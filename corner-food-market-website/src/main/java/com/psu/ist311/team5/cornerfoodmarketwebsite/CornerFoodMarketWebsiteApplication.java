@@ -1,4 +1,4 @@
-package com.psu.ist311.team.team5.cornerfoodmarketwebsite;
+package com.psu.ist311.team5.cornerfoodmarketwebsite;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

@@ -1,6 +1,7 @@
-package com.psu.ist311.team.team5.cornerfoodmarketwebsite.data.repository;
+package com.psu.ist311.team.team5.cornerfoodmarketwebsite.repository;
 
-import com.psu.ist311.team.team5.cornerfoodmarketwebsite.data.entity.Customer;
+import com.psu.ist311.team5.cornerfoodmarketwebsite.repository.CustomerRepository;
+import com.psu.ist311.team5.cornerfoodmarketwebsite.model.Customer;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -32,8 +33,8 @@ public class CustomerRepositoryTests {
 
         Customer savedCustomer = repo.save(customer);
 
-        Customer existingUser = entityManager.find(Customer.class, savedCustomer.getId());
+        Customer existingCustomer = entityManager.find(Customer.class, savedCustomer.getId());
 
-        assertThat(existingUser.getEmail()).isEqualTo(customer.getEmail());
+        assertThat(existingCustomer.getEmail()).isEqualTo(customer.getEmail());
     }
 }

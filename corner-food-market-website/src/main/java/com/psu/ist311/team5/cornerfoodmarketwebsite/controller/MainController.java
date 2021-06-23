@@ -1,4 +1,4 @@
-package com.psu.ist311.team.team5.cornerfoodmarketwebsite.web;
+package com.psu.ist311.team5.cornerfoodmarketwebsite.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

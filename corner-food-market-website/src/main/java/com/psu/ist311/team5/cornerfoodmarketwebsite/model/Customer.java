@@ -1,4 +1,4 @@
-package com.psu.ist311.team.team5.cornerfoodmarketwebsite.data.entity;
+package com.psu.ist311.team5.cornerfoodmarketwebsite.model;
 
 import javax.persistence.*;
 
@@ -19,6 +19,10 @@ public class Customer {
     private String lastName;
     @Column(name = "CELL_PHONE_NUMBER")
     private String cellPhoneNumber;
+    @Column(name = "CITY")
+    private String city;
+    @Column(name = "COUNTRY")
+    private String country;
 
     public short getId() {
         return id;
@@ -66,5 +70,21 @@ public class Customer {
 
     public void setCellPhoneNumber(String cellPhoneNumber) {
         this.cellPhoneNumber = cellPhoneNumber;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
     }
 }
