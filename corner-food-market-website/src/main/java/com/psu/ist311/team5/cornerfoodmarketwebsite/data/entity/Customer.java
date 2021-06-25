@@ -1,4 +1,4 @@
-package com.psu.ist311.team5.cornerfoodmarketwebsite.model;
+package com.psu.ist311.team5.cornerfoodmarketwebsite.data.entity;
 
 import javax.persistence.*;
 
