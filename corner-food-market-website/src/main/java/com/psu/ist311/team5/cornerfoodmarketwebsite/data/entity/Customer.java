@@ -15,14 +15,12 @@ public class Customer {
     private String password;
     @Column(name = "FIRST_NAME")
     private String firstName;
+    @Column(name = "MIDDLE_NAME")
+    private String middleName;
     @Column(name = "LAST_NAME")
     private String lastName;
     @Column(name = "CELL_PHONE_NUMBER")
     private String cellPhoneNumber;
-    @Column(name = "CITY")
-    private String city;
-    @Column(name = "COUNTRY")
-    private String country;
 
     public short getId() {
         return id;
@@ -56,6 +54,14 @@ public class Customer {
         this.firstName = firstName;
     }
 
+    public String getMiddleName() {
+        return middleName;
+    }
+
+    public void setMiddleName(String middleName) {
+        this.middleName = middleName;
+    }
+
     public String getLastName() {
         return lastName;
     }
@@ -70,21 +76,5 @@ public class Customer {
 
     public void setCellPhoneNumber(String cellPhoneNumber) {
         this.cellPhoneNumber = cellPhoneNumber;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public String getCountry() {
-        return country;
-    }
-
-    public void setCountry(String country) {
-        this.country = country;
     }
 }

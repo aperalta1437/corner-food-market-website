@@ -17,10 +17,12 @@ public class CustomerAddress {
     private String addressLine2;
     @Column(name = "CITY")
     private String city;
+    @Column(name = "STATE_CODE")
+    private String stateCode;
     @Column(name = "POSTAL_CODE")
     private String postalCode;
-    @Column(name = "COUNTRY")
-    private String country;
+    @Column(name = "COUNTRY_ALPHA2_CODE")
+    private String countryAlpha2Code;
     @Column(name = "TELEPHONE_NUMBER")
     private String telephoneNumber;
 
@@ -64,6 +66,14 @@ public class CustomerAddress {
         this.city = city;
     }
 
+    public String getStateCode() {
+        return stateCode;
+    }
+
+    public void setStateCode(String stateCode) {
+        this.stateCode = stateCode;
+    }
+
     public String getPostalCode() {
         return postalCode;
     }
@@ -72,12 +82,12 @@ public class CustomerAddress {
         this.postalCode = postalCode;
     }
 
-    public String getCountry() {
-        return country;
+    public String getCountryAlpha2Code() {
+        return countryAlpha2Code;
     }
 
-    public void setCountry(String country) {
-        this.country = country;
+    public void setCountryAlpha2Code(String countryAlpha2Code) {
+        this.countryAlpha2Code = countryAlpha2Code;
     }
 
     public String getTelephoneNumber() {
