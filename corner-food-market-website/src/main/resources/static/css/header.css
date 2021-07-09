@@ -1,0 +1,38 @@
+.level-0-menu-item:hover .level-1-menu {
+  display: block;
+}
+
+.level-0-menu-item {
+  padding: 0%;
+}
+
+.level-0-menu-item > .nav-link {
+  height: 100%;
+  width: 100%;
+}
+
+.header-main {
+  padding: 15px !important;
+}
+
+.level-1-menu-item:hover .level-2-menu {
+  display: block;
+}
+
+.dropdown-submenu {
+  position: relative;
+}
+
+.dropdown-submenu a::after {
+  transform: rotate(-90deg);
+  position: absolute;
+  right: 6px;
+  top: 0.8em;
+}
+
+.dropdown-submenu .dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-left: 0.1rem;
+  margin-right: 0.1rem;
+}

@@ -56,37 +56,32 @@ public class SignupFormService {
         }
 
         if (signupForm.getIsAddressProvided()) {
-            CustomerAddress newCustomerAddress = new CustomerAddress();
-
-            newCustomerAddress.setCustomerId(this.customerRepository.getIdByEmail(newCustomer.getEmail()));
-
-            newCustomerAddress.setAddressLine1(signupForm.getAddressLine1());
-            newCustomerAddress.setAddressLine2(signupForm.getAddressLine2());
-            newCustomerAddress.setCity(signupForm.getCity());
-
-            String countryAlpha2Code = signupForm.getCountryAlpha2Code();
-
-            if (CountryAlpha2Code.valueOf(countryAlpha2Code) == CountryAlpha2Code.US) {
-                newCustomerAddress.setStateCode(signupForm.getStateCode());
-            }
-            newCustomerAddress.setPostalCode(signupForm.getPostalCode());
-            newCustomerAddress.setCountryAlpha2Code(countryAlpha2Code);
-
-            try {
-                this.customerAddressRepository.save(newCustomerAddress);
-            } catch (Exception ex) {
-                // TODO - Log the exception message.
-            }
+            this.addDeliveryAddress(signupForm, this.customerRepository.getIdByEmail(newCustomer.getEmail()));
         }
-
-        System.out.println(signupForm.getAddressLine1());
-        System.out.println(signupForm.getAddressLine2());
-        System.out.println(signupForm.getCity());
-        System.out.println(signupForm.getPostalCode());
-        System.out.println(signupForm.getStateCode());
-        System.out.println(signupForm.getCountryAlpha2Code());
-        System.out.println(signupForm.getIsAddressProvided());
-
         return isNewCustomerSaved;
+    }
+
+    public void addDeliveryAddress(SignupForm signupForm, short newCustomerId) {
+        CustomerAddress newCustomerAddress = new CustomerAddress();
+
+        newCustomerAddress.setCustomerId(newCustomerId);
+
+        newCustomerAddress.setAddressLine1(signupForm.getAddressLine1());
+        newCustomerAddress.setAddressLine2(signupForm.getAddressLine2());
+        newCustomerAddress.setCity(signupForm.getCity());
+
+        String countryAlpha2Code = signupForm.getCountryAlpha2Code();
+
+        if (CountryAlpha2Code.valueOf(countryAlpha2Code) == CountryAlpha2Code.US) {
+            newCustomerAddress.setStateCode(signupForm.getStateCode());
+        }
+        newCustomerAddress.setPostalCode(signupForm.getPostalCode());
+        newCustomerAddress.setCountryAlpha2Code(countryAlpha2Code);
+
+        try {
+            this.customerAddressRepository.save(newCustomerAddress);
+        } catch (Exception ex) {
+            // TODO - Log the exception message.
+        }
     }
 }
