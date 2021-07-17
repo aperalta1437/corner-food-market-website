@@ -4,4 +4,5 @@ docker run --rm --name corner-food-market-website-pg-db -e POSTGRES_PASSWORD=pos
 Start-Sleep 3
 $env:PGPASSWORD=postgres
 psql -U postgres -d dev -h localhost -f schema.sql
+psql -U postgres -d dev -h localhost -f triggers.sql
 psql -U postgres -d dev -h localhost -f data.sql

@@ -14,7 +14,7 @@ public class Item {
     @Column(name = "DESCRIPTION")
     private String description;
     @Column(name = "SKU")
-    private String SKU;
+    private String sku;
     @Column(name = "CATEGORY_ID")
     private short categoryId;
     @Column(name = "INVENTORY_ID")
@@ -22,7 +22,7 @@ public class Item {
     @Column(name = "PRICE")
     private double price;
     @Column(name = "DISCOUNT_ID")
-    private short discountId;
+    private Short discountId;
     @Column(name = "IS_ON_SALE")
     private boolean isOnSale;
     @Column(name = "IS_POPULAR")
@@ -52,12 +52,12 @@ public class Item {
         this.description = description;
     }
 
-    public String getSKU() {
-        return SKU;
+    public String getSku() {
+        return sku;
     }
 
-    public void setSKU(String SKU) {
-        this.SKU = SKU;
+    public void setSKU(String sku) {
+        this.sku = sku;
     }
 
     public short getCategoryId() {
@@ -84,11 +84,11 @@ public class Item {
         this.price = price;
     }
 
-    public short getDiscountId() {
+    public Short getDiscountId() {
         return discountId;
     }
 
-    public void setDiscountId(short discountId) {
+    public void setDiscountId(Short discountId) {
         this.discountId = discountId;
     }
 
