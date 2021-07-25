@@ -10,7 +10,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@Controller
 public class HTTPErrorController implements ErrorController {
 
     @RequestMapping("/error")
@@ -19,12 +18,13 @@ public class HTTPErrorController implements ErrorController {
         Object status = request.getAttribute(RequestDispatcher.ERROR_STATUS_CODE);
 
         // TODO: log error details here
-
+        System.out.println("HELOOSKLKJBSLKCBN");
         if (status != null) {
             int statusCode = Integer.parseInt(status.toString());
 
             // display specific error page
             if (statusCode == HttpStatus.NOT_FOUND.value()) {
+                System.out.println("BABIDI");
                 response.sendRedirect("/404");
             } else if (statusCode == HttpStatus.INTERNAL_SERVER_ERROR.value()) {
                 return "500";

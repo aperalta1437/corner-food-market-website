@@ -68,8 +68,8 @@ public class ItemInformationService {
             ItemInformation itemInformation = new ItemInformation(
                     item.getName(), item.getSku(), item.getPrice(), item.getIsPopular(),
                     isPercentageBased, discountPercent, discountAmount, itemInventory.get().getQuantity(),
-                    itemCategory.get().getName(), itemCategory.get().getUrlRouteName(), itemImage.get().getFileName(),
-                    fileRelativePath.get().getRelativePath());
+                    itemCategory.get().getName(), itemCategory.get().getUrlRouteName(),
+                    fileRelativePath.get().getRelativePath(), itemImage.get().getFileName());
 
 
 
@@ -86,6 +86,7 @@ public class ItemInformationService {
     }
 
     public ItemDetailedInformation getItemDetailedInformation(String itemSku) {
+        System.out.println(itemSku);
         Item item = this.itemRepository.findBySku(itemSku);
 
         Optional<ItemCategory> itemCategory = this.itemCategoryRepository.findById(item.getCategoryId());
@@ -118,8 +119,8 @@ public class ItemInformationService {
         ItemDetailedInformation itemDetailedInformation = new ItemDetailedInformation(
                 item.getName(), item.getDescription(), item.getSku(), item.getPrice(), item.getIsPopular(),
                 isPercentageBased, discountPercent, discountAmount, itemInventory.get().getQuantity(),
-                itemCategory.get().getName(), itemCategory.get().getUrlRouteName(), imagesFileNames.get(0),
-                imagesFileRelativePaths.get(0), imagesFileNames, imagesFileRelativePaths);
+                itemCategory.get().getName(), itemCategory.get().getUrlRouteName(),
+                imagesFileRelativePaths.get(0), imagesFileNames.get(0), imagesFileRelativePaths, imagesFileNames);
 
         return itemDetailedInformation;
     }

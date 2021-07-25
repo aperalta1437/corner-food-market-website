@@ -12,14 +12,13 @@ public class ItemInformation {
     private short quantity;
     private String categoryName;
     private String categoryUrlRouteName;
-    private String imageFileName;
-    private String imageRelativePath;
+    private String mainImageSourceRelativePathName;
 
 
     public ItemInformation(String name, String sku, double price, boolean isPopular,
                            Boolean isPercentageBasedDiscount, Double discountPercent, Double discountAmount,
-                           short quantity, String categoryName, String categoryUrlRouteName, String imageFileName,
-                           String imageRelativePath) {
+                           short quantity, String categoryName, String categoryUrlRouteName,
+                           String mainImageRelativePath, String mainImageFileName) {
         this.name = name;
         this.sku = sku;
         this.price = java.text.NumberFormat.getCurrencyInstance().format(price);
@@ -30,8 +29,7 @@ public class ItemInformation {
         this.quantity = quantity;
         this.categoryName = categoryName;
         this.categoryUrlRouteName = categoryUrlRouteName;
-        this.imageFileName = imageFileName;
-        this.imageRelativePath = imageRelativePath;
+        this.mainImageSourceRelativePathName = mainImageRelativePath + mainImageFileName;
     }
 
     public String getName() {
@@ -114,19 +112,11 @@ public class ItemInformation {
         this.categoryUrlRouteName = categoryUrlRouteName;
     }
 
-    public String getImageFileName() {
-        return imageFileName;
+    public String getMainImageSourceRelativePathName() {
+        return mainImageSourceRelativePathName;
     }
 
-    public void setImageFileName(String imageFileName) {
-        this.imageFileName = imageFileName;
-    }
-
-    public String getImageRelativePath() {
-        return imageRelativePath;
-    }
-
-    public void setImageRelativePath(String imageRelativePath) {
-        this.imageRelativePath = imageRelativePath;
+    public void setMainImageSourceRelativePathName(String mainImageFileName, String mainImageRelativePath) {
+        this.mainImageSourceRelativePathName = mainImageFileName + mainImageRelativePath;
     }
 }

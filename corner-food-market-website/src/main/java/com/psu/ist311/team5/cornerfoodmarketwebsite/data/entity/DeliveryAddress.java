@@ -3,8 +3,8 @@ package com.psu.ist311.team5.cornerfoodmarketwebsite.data.entity;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "CUSTOMER_ADDRESS")
-public class CustomerAddress {
+@Table(name = "DELIVERY_ADDRESS")
+public class DeliveryAddress {
     @Id
     @Column(name = "ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)

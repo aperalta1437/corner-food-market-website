@@ -8,21 +8,25 @@ import java.util.ArrayList;
 public class ItemDetailedInformation extends ItemInformation{
 
     private String description;
-    private Iterable<String> imagesFileNames;
-    private Iterable<String> imagesFileRelativePaths;
+    private Iterable<String> imagesSourceRelativePathNames;
 
     public ItemDetailedInformation(String name, String description, String sku, double price, boolean isPopular,
                                    Boolean isPercentageBasedDiscount, Double discountPercent, Double discountAmount,
                                    short quantity, String categoryName, String categoryUrlRouteName,
-                                   String mainImageFileName, String mainImageRelativePath,
-                                   Iterable<String> imagesFileNames, Iterable<String> imagesFileRelativePaths) {
+                                   String mainImageRelativePath, String mainImageFileName,
+                                   ArrayList<String> imagesFileRelativePaths, ArrayList<String> imagesFileNames) {
 
         super(name, sku, price, isPopular, isPercentageBasedDiscount, discountPercent, discountAmount, quantity,
-                categoryName, categoryUrlRouteName, mainImageFileName, mainImageRelativePath);
+                categoryName, categoryUrlRouteName, mainImageRelativePath, mainImageFileName);
 
         this.description = description;
-        this.imagesFileNames = imagesFileNames;
-        this.imagesFileRelativePaths = imagesFileRelativePaths;
+
+        ArrayList<String> tempImagesSourceRelativePathNames = new ArrayList<>();
+
+        for (int index = 0; index < imagesFileNames.size(); index ++) {
+            tempImagesSourceRelativePathNames.add(imagesFileRelativePaths.get(index) + imagesFileNames.get(index));
+        }
+        this.imagesSourceRelativePathNames = tempImagesSourceRelativePathNames;
     }
 
     public String getDescription() {
@@ -33,19 +37,17 @@ public class ItemDetailedInformation extends ItemInformation{
         this.description = description;
     }
 
-    public Iterable<String> getImagesFileNames() {
-        return imagesFileNames;
+    public Iterable<String> getImagesSourceRelativePathNames() {
+        return imagesSourceRelativePathNames;
     }
 
-    public void setImagesFileNames(Iterable<String> imagesFileNames) {
-        this.imagesFileNames = imagesFileNames;
+    public void setImagesSourceRelativePathNames(ArrayList<String> imagesFileRelativePaths, ArrayList<String> imagesFileNames) {
+        ArrayList<String> tempImagesSourceRelativePathNames = new ArrayList<>();
+
+        for (int index = 0; index < imagesFileNames.size(); index ++) {
+            tempImagesSourceRelativePathNames.add(imagesFileRelativePaths.get(index) + imagesFileNames.get(index));
+        }
+        this.imagesSourceRelativePathNames = tempImagesSourceRelativePathNames;
     }
 
-    public Iterable<String> getImagesFileRelativePaths() {
-        return imagesFileRelativePaths;
-    }
-
-    public void setImagesFileRelativePaths(Iterable<String> imagesFileRelativePaths) {
-        this.imagesFileRelativePaths = imagesFileRelativePaths;
-    }
 }

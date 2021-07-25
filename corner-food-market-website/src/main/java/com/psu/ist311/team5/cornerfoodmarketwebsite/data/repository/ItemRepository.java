@@ -10,5 +10,6 @@ public interface ItemRepository extends JpaRepository<Item, Short> {
     @Query(value = "SELECT I1 FROM Item I1 WHERE I1.isOnSale = true")
     Iterable<Item> findAllOnSale();
 
+    @Query(value = "SELECT I1 FROM Item I1 WHERE I1.sku = ?1")
     Item findBySku(String itemSku);
 }

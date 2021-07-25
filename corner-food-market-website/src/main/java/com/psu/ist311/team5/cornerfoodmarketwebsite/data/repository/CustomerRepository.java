@@ -17,4 +17,7 @@ public interface CustomerRepository extends JpaRepository<Customer, Short> {
 
     @Query("SELECT C1.id FROM Customer C1 WHERE C1.email = ?1")
     Short getIdByEmail(String email);
+
+    @Query(value = "SELECT (CASE WHEN C1.MIDDLE_NAME IS NOT NULL OR C1.MIDDLE_NAME <> '' THEN CONCAT(C1.FIRST_NAME, ' ', C1.MIDDLE_NAME, ' ', C1.LAST_NAME) ELSE CONCAT(C1.FIRST_NAME, ' ', C1.LAST_NAME) END) FROM CUSTOMER C1 WHERE C1.ID = ?1", nativeQuery = true)
+    String getFullNameById(short id);
 }

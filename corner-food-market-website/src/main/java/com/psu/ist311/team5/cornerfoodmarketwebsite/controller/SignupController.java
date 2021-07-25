@@ -3,7 +3,7 @@ package com.psu.ist311.team5.cornerfoodmarketwebsite.controller;
 import com.psu.ist311.team5.cornerfoodmarketwebsite.business.dto.request.form.SignupForm;
 import com.psu.ist311.team5.cornerfoodmarketwebsite.business.dto.response.SignupResponse;
 import com.psu.ist311.team5.cornerfoodmarketwebsite.business.service.SignupFormService;
-import com.psu.ist311.team5.cornerfoodmarketwebsite.data.repository.CustomerAddressRepository;
+import com.psu.ist311.team5.cornerfoodmarketwebsite.data.repository.DeliveryAddressRepository;
 import com.psu.ist311.team5.cornerfoodmarketwebsite.data.repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
@@ -24,11 +24,11 @@ public class SignupController {
     private final CustomerRepository customerRepository;
 
     @Autowired
-    private final CustomerAddressRepository customerAddressRepository;
+    private final DeliveryAddressRepository deliveryAddressRepository;
 
-    public SignupController(CustomerRepository customerRepository, CustomerAddressRepository customerAddressRepository) {
+    public SignupController(CustomerRepository customerRepository, DeliveryAddressRepository deliveryAddressRepository) {
         this.customerRepository = customerRepository;
-        this.customerAddressRepository = customerAddressRepository;
+        this.deliveryAddressRepository = deliveryAddressRepository;
     }
 
     @GetMapping(value = "/signup")
@@ -41,7 +41,7 @@ public class SignupController {
     @PostMapping(value = "/process-signup")
     public String processSignup(SignupForm signupForm, Model model) {
         SignupFormService signupFormService = new SignupFormService(this.customerRepository,
-                this.customerAddressRepository);
+                this.deliveryAddressRepository);
         SignupResponse signupResponse = signupFormService.processNewSignup(signupForm);
         model.addAttribute("signupResponse", signupResponse);
         return "signup-response";

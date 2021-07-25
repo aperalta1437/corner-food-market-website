@@ -4,8 +4,8 @@ import com.psu.ist311.team5.cornerfoodmarketwebsite.business.dto.request.form.Si
 import com.psu.ist311.team5.cornerfoodmarketwebsite.business.dto.response.SignupResponse;
 import com.psu.ist311.team5.cornerfoodmarketwebsite.business.service.utils.CountryAlpha2Code;
 import com.psu.ist311.team5.cornerfoodmarketwebsite.data.entity.Customer;
-import com.psu.ist311.team5.cornerfoodmarketwebsite.data.entity.CustomerAddress;
-import com.psu.ist311.team5.cornerfoodmarketwebsite.data.repository.CustomerAddressRepository;
+import com.psu.ist311.team5.cornerfoodmarketwebsite.data.entity.DeliveryAddress;
+import com.psu.ist311.team5.cornerfoodmarketwebsite.data.repository.DeliveryAddressRepository;
 import com.psu.ist311.team5.cornerfoodmarketwebsite.data.repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -14,12 +14,12 @@ import org.springframework.stereotype.Service;
 @Service
 public class SignupFormService {
     private final CustomerRepository customerRepository;
-    private final CustomerAddressRepository customerAddressRepository;
+    private final DeliveryAddressRepository deliveryAddressRepository;
 
     @Autowired
-    public SignupFormService(CustomerRepository customerRepository, CustomerAddressRepository customerAddressRepository) {
+    public SignupFormService(CustomerRepository customerRepository, DeliveryAddressRepository deliveryAddressRepository) {
         this.customerRepository = customerRepository;
-        this.customerAddressRepository = customerAddressRepository;
+        this.deliveryAddressRepository = deliveryAddressRepository;
     }
 
     public SignupResponse processNewSignup(SignupForm signupForm) {
@@ -62,24 +62,24 @@ public class SignupFormService {
     }
 
     public void addDeliveryAddress(SignupForm signupForm, short newCustomerId) {
-        CustomerAddress newCustomerAddress = new CustomerAddress();
+        DeliveryAddress newDeliveryAddress = new DeliveryAddress();
 
-        newCustomerAddress.setCustomerId(newCustomerId);
+        newDeliveryAddress.setCustomerId(newCustomerId);
 
-        newCustomerAddress.setAddressLine1(signupForm.getAddressLine1());
-        newCustomerAddress.setAddressLine2(signupForm.getAddressLine2());
-        newCustomerAddress.setCity(signupForm.getCity());
+        newDeliveryAddress.setAddressLine1(signupForm.getAddressLine1());
+        newDeliveryAddress.setAddressLine2(signupForm.getAddressLine2());
+        newDeliveryAddress.setCity(signupForm.getCity());
 
         String countryAlpha2Code = signupForm.getCountryAlpha2Code();
 
         if (CountryAlpha2Code.valueOf(countryAlpha2Code) == CountryAlpha2Code.US) {
-            newCustomerAddress.setStateCode(signupForm.getStateCode());
+            newDeliveryAddress.setStateCode(signupForm.getStateCode());
         }
-        newCustomerAddress.setPostalCode(signupForm.getPostalCode());
-        newCustomerAddress.setCountryAlpha2Code(countryAlpha2Code);
+        newDeliveryAddress.setPostalCode(signupForm.getPostalCode());
+        newDeliveryAddress.setCountryAlpha2Code(countryAlpha2Code);
 
         try {
-            this.customerAddressRepository.save(newCustomerAddress);
+            this.deliveryAddressRepository.save(newDeliveryAddress);
         } catch (Exception ex) {
             // TODO - Log the exception message.
         }

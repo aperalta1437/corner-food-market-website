@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ItemImageRepository extends JpaRepository<ItemImage, Short> {
+public interface ItemImageRepository extends JpaRepository<ItemImage, Integer> {
     @Query(value = "SELECT II1 FROM ItemImage II1 WHERE II1.itemId = ?1 AND II1.sortNumber = 1")
     ItemImage getMainItemImageByItemId(short id);
 

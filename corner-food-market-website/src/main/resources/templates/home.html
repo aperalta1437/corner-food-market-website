@@ -153,20 +153,20 @@
             <div href="#" class="card card-product-grid">
               <a href="#" class="img-wrap">
                 <img
-                  th:src="@{${itemInformation.imageRelativePath} + ${itemInformation.imageFileName}}"
+                  th:src="@{${itemInformation.mainImageSourceRelativePathName}}"
                 />
               </a>
               <figcaption class="info-wrap">
                 <a
                   th:text="${itemInformation.name}"
-                  th:href="@{${itemInformation.categoryUrlRouteName} + '/' + ${itemInformation.sku}}"
+                  th:href="@{'/categories/' + ${itemInformation.categoryUrlRouteName} + '/items/' + ${itemInformation.sku}}"
                   class="title"
                   >Item Name</a
                 >
-                <div th:text="${itemInformation.price}" class="price mt-1">Price</div>
+                <div th:text="${itemInformation.price}" class="price mt-1">Item Price</div>
                 <!-- price-wrap.// -->
                 <div th:text="' Available: ' + ${itemInformation.quantity}" class="price mt-1">
-                  Quantity
+                  Item Quantity
                 </div>
               </figcaption>
             </div>
