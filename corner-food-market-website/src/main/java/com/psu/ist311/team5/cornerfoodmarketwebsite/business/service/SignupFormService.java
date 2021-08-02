@@ -3,10 +3,11 @@ package com.psu.ist311.team5.cornerfoodmarketwebsite.business.service;
 import com.psu.ist311.team5.cornerfoodmarketwebsite.business.dto.request.form.SignupForm;
 import com.psu.ist311.team5.cornerfoodmarketwebsite.business.dto.response.SignupResponse;
 import com.psu.ist311.team5.cornerfoodmarketwebsite.business.service.utils.CountryAlpha2Code;
-import com.psu.ist311.team5.cornerfoodmarketwebsite.data.entity.Customer;
-import com.psu.ist311.team5.cornerfoodmarketwebsite.data.entity.DeliveryAddress;
-import com.psu.ist311.team5.cornerfoodmarketwebsite.data.repository.DeliveryAddressRepository;
-import com.psu.ist311.team5.cornerfoodmarketwebsite.data.repository.CustomerRepository;
+import com.psu.ist311.team5.cornerfoodmarketwebsite.data.single_table.entity.Customer;
+import com.psu.ist311.team5.cornerfoodmarketwebsite.data.single_table.entity.DeliveryAddress;
+import com.psu.ist311.team5.cornerfoodmarketwebsite.data.single_table.repository.DeliveryAddressRepository;
+import com.psu.ist311.team5.cornerfoodmarketwebsite.data.single_table.repository.CustomerRepository;
+import org.apache.el.parser.AstFalse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -45,6 +46,7 @@ public class SignupFormService {
         newCustomer.setMiddleName(signupForm.getMiddleName());
         newCustomer.setLastName(signupForm.getLastName());
         newCustomer.setCellPhoneNumber(signupForm.getCellPhoneNumber());
+        newCustomer.setIsDisabled(false);
 
         boolean isNewCustomerSaved;
         try {

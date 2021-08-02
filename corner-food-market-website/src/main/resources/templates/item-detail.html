@@ -13,7 +13,11 @@
 
     <!-- Fonticons -->
     <link th:href="@{fonts/feathericons/css/iconfont.css}" rel="stylesheet" type="text/css" />
-    <link th:href="@{fonts/material-icons/css/materialdesignicons.css}" rel="stylesheet" type="text/css"/>
+    <link
+      th:href="@{fonts/material-icons/css/materialdesignicons.css}"
+      rel="stylesheet"
+      type="text/css"
+    />
   </head>
   <body>
     <div th:replace="fragments/header::header"></div>
@@ -27,12 +31,15 @@
             <aside class="col-md-6">
               <article class="gallery-wrap">
                 <div class="img-big-wrap">
-                  <a href="#"><img th:src="@{'/' + ${itemDetailedInformation.mainImageSourceRelativePathName}}" /></a>
+                  <a href="#"
+                    ><img
+                      th:src="@{'/' + ${itemDetailedInformation.images[0].getSourceRelativePathName()}}"
+                  /></a>
                 </div>
                 <!-- img-big-wrap.// -->
                 <div class="thumbs-wrap">
-                  <a th:each="imageSourceRelativePathName: ${itemDetailedInformation.imagesSourceRelativePathNames}" href="#" class="item-thumb">
-                    <img th:src="@{'/' + ${imageSourceRelativePathName}}" />
+                  <a th:each="image: ${itemDetailedInformation.images}" href="#" class="item-thumb">
+                    <img th:src="@{'/' + ${image.getSourceRelativePathName()}}" />
                   </a>
                 </div>
                 <!-- thumbs-wrap.// -->
@@ -64,9 +71,7 @@
                   <span class="text-muted">/per unit</span>
                 </div>
 
-                <p th:text="${itemDetailedInformation.description}">
-                  Item Description
-                </p>
+                <p th:text="${itemDetailedInformation.description}">Item Description</p>
 
                 <dl class="row">
                   <dt class="col-sm-3">Flavor</dt>

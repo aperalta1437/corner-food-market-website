@@ -1,7 +1,7 @@
 package com.psu.ist311.team5.cornerfoodmarketwebsite.repository;
 
-import com.psu.ist311.team5.cornerfoodmarketwebsite.data.repository.CustomerRepository;
-import com.psu.ist311.team5.cornerfoodmarketwebsite.data.entity.Customer;
+import com.psu.ist311.team5.cornerfoodmarketwebsite.data.single_table.repository.CustomerRepository;
+import com.psu.ist311.team5.cornerfoodmarketwebsite.data.single_table.entity.Customer;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;

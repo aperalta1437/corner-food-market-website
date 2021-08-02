@@ -1,9 +1,13 @@
 package com.psu.ist311.team5.cornerfoodmarketwebsite.controller;
 
-import com.psu.ist311.team5.cornerfoodmarketwebsite.business.dto.response.domain.ItemInformation;
+import com.psu.ist311.team5.cornerfoodmarketwebsite.data.domain.entity.ItemInformation;
+import com.psu.ist311.team5.cornerfoodmarketwebsite.data.domain.entity.ItemDetailedInformation;
 import com.psu.ist311.team5.cornerfoodmarketwebsite.business.dto.response.domain.ReviewInformation;
 import com.psu.ist311.team5.cornerfoodmarketwebsite.business.service.ItemInformationService;
 import com.psu.ist311.team5.cornerfoodmarketwebsite.business.service.ReviewInformationService;
+import com.psu.ist311.team5.cornerfoodmarketwebsite.data.single_table.entity.GeneralReview;
+import com.psu.ist311.team5.cornerfoodmarketwebsite.data.single_table.entity.ItemReview;
+import com.psu.ist311.team5.cornerfoodmarketwebsite.data.single_table.entity.OrderReview;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -42,7 +46,7 @@ public class HomeController {
     public String getItemDetailsPage(@PathVariable(value = "item-category") String itemCategory,
                               @PathVariable(value = "item-sku") String itemSku, Model model) {
 
-        ItemInformation itemDetailedInformation = this.itemInformationService.getItemDetailedInformation(itemSku);
+        ItemDetailedInformation itemDetailedInformation = this.itemInformationService.getItemDetailedInformation(itemSku);
 
         model.addAttribute("itemDetailedInformation", itemDetailedInformation);
 
@@ -52,9 +56,13 @@ public class HomeController {
     @GetMapping(value = "/reviews")
     public String getReviewsPage(Model model) {
 
-        List<ReviewInformation> reviewInformationList = this.reviewInformationService.getReviewsInformation();
+        List<GeneralReview> generalReviewsList = this.reviewInformationService.getGeneralReviews();
+        List<OrderReview> orderReviewList = this.reviewInformationService.getOrderReviews();
+        List<ItemReview> itemReviewList = this.reviewInformationService.getItemReviews();
 
-        model.addAttribute("reviewInformationList", reviewInformationList);
+        model.addAttribute("generalReviewsList", generalReviewsList);
+        model.addAttribute("orderReviewList", orderReviewList);
+        model.addAttribute("itemReviewList", itemReviewList);
         return "reviews";
     }
 

@@ -1,7 +1,7 @@
 package com.psu.ist311.team5.cornerfoodmarketwebsite.business.service;
 
 import com.psu.ist311.team5.cornerfoodmarketwebsite.business.dto.response.domain.NavigationBarCategory;
-import com.psu.ist311.team5.cornerfoodmarketwebsite.data.repository.ItemCategoryRepository;
+import com.psu.ist311.team5.cornerfoodmarketwebsite.data.single_table.repository.ItemCategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

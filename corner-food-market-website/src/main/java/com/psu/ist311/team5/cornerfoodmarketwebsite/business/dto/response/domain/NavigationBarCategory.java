@@ -1,6 +1,6 @@
 package com.psu.ist311.team5.cornerfoodmarketwebsite.business.dto.response.domain;
 
-import com.psu.ist311.team5.cornerfoodmarketwebsite.data.entity.ItemCategory;
+import com.psu.ist311.team5.cornerfoodmarketwebsite.data.single_table.entity.ItemCategory;
 
 public class NavigationBarCategory {
     private ItemCategory itemCategory;

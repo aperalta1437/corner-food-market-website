@@ -23,54 +23,376 @@
     <div th:replace="fragments/header::header"></div>
     <!-- section-header.// -->
 
-    <section class="section-content padding-y bg">
+    <section class="section-content padding-y bg-white">
       <div class="container">
         <!-- ============================ COMPONENT 1 ================================= -->
         <div class="row">
           <div class="col-md-9">
-            <header class="section-heading">
-              <h3>Review components</h3>
-              <div class="rating-wrap">
-                <ul class="rating-stars stars-lg">
-                  <li style="width: 80%" class="stars-active">
-                    <img th:src="@{/images/icons/stars-active.svg}" alt="" />
-                  </li>
-                  <li>
-                    <img th:src="@{/images/icons/starts-disable.svg}" alt="" />
-                  </li>
-                </ul>
-                <strong class="label-rating text-lg">
-                  4.5 <span class="text-muted">| 112 reviews</span></strong
+            <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+              <li class="nav-item">
+                <a
+                  class="nav-link active"
+                  id="pills-home-tab"
+                  data-toggle="pill"
+                  href="#pills-home"
+                  role="tab"
+                  aria-controls="pills-home"
+                  aria-selected="true"
+                  >General Reviews</a
                 >
-              </div>
-            </header>
+              </li>
+              <li class="nav-item">
+                <a
+                  class="nav-link"
+                  id="pills-profile-tab"
+                  data-toggle="pill"
+                  href="#pills-profile"
+                  role="tab"
+                  aria-controls="pills-profile"
+                  aria-selected="false"
+                  >Order Reviews</a
+                >
+              </li>
+              <li class="nav-item">
+                <a
+                  class="nav-link"
+                  id="pills-contact-tab"
+                  data-toggle="pill"
+                  href="#pills-contact"
+                  role="tab"
+                  aria-controls="pills-contact"
+                  aria-selected="false"
+                  >Item Reviews</a
+                >
+              </li>
+            </ul>
+            <div class="tab-content" id="pills-tabContent">
+              <div
+                class="tab-pane fade show active"
+                id="pills-home"
+                role="tabpanel"
+                aria-labelledby="pills-home-tab"
+              >
+                <header class="section-heading">
+                  <h3>General Reviews</h3>
+                  <div class="rating-wrap">
+                    <ul class="rating-stars stars-lg">
+                      <li style="width: 80%" class="stars-active">
+                        <img th:src="@{/images/icons/stars-active.svg}" alt="" />
+                      </li>
+                      <li>
+                        <img th:src="@{/images/icons/starts-disable.svg}" alt="" />
+                      </li>
+                    </ul>
+                    <strong class="label-rating text-lg">
+                      4.5 <span class="text-muted">| 112 reviews</span></strong
+                    >
+                  </div>
+                </header>
 
-            <article class="box mb-3">
-              <div class="icontext w-100">
-                <img th:src="@{/images/avatars/avatar1.jpg}" class="img-xs icon rounded-circle" />
-                <div class="text">
-                  <span class="date text-muted float-md-right">24.04.2020 </span>
-                  <h6 class="mb-1">Mike John</h6>
-                  <ul class="rating-stars">
-                    <li style="width: 80%" class="stars-active">
-                      <img th:src="@{/images/icons/stars-active.svg}" alt="" />
-                    </li>
-                    <li>
-                      <img th:src="@{/images/icons/starts-disable.svg}" alt="" />
-                    </li>
-                  </ul>
-                  <span class="label-rating text-warning">Good</span>
+                <article class="box mb-3 w-100">
+                  <div class="icontext w-100">
+                    <img
+                      th:src="@{/images/avatars/avatar1.jpg}"
+                      class="img-xs icon rounded-circle"
+                    />
+                    <div class="text">
+                      <span class="date text-muted float-md-right">24.04.2020 </span>
+                      <h6 class="mb-1">Mike John</h6>
+                      <ul class="rating-stars">
+                        <li style="width: 80%" class="stars-active">
+                          <img th:src="@{/images/icons/stars-active.svg}" alt="" />
+                        </li>
+                        <li>
+                          <img th:src="@{/images/icons/starts-disable.svg}" alt="" />
+                        </li>
+                      </ul>
+                      <span class="label-rating text-warning">Good</span>
+                    </div>
+                  </div>
+                  <!-- icontext.// -->
+                  <div class="mt-3">
+                    <p>
+                      Dummy comment Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
+                      eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
+                      veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
+                    </p>
+                  </div>
+                </article>
+                <article class="box mb-3 w-100">
+                  <div class="icontext w-100">
+                    <img
+                      th:src="@{/images/avatars/avatar1.jpg}"
+                      class="img-xs icon rounded-circle"
+                    />
+                    <div class="text">
+                      <span class="date text-muted float-md-right">24.04.2020 </span>
+                      <h6 class="mb-1">Mike John</h6>
+                      <ul class="rating-stars">
+                        <li style="width: 80%" class="stars-active">
+                          <img th:src="@{/images/icons/stars-active.svg}" alt="" />
+                        </li>
+                        <li>
+                          <img th:src="@{/images/icons/starts-disable.svg}" alt="" />
+                        </li>
+                      </ul>
+                      <span class="label-rating text-warning">Good</span>
+                    </div>
+                  </div>
+                  <!-- icontext.// -->
+                  <div class="mt-3">
+                    <p>
+                      Dummy comment Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
+                      eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
+                      veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
+                    </p>
+                  </div>
+                </article>
+                <article class="box mb-3 w-100">
+                  <div class="icontext w-100">
+                    <img
+                      th:src="@{/images/avatars/avatar1.jpg}"
+                      class="img-xs icon rounded-circle"
+                    />
+                    <div class="text">
+                      <span class="date text-muted float-md-right">24.04.2020 </span>
+                      <h6 class="mb-1">Mike John</h6>
+                      <ul class="rating-stars">
+                        <li style="width: 80%" class="stars-active">
+                          <img th:src="@{/images/icons/stars-active.svg}" alt="" />
+                        </li>
+                        <li>
+                          <img th:src="@{/images/icons/starts-disable.svg}" alt="" />
+                        </li>
+                      </ul>
+                      <span class="label-rating text-warning">Good</span>
+                    </div>
+                  </div>
+                  <!-- icontext.// -->
+                  <div class="mt-3">
+                    <p>
+                      Dummy comment Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
+                      eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
+                      veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
+                    </p>
+                  </div>
+                </article>
+
+                <!-- ============================ COMPONENT REGISTER   ================================= -->
+                <div class="card mx-auto" style="max-width: 520px; margin-top: 40px">
+                  <article class="card-body">
+                    <header class="mb-4">
+                      <h4 class="card-title">Sign Up</h4>
+                    </header>
+                    <form th:action="@{/process-signup}" method="post" th:object="${signupForm}">
+                      <small class="form-text text-muted"
+                        >We'll never share your personal information with anyone else.</small
+                      >
+                      <div class="form-row">
+                        <div class="col form-group">
+                          <label>First name</label>
+                          <input
+                            type="text"
+                            class="form-control"
+                            placeholder=""
+                            th:field="*{firstName}"
+                            required
+                            minlength="2"
+                            maxlength="25"
+                          />
+                        </div>
+                        <!-- form-group end.// -->
+                        <div class="col form-group">
+                          <label>Last name</label>
+                          <input
+                            type="text"
+                            class="form-control"
+                            placeholder=""
+                            th:field="*{lastName}"
+                            required
+                            minlength="2"
+                            maxlength="35"
+                          />
+                        </div>
+                        <!-- form-group end.// -->
+                      </div>
+                      <!-- form-row end.// -->
+                      <div class="form-row">
+                        <div class="col form-group">
+                          <label><br />Middle name</label>
+                          <input
+                            type="text"
+                            class="form-control"
+                            placeholder=""
+                            th:field="*{middleName}"
+                            minlength="2"
+                            maxlength="25"
+                          />
+                        </div>
+                        <!-- form-group end.// -->
+                        <div class="col form-group">
+                          <label
+                            >Cell Phone Number<small class="form-text text-muted"
+                              >(###-###-####)</small
+                            ></label
+                          >
+                          <input
+                            type="tel"
+                            pattern="[0-9]{3}[0-9]{3}[0-9]{4}"
+                            class="form-control"
+                            placeholder=""
+                            th:field="*{cellPhoneNumber}"
+                          />
+                        </div>
+                        <!-- form-group end.// -->
+                      </div>
+                      <!-- form-row end.// -->
+                      <div class="form-group">
+                        <label>Email</label>
+                        <input
+                          type="email"
+                          class="form-control"
+                          placeholder=""
+                          th:field="*{email}"
+                          required
+                          minlength="3"
+                          maxlength="254"
+                        />
+                        <small class="form-text text-muted"
+                          >NOTE: You will need to use this email to access your account.</small
+                        >
+                      </div>
+                      <!-- form-group end.// -->
+                      <div class="form-group">
+                        <label class="custom-control custom-checkbox" for="chkbox-delivery-address">
+                          <input
+                            type="checkbox"
+                            class="custom-control-input"
+                            id="chkbox-delivery-address"
+                            name="chkbox-delivery-address"
+                            th:field="*{isAddressProvided}"
+                          />
+                          <div class="custom-control-label">Provide delivery address</div>
+                        </label>
+                        <small class="form-text text-muted"
+                          >NOTE: If you choose to not provide it, you will be asked again when you
+                          make use of our delivery service.</small
+                        >
+                      </div>
+                      <!-- form-group end.// -->
+                      <div id="div-delivery-address" style="display: none">
+                        <div class="form-row">
+                          <div class="col form-group">
+                            <label>Street Address</label>
+                            <input
+                              type="text"
+                              class="form-control delivery-address-field"
+                              placeholder=""
+                              th:field="*{addressLine1}"
+                              maxlength="50"
+                            />
+                          </div>
+                          <!-- form-group end.// -->
+                          <div class="col form-group">
+                            <label>Apartment/Unit/Suite #</label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              placeholder=""
+                              th:field="*{addressLine2}"
+                              maxlength="25"
+                            />
+                          </div>
+                          <!-- form-group end.// -->
+                        </div>
+                        <!-- form-row end.// -->
+                        <div class="form-row">
+                          <div class="form-group col-md-6">
+                            <label>City</label>
+                            <input
+                              type="text"
+                              class="form-control delivery-address-field"
+                              th:field="*{city}"
+                              maxlength="35"
+                            />
+                          </div>
+                          <!-- form-group end.// -->
+                        </div>
+                        <!-- form-row.// -->
+                      </div>
+                      <div class="form-row">
+                        <div class="form-group col-md-6">
+                          <label>Create password</label>
+                          <input
+                            class="form-control"
+                            id="input-password"
+                            type="password"
+                            th:field="*{password}"
+                            required
+                            minlength="8"
+                            maxlength="64"
+                          />
+                        </div>
+                        <!-- form-group end.// -->
+                        <div class="form-group col-md-6">
+                          <label>Repeat password</label>
+                          <input
+                            class="form-control"
+                            id="input-password-confirm"
+                            type="password"
+                            required
+                            minlength="8"
+                            maxlength="64"
+                          />
+                        </div>
+                        <!-- form-group end.// -->
+                      </div>
+                      <div class="form-group">
+                        <button
+                          type="submit"
+                          class="btn btn-primary btn-block"
+                          id="btn-signup-submit"
+                        >
+                          Sign Up
+                        </button>
+                      </div>
+                      <!-- form-group// -->
+                      <div class="form-group">
+                        <label class="custom-control custom-checkbox">
+                          <input
+                            type="checkbox"
+                            class="custom-control-input"
+                            id="chkbox-terms-n-conditions"
+                          />
+                          <div class="custom-control-label">
+                            I agree with <a href="#">terms and contitions</a>
+                          </div>
+                        </label>
+                      </div>
+                      <!-- form-group end.// -->
+                    </form>
+                  </article>
+                  <!-- card-body.// -->
                 </div>
+                <!-- card .// -->
               </div>
-              <!-- icontext.// -->
-              <div class="mt-3">
-                <p>
-                  Dummy comment Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
-                  eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-                  veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                </p>
+              <div
+                class="tab-pane fade"
+                id="pills-profile"
+                role="tabpanel"
+                aria-labelledby="pills-profile-tab"
+              >
+                ...
               </div>
-            </article>
+              <div
+                class="tab-pane fade"
+                id="pills-contact"
+                role="tabpanel"
+                aria-labelledby="pills-contact-tab"
+              >
+                ...
+              </div>
+            </div>
           </div>
           <!-- col.// -->
         </div>
@@ -81,8 +403,8 @@
     </section>
     <!-- ========================= SECTION CONTENT END// ========================= -->
 
-	<!-- ========================= FOOTER ========================= -->
-	<div th:replace="fragments/footer::footer"></div>
-	<!-- ========================= FOOTER END // ========================= -->
+    <!-- ========================= FOOTER ========================= -->
+    <div th:replace="fragments/footer::footer"></div>
+    <!-- ========================= FOOTER END // ========================= -->
   </body>
 </html>

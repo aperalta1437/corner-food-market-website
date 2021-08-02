@@ -1,7 +1,7 @@
 package com.psu.ist311.team5.cornerfoodmarketwebsite.controller;
 
 import com.psu.ist311.team5.cornerfoodmarketwebsite.controller.utils.LoginProcessIssue;
-import com.psu.ist311.team5.cornerfoodmarketwebsite.data.repository.CustomerRepository;
+import com.psu.ist311.team5.cornerfoodmarketwebsite.data.single_table.repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;

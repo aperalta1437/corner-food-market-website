@@ -1,9 +1,11 @@
 package com.psu.ist311.team5.cornerfoodmarketwebsite.business.service;
 
 import com.psu.ist311.team5.cornerfoodmarketwebsite.business.dto.response.domain.ReviewInformation;
-import com.psu.ist311.team5.cornerfoodmarketwebsite.data.entity.GeneralReview;
-import com.psu.ist311.team5.cornerfoodmarketwebsite.data.entity.ItemReview;
-import com.psu.ist311.team5.cornerfoodmarketwebsite.data.repository.*;
+import com.psu.ist311.team5.cornerfoodmarketwebsite.data.single_table.entity.GeneralReview;
+import com.psu.ist311.team5.cornerfoodmarketwebsite.data.single_table.entity.ItemReview;
+import com.psu.ist311.team5.cornerfoodmarketwebsite.data.single_table.entity.OrderReview;
+import com.psu.ist311.team5.cornerfoodmarketwebsite.data.single_table.repository.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -16,58 +18,37 @@ public class ReviewInformationService {
     private final OrderReviewRepository orderReviewRepository;
     private final ItemReviewRepository itemReviewRepository;
     private final CustomerRepository customerRepository;
+    private final OrderDetailsRepository orderDetailsRepository;
 
-    public ReviewInformationService(GeneralReviewRepository generalReviewRepository, OrderReviewRepository orderReviewRepository, ItemReviewRepository itemReviewRepository, CustomerRepository customerRepository) {
+    @Autowired
+    public ReviewInformationService(GeneralReviewRepository generalReviewRepository, OrderReviewRepository orderReviewRepository,
+                                    ItemReviewRepository itemReviewRepository, CustomerRepository customerRepository,
+                                    OrderDetailsRepository orderDetailsRepository) {
         this.generalReviewRepository = generalReviewRepository;
         this.orderReviewRepository = orderReviewRepository;
         this.itemReviewRepository = itemReviewRepository;
         this.customerRepository = customerRepository;
+        this.orderDetailsRepository = orderDetailsRepository;
     }
 
+    public List<GeneralReview> getGeneralReviews() {
 
-    public List<ReviewInformation> getGeneralReviews() {
+        List<GeneralReview> generalReviewList = this.generalReviewRepository.findAll();
 
-        Iterable<GeneralReview> generalReviews = this.generalReviewRepository.findAll();
-        List<ReviewInformation> reviewInformationList = new ArrayList<>();
-
-        generalReviews.forEach(generalReview -> {
-            Short customerId = generalReview.getCustomerId();
-            String customerFullName;
-            if (customerId == null) {
-                customerFullName = "Anonymous User";
-            } else {
-                customerFullName = this.customerRepository.getFullNameById(customerId);
-            }
-
-            ReviewInformation reviewInformation = new ReviewInformation(customerFullName, generalReview.getSubjectLine(),
-                    generalReview.getReviewText(), generalReview.getStarRating(), generalReview.getCreatedAt());
-
-            reviewInformationList.add(reviewInformation);
-        });
-
-        return reviewInformationList;
+        return generalReviewList;
     }
 
-    public List<ReviewInformation> getOrderReviews() {
+    public List<OrderReview> getOrderReviews() {
 
-        Iterable<GeneralReview> generalReviews = this.generalReviewRepository.findAll();
-        List<ReviewInformation> reviewInformationList = new ArrayList<>();
+        List<OrderReview> orderReviewList = this.orderReviewRepository.findAll();
 
-        generalReviews.forEach(generalReview -> {
-            Short customerId = generalReview.getCustomerId();
-            String customerFullName;
-            if (customerId == null) {
-                customerFullName = "Anonymous User";
-            } else {
-                customerFullName = this.customerRepository.getFullNameById(customerId);
-            }
+        return orderReviewList;
+    }
 
-            ReviewInformation reviewInformation = new ReviewInformation(customerFullName, generalReview.getSubjectLine(),
-                    generalReview.getReviewText(), generalReview.getStarRating(), generalReview.getCreatedAt());
+    public List<ItemReview> getItemReviews() {
 
-            reviewInformationList.add(reviewInformation);
-        });
+        List<ItemReview> itemReviewList = this.itemReviewRepository.findAll();
 
-        return reviewInformationList;
+        return itemReviewList;
     }
 }

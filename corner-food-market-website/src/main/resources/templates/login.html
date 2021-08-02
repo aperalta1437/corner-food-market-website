@@ -36,12 +36,15 @@
               th:text="${loginProcessIssue.getLoginIssueMessage()}"
               class="text-danger"
             >
-              dhfghd
             </h6>
             <h6
-              th:case="${T(com.psu.ist311.team5.cornerfoodmarketwebsite.controller.utils.LoginProcessIssue).EXPIRED_SESSION}"
+              th:case="${T(com.psu.ist311.team5.cornerfoodmarketwebsite.controller.utils.LoginProcessIssue).DISABLED_ACCOUNT}"
               th:text="${loginProcessIssue.getLoginIssueMessage()}"
               class="text-danger"
+            ></h6>
+            <h6 th:case="${T(com.psu.ist311.team5.cornerfoodmarketwebsite.controller.utils.LoginProcessIssue).EXPIRED_SESSION}"
+                th:text="${loginProcessIssue.getLoginIssueMessage()}"
+                    class="text-danger"
             ></h6>
           </th:block>
           <form th:action="@{/login}" method="post">

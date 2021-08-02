@@ -1,6 +1,6 @@
 package com.psu.ist311.team5.cornerfoodmarketwebsite.business.dto.request.domain;
 
-import com.psu.ist311.team5.cornerfoodmarketwebsite.data.entity.Customer;
+import com.psu.ist311.team5.cornerfoodmarketwebsite.data.single_table.entity.Customer;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -36,7 +36,7 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public boolean isAccountNonLocked() {
-        return true;
+        return !this.customer.getIsDisabled();
     }
 
     @Override

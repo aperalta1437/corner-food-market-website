@@ -1,8 +1,8 @@
 package com.psu.ist311.team5.cornerfoodmarketwebsite.business.service;
 
 import com.psu.ist311.team5.cornerfoodmarketwebsite.business.dto.request.domain.CustomUserDetails;
-import com.psu.ist311.team5.cornerfoodmarketwebsite.data.entity.Customer;
-import com.psu.ist311.team5.cornerfoodmarketwebsite.data.repository.CustomerRepository;
+import com.psu.ist311.team5.cornerfoodmarketwebsite.data.single_table.entity.Customer;
+import com.psu.ist311.team5.cornerfoodmarketwebsite.data.single_table.repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

@@ -1,8 +1,5 @@
 package com.psu.ist311.team5.cornerfoodmarketwebsite.business.dto.response.domain;
 
-import com.psu.ist311.team5.cornerfoodmarketwebsite.data.entity.FileRelativePath;
-import com.psu.ist311.team5.cornerfoodmarketwebsite.data.entity.ItemImage;
-
 import java.util.ArrayList;
 
 public class ItemDetailedInformation extends ItemInformation{
@@ -49,5 +46,4 @@ public class ItemDetailedInformation extends ItemInformation{
         }
         this.imagesSourceRelativePathNames = tempImagesSourceRelativePathNames;
     }
-
 }

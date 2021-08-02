@@ -1,15 +1,12 @@
 package com.psu.ist311.team5.cornerfoodmarketwebsite.controller;
 
-import com.psu.ist311.team5.cornerfoodmarketwebsite.data.entity.Customer;
-import com.psu.ist311.team5.cornerfoodmarketwebsite.data.repository.CustomerRepository;
+import com.psu.ist311.team5.cornerfoodmarketwebsite.data.single_table.repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
