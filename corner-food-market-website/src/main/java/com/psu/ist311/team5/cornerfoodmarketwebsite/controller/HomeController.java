@@ -26,12 +26,11 @@ import java.util.List;
 public class HomeController {
 
     private final ItemInformationService itemInformationService;
-    private final ReviewInformationService reviewInformationService;
+
 
     @Autowired
-    public HomeController(ItemInformationService itemInformationService, ReviewInformationService reviewInformationService) {
+    public HomeController(ItemInformationService itemInformationService) {
         this.itemInformationService = itemInformationService;
-        this.reviewInformationService = reviewInformationService;
     }
 
     @GetMapping(value = "/")
@@ -51,19 +50,6 @@ public class HomeController {
         model.addAttribute("itemDetailedInformation", itemDetailedInformation);
 
         return "item-detail";
-    }
-
-    @GetMapping(value = "/reviews")
-    public String getReviewsPage(Model model) {
-
-        List<GeneralReview> generalReviewsList = this.reviewInformationService.getGeneralReviews();
-        List<OrderReview> orderReviewList = this.reviewInformationService.getOrderReviews();
-        List<ItemReview> itemReviewList = this.reviewInformationService.getItemReviews();
-
-        model.addAttribute("generalReviewsList", generalReviewsList);
-        model.addAttribute("orderReviewList", orderReviewList);
-        model.addAttribute("itemReviewList", itemReviewList);
-        return "reviews";
     }
 
     @ModelAttribute

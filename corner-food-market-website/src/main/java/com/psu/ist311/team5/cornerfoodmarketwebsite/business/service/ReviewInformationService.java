@@ -1,6 +1,7 @@
 package com.psu.ist311.team5.cornerfoodmarketwebsite.business.service;
 
-import com.psu.ist311.team5.cornerfoodmarketwebsite.business.dto.response.domain.ReviewInformation;
+import com.psu.ist311.team5.cornerfoodmarketwebsite.business.dto.request.form.AnonymousGeneralReviewForm;
+import com.psu.ist311.team5.cornerfoodmarketwebsite.business.service.utils.UnregisteredCustomer;
 import com.psu.ist311.team5.cornerfoodmarketwebsite.data.single_table.entity.GeneralReview;
 import com.psu.ist311.team5.cornerfoodmarketwebsite.data.single_table.entity.ItemReview;
 import com.psu.ist311.team5.cornerfoodmarketwebsite.data.single_table.entity.OrderReview;
@@ -8,7 +9,6 @@ import com.psu.ist311.team5.cornerfoodmarketwebsite.data.single_table.repository
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -50,5 +50,21 @@ public class ReviewInformationService {
         List<ItemReview> itemReviewList = this.itemReviewRepository.findAll();
 
         return itemReviewList;
+    }
+
+    public Boolean saveAnonymousGeneralReview(AnonymousGeneralReviewForm anonymousGeneralReviewForm) {
+        GeneralReview generalReview = new GeneralReview(this.customerRepository.getById(UnregisteredCustomer.ANONYMOUS_CUSTOMER.getCustomerId()), true, true, false,
+                false, anonymousGeneralReviewForm.getSubjectLine(), anonymousGeneralReviewForm.getComment(), anonymousGeneralReviewForm.getStarRating(), false);
+
+        boolean isNewGeneralReviewSaved;
+        try {
+            this.generalReviewRepository.save(generalReview);
+            isNewGeneralReviewSaved = true;
+        } catch (Exception ex) {
+            // TODO - Log the exception message.
+            isNewGeneralReviewSaved = false;
+        }
+
+        return isNewGeneralReviewSaved;
     }
 }

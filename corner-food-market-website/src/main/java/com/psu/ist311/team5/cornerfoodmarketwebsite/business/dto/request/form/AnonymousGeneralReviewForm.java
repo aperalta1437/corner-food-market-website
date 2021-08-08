@@ -1,9 +1,9 @@
 package com.psu.ist311.team5.cornerfoodmarketwebsite.business.dto.request.form;
 
-public class GeneralReviewForm {
+public class AnonymousGeneralReviewForm {
     private String subjectLine;
-    private String reviewText;
-    private float starRating;
+    private String comment;
+    private short starRating;
 
     public String getSubjectLine() {
         return subjectLine;
@@ -13,19 +13,19 @@ public class GeneralReviewForm {
         this.subjectLine = subjectLine;
     }
 
-    public String getReviewText() {
-        return reviewText;
+    public String getComment() {
+        return comment;
     }
 
-    public void setReviewText(String reviewText) {
-        this.reviewText = reviewText;
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 
-    public float getStarRating() {
+    public short getStarRating() {
         return starRating;
     }
 
-    public void setStarRating(float starRating) {
+    public void setStarRating(short starRating) {
         this.starRating = starRating;
     }
 }

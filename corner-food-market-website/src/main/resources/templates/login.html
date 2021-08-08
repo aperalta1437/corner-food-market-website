@@ -8,7 +8,8 @@
 
     <title>Corner Food Market - Log-in</title>
 
-    <th:block th:replace="fragments/imports::imports"></th:block> <!-- common-imports.// -->
+    <th:block th:replace="fragments/imports::imports"></th:block>
+    <!-- common-imports.// -->
 
     <script type="text/javascript">
       /// some script
@@ -22,7 +23,8 @@
   </head>
 
   <body>
-  <div th:replace="fragments/header::header"></div> <!-- section-header.// -->
+    <div th:replace="fragments/header::header"></div>
+    <!-- section-header.// -->
 
     <!-- ========================= SECTION CONTENT ========================= -->
     <section class="section-conten padding-y" style="min-height: 84vh">
@@ -35,16 +37,16 @@
               th:case="${T(com.psu.ist311.team5.cornerfoodmarketwebsite.controller.utils.LoginProcessIssue).FAILED_LOGIN}"
               th:text="${loginProcessIssue.getLoginIssueMessage()}"
               class="text-danger"
-            >
-            </h6>
+            ></h6>
             <h6
               th:case="${T(com.psu.ist311.team5.cornerfoodmarketwebsite.controller.utils.LoginProcessIssue).DISABLED_ACCOUNT}"
               th:text="${loginProcessIssue.getLoginIssueMessage()}"
               class="text-danger"
             ></h6>
-            <h6 th:case="${T(com.psu.ist311.team5.cornerfoodmarketwebsite.controller.utils.LoginProcessIssue).EXPIRED_SESSION}"
-                th:text="${loginProcessIssue.getLoginIssueMessage()}"
-                    class="text-danger"
+            <h6
+              th:case="${T(com.psu.ist311.team5.cornerfoodmarketwebsite.controller.utils.LoginProcessIssue).EXPIRED_SESSION}"
+              th:text="${loginProcessIssue.getLoginIssueMessage()}"
+              class="text-danger"
             ></h6>
           </th:block>
           <form th:action="@{/login}" method="post">
@@ -67,7 +69,7 @@
               <a th:href="@{/forgot-password}" class="float-right">Forgot password?</a>
               <label class="float-left custom-control custom-checkbox">
                 <input type="checkbox" class="custom-control-input" checked="" />
-                <div class="custom-control-label">Remember</div>
+                <div class="custom-control-label">Remember Me</div>
               </label>
             </div>
             <!-- form-group form-check .// -->

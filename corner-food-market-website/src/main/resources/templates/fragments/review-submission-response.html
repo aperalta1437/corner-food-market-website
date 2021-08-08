@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Title</title>
+  </head>
+  <body>
+    <div class="card-body" th:fragment="review-submission-response">
+      <div class="row">
+        <header class="my-4 align-middle mx-auto">
+          <h4 th:if="${isNewGeneralReviewSaved}" class="card-title text-center">
+            Review Submitted Successfully
+          </h4>
+          <h4 th:unless="${isNewGeneralReviewSaved}" class="card-title text-center">
+            Server Error
+          </h4>
+        </header>
+      </div>
+      <div class="row">
+        <p th:if="${isNewGeneralReviewSaved}" class="text-center my-3 mx-auto">
+          Your review will be posted once it has been processed.
+        </p>
+        <p th:unless="${isNewGeneralReviewSaved}" class="text-center my-3 mx-auto">
+          An error happened that kept your review from getting submitted. Please, try again later
+          and if the error persist, contact the store manager.
+        </p>
+      </div>
+      <div class="row">
+        <button
+          class="btn btn-primary my-4 mx-4 align-bottom btn-block"
+          onclick="makeAnotherReview()"
+        >
+          Make Another Review
+        </button>
+      </div>
+    </div>
+  </body>
+</html>

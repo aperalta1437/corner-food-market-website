@@ -30,8 +30,8 @@ public class ItemReview {
     private boolean isActiveShopper;
     @Column(name = "SUBJECT_LINE")
     private String subjectLine;
-    @Column(name = "REVIEW_TEXT")
-    private String reviewText;
+    @Column(name = "COMMENT")
+    private String comment;
     @Column(name = "STAR_RATING")
     private float starRating;
     @Column(name = "IS_DELETED")
@@ -103,12 +103,12 @@ public class ItemReview {
         this.subjectLine = subjectLine;
     }
 
-    public String getReviewText() {
-        return reviewText;
+    public String getComment() {
+        return comment;
     }
 
-    public void setReviewText(String reviewText) {
-        this.reviewText = reviewText;
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 
     public float getStarRating() {

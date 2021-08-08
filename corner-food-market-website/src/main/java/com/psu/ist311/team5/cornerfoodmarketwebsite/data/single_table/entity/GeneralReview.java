@@ -28,14 +28,31 @@ public class GeneralReview {
     private boolean isActiveShopper;
     @Column(name = "SUBJECT_LINE")
     private String subjectLine;
-    @Column(name = "REVIEW_TEXT")
-    private String reviewText;
+    @Column(name = "COMMENT")
+    private String comment;
     @Column(name = "STAR_RATING")
-    private float starRating;
+    private short starRating;
     @Column(name = "IS_DELETED")
     private boolean isDeleted;
     @Column(name = "CREATED_AT")
     private Date createdAt;
+
+    public GeneralReview() {
+    }
+
+    public GeneralReview(Customer customer, boolean isAnonymousToCustomers, boolean isAnonymousToEveryone,
+                         boolean isRegisteredUser, boolean isActiveShopper, String subjectLine, String comment,
+                         short starRating, boolean isDeleted) {
+        this.customer = customer;
+        this.isAnonymousToCustomers = isAnonymousToCustomers;
+        this.isAnonymousToEveryone = isAnonymousToEveryone;
+        this.isRegisteredUser = isRegisteredUser;
+        this.isActiveShopper = isActiveShopper;
+        this.subjectLine = subjectLine;
+        this.comment = comment;
+        this.starRating = starRating;
+        this.isDeleted = isDeleted;
+    }
 
     public int getId() {
         return id;
@@ -93,19 +110,19 @@ public class GeneralReview {
         this.subjectLine = subjectLine;
     }
 
-    public String getReviewText() {
-        return reviewText;
+    public String getComment() {
+        return comment;
     }
 
-    public void setReviewText(String reviewText) {
-        this.reviewText = reviewText;
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 
-    public float getStarRating() {
+    public short getStarRating() {
         return starRating;
     }
 
-    public void setStarRating(float startRating) {
+    public void setStarRating(short startRating) {
         this.starRating = startRating;
     }
 

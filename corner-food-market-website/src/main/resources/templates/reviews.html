@@ -9,6 +9,7 @@
 
     <th:block th:replace="fragments/imports::imports"></th:block>
     <!-- common-imports.// -->
+    <script th:src="@{/js/reviews.js}" defer type="text/javascript"></script>
 
     <!-- Fonticons -->
     <link th:href="@{/fonts/feathericons/css/iconfont.css}" rel="stylesheet" type="text/css" />
@@ -17,6 +18,7 @@
       rel="stylesheet"
       type="text/css"
     />
+    <link th:href="@{/css/reviews.css}" rel="stylesheet" type="text/css" />
   </head>
 
   <body>
@@ -177,183 +179,114 @@
                     </p>
                   </div>
                 </article>
-
-                <!-- ============================ COMPONENT REGISTER   ================================= -->
-                <div class="card mx-auto" style="max-width: 520px; margin-top: 40px">
+                <div
+                  class="mx-auto my-5 text-center spinner-component"
+                  id="div-submitted-general-review-spinner"
+                >
+                  <div
+                    class="spinner-border spinner-component"
+                    style="width: 3rem; height: 3rem"
+                    role="status"
+                  >
+                    <span class="sr-only">Loading...</span>
+                  </div>
+                </div>
+                <div
+                  class="card mx-auto"
+                  style="max-width: 520px; margin-top: 40px"
+                  id="div-submitted-general-review-response"
+                ></div>
+                <div
+                  class="card mx-auto"
+                  style="max-width: 520px; margin-top: 40px"
+                  id="div-general-review-form"
+                >
                   <article class="card-body">
-                    <header class="mb-4">
-                      <h4 class="card-title">Sign Up</h4>
-                    </header>
-                    <form th:action="@{/process-signup}" method="post" th:object="${signupForm}">
-                      <small class="form-text text-muted"
-                        >We'll never share your personal information with anyone else.</small
-                      >
-                      <div class="form-row">
-                        <div class="col form-group">
-                          <label>First name</label>
-                          <input
-                            type="text"
-                            class="form-control"
-                            placeholder=""
-                            th:field="*{firstName}"
-                            required
-                            minlength="2"
-                            maxlength="25"
-                          />
-                        </div>
-                        <!-- form-group end.// -->
-                        <div class="col form-group">
-                          <label>Last name</label>
-                          <input
-                            type="text"
-                            class="form-control"
-                            placeholder=""
-                            th:field="*{lastName}"
-                            required
-                            minlength="2"
-                            maxlength="35"
-                          />
-                        </div>
-                        <!-- form-group end.// -->
-                      </div>
-                      <!-- form-row end.// -->
-                      <div class="form-row">
-                        <div class="col form-group">
-                          <label><br />Middle name</label>
-                          <input
-                            type="text"
-                            class="form-control"
-                            placeholder=""
-                            th:field="*{middleName}"
-                            minlength="2"
-                            maxlength="25"
-                          />
-                        </div>
-                        <!-- form-group end.// -->
-                        <div class="col form-group">
-                          <label
-                            >Cell Phone Number<small class="form-text text-muted"
-                              >(###-###-####)</small
-                            ></label
-                          >
-                          <input
-                            type="tel"
-                            pattern="[0-9]{3}[0-9]{3}[0-9]{4}"
-                            class="form-control"
-                            placeholder=""
-                            th:field="*{cellPhoneNumber}"
-                          />
-                        </div>
-                        <!-- form-group end.// -->
-                      </div>
-                      <!-- form-row end.// -->
+                    <form
+                      th:action="@{/reviews/process-general-review}"
+                      th:object="${anonymousGeneralReviewForm}"
+                      method="post"
+                      id="form-general-review"
+                    >
+                      <header class="mb-4">
+                        <h4 class="card-title">Leave a General Review</h4>
+                      </header>
                       <div class="form-group">
-                        <label>Email</label>
+                        <label>Subject Line</label>
                         <input
-                          type="email"
+                          type="text"
                           class="form-control"
                           placeholder=""
-                          th:field="*{email}"
-                          required
+                          th:field="*{subjectLine}"
                           minlength="3"
-                          maxlength="254"
+                          maxlength="50"
                         />
-                        <small class="form-text text-muted"
-                          >NOTE: You will need to use this email to access your account.</small
-                        >
                       </div>
                       <!-- form-group end.// -->
                       <div class="form-group">
-                        <label class="custom-control custom-checkbox" for="chkbox-delivery-address">
-                          <input
-                            type="checkbox"
-                            class="custom-control-input"
-                            id="chkbox-delivery-address"
-                            name="chkbox-delivery-address"
-                            th:field="*{isAddressProvided}"
-                          />
-                          <div class="custom-control-label">Provide delivery address</div>
-                        </label>
-                        <small class="form-text text-muted"
-                          >NOTE: If you choose to not provide it, you will be asked again when you
-                          make use of our delivery service.</small
+                        <label>Comment</label>
+                        <textarea
+                          class="form-control"
+                          placeholder=""
+                          th:field="*{comment}"
+                          required
+                          minlength="25"
+                          maxlength="300"
                         >
+                        </textarea>
                       </div>
-                      <!-- form-group end.// -->
-                      <div id="div-delivery-address" style="display: none">
-                        <div class="form-row">
-                          <div class="col form-group">
-                            <label>Street Address</label>
-                            <input
-                              type="text"
-                              class="form-control delivery-address-field"
-                              placeholder=""
-                              th:field="*{addressLine1}"
-                              maxlength="50"
-                            />
-                          </div>
-                          <!-- form-group end.// -->
-                          <div class="col form-group">
-                            <label>Apartment/Unit/Suite #</label>
-                            <input
-                              type="text"
-                              class="form-control"
-                              placeholder=""
-                              th:field="*{addressLine2}"
-                              maxlength="25"
-                            />
-                          </div>
-                          <!-- form-group end.// -->
-                        </div>
-                        <!-- form-row end.// -->
-                        <div class="form-row">
-                          <div class="form-group col-md-6">
-                            <label>City</label>
-                            <input
-                              type="text"
-                              class="form-control delivery-address-field"
-                              th:field="*{city}"
-                              maxlength="35"
-                            />
-                          </div>
-                          <!-- form-group end.// -->
-                        </div>
-                        <!-- form-row.// -->
-                      </div>
-                      <div class="form-row">
-                        <div class="form-group col-md-6">
-                          <label>Create password</label>
+                      <div class="form-group">
+                        <label>Rating</label>
+                        <div class="rating">
                           <input
-                            class="form-control"
-                            id="input-password"
-                            type="password"
-                            th:field="*{password}"
+                            type="radio"
+                            th:field="*{starRating}"
+                            name="rating"
+                            value="5"
+                            id="5-general"
                             required
-                            minlength="8"
-                            maxlength="64"
-                          />
-                        </div>
-                        <!-- form-group end.// -->
-                        <div class="form-group col-md-6">
-                          <label>Repeat password</label>
+                          /><label for="5-general">☆</label>
                           <input
-                            class="form-control"
-                            id="input-password-confirm"
-                            type="password"
+                            type="radio"
+                            th:field="*{starRating}"
+                            name="rating"
+                            value="4"
+                            id="4-general"
                             required
-                            minlength="8"
-                            maxlength="64"
-                          />
+                          /><label for="4-general">☆</label>
+                          <input
+                            type="radio"
+                            th:field="*{starRating}"
+                            name="rating"
+                            value="3"
+                            id="3-general"
+                            required
+                          /><label for="3-general">☆</label>
+                          <input
+                            type="radio"
+                            th:field="*{starRating}"
+                            name="rating"
+                            value="2"
+                            id="2-general"
+                            required
+                          /><label for="2-general">☆</label>
+                          <input
+                            type="radio"
+                            th:field="*{starRating}"
+                            name="rating"
+                            value="1"
+                            id="1-general"
+                            required
+                          /><label for="1-general">☆</label>
                         </div>
-                        <!-- form-group end.// -->
                       </div>
                       <div class="form-group">
                         <button
                           type="submit"
                           class="btn btn-primary btn-block"
-                          id="btn-signup-submit"
+                          id="btn-submit-general-review"
                         >
-                          Sign Up
+                          Submit Review
                         </button>
                       </div>
                       <!-- form-group// -->
@@ -362,13 +295,14 @@
                           <input
                             type="checkbox"
                             class="custom-control-input"
-                            id="chkbox-terms-n-conditions"
+                            id="chkbox-general-review-terms-n-conditions"
                           />
                           <div class="custom-control-label">
-                            I agree with <a href="#">terms and contitions</a>
+                            I agree with <a href="#">terms and conditions</a>
                           </div>
                         </label>
                       </div>
+                      <!-- form-group end.// -->
                       <!-- form-group end.// -->
                     </form>
                   </article>

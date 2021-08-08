@@ -1,40 +1,35 @@
 package com.psu.ist311.team5.cornerfoodmarketwebsite.controller;
 
-import com.psu.ist311.team5.cornerfoodmarketwebsite.data.single_table.repository.CustomerRepository;
+import com.psu.ist311.team5.cornerfoodmarketwebsite.business.dto.request.domain.AddToCartItem;
+import com.psu.ist311.team5.cornerfoodmarketwebsite.business.service.ItemInformationService;
+import com.psu.ist311.team5.cornerfoodmarketwebsite.data.domain.entity.ItemInformation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
 
 @Controller
 public class AccountController {
 
-    @Autowired
-    private final CustomerRepository customerRepository;
+    private final ItemInformationService itemInformationService;
 
     @Autowired
-    public AccountController(CustomerRepository customerRepository) {
-        this.customerRepository = customerRepository;
+    public AccountController(ItemInformationService itemInformationService) {
+        this.itemInformationService = itemInformationService;
     }
 
     @GetMapping(value = "/account")
-    public String getAccountMainPage(HttpServletResponse response) throws IOException {
-        //Customer customer = customerRepository.findById(customerId);
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if ((auth == null) || !(auth.isAuthenticated()) || (auth instanceof AnonymousAuthenticationToken)) {
-            response.sendRedirect("/login");
-        }
+    public String getAccountMainPage(Model model) throws IOException {
+
+        List<List<ItemInformation>> itemInformationLists = this.itemInformationService.getItemsInformation();
+
+        model.addAttribute("itemInformationLists", itemInformationLists);
+        model.addAttribute("addToCartItem", new AddToCartItem());
 
         return "account-home";
     }
-
-//    @PostMapping(value = "/403")
-//    public void getLoginPage(HttpServletResponse response) throws IOException {
-//        response.sendRedirect("/login");
-//    }
 }

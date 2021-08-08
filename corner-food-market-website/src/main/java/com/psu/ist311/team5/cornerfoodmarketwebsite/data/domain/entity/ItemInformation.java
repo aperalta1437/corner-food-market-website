@@ -25,7 +25,7 @@ public class ItemInformation {
     @Column(name = "SKU")
     private String sku;
     @Column(name = "PRICE")
-    private String price;
+    private double price;
     @Column(name = "IS_ON_SALE")
     private boolean isOnSale;
     @Column(name = "IS_POPULAR")
@@ -73,10 +73,10 @@ public class ItemInformation {
     }
 
     public String getPrice() {
-        return price;
+        return java.text.NumberFormat.getCurrencyInstance().format(price);
     }
 
-    public void setPrice(String price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 
