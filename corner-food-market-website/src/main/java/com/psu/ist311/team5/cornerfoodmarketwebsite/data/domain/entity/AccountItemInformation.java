@@ -1,5 +1,6 @@
 package com.psu.ist311.team5.cornerfoodmarketwebsite.data.domain.entity;
 
+import com.psu.ist311.team5.cornerfoodmarketwebsite.data.single_table.entity.CartItem;
 import com.psu.ist311.team5.cornerfoodmarketwebsite.data.single_table.entity.ItemImage;
 import org.hibernate.annotations.Where;
 
@@ -15,7 +16,7 @@ import java.util.List;
         @SecondaryTable(name = "ITEM_CATEGORY", foreignKey = @ForeignKey(name = "CATEGORY_ID")),
         @SecondaryTable(name = "ITEM_IMAGE", pkJoinColumns = @PrimaryKeyJoinColumn(name = "ITEM_ID"))
 })
-public class ItemInformation {
+public class AccountItemInformation {
     @Id
     @Column(name = "ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,7 +38,7 @@ public class ItemInformation {
     @Column(name = "DISCOUNT_AMOUNT", table = "DISCOUNT")
     private Double discountAmount;
     @Column(name = "QUANTITY", table = "ITEM_INVENTORY")
-    private short quantity;                                         // We need quantity to avoid toggling IS_ON_SALE if there is none.
+    private short quantity;
     @Column(name = "NAME", table = "ITEM_CATEGORY")
     private String categoryName;
     @Column(name = "URL_ROUTE_NAME", table = "ITEM_CATEGORY")
@@ -46,7 +47,11 @@ public class ItemInformation {
     @Where(clause = "SORT_NUMBER = 1")
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "ITEM_ID", referencedColumnName = "ID")
-    List<ItemImage> images = new ArrayList<>();
+    private List<ItemImage> images = new ArrayList<>();
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "ITEM_ID", referencedColumnName = "ID")
+    private List<CartItem> cartItems = new ArrayList<>();
 
     public short getId() {
         return id;
@@ -151,4 +156,13 @@ public class ItemInformation {
     public void setImages(List<ItemImage> images) {
         this.images = images;
     }
+
+    public List<CartItem> getCartItems() {
+        return cartItems;
+    }
+
+    public void setCartItems(List<CartItem> cartItems) {
+        this.cartItems = cartItems;
+    }
 }
+

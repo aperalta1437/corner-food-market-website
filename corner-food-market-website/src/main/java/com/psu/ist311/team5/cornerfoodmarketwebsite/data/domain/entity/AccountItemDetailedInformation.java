@@ -1,7 +1,7 @@
 package com.psu.ist311.team5.cornerfoodmarketwebsite.data.domain.entity;
 
+import com.psu.ist311.team5.cornerfoodmarketwebsite.data.single_table.entity.CartItem;
 import com.psu.ist311.team5.cornerfoodmarketwebsite.data.single_table.entity.ItemImage;
-import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -15,13 +15,15 @@ import java.util.List;
         @SecondaryTable(name = "ITEM_CATEGORY", foreignKey = @ForeignKey(name = "CATEGORY_ID")),
         @SecondaryTable(name = "ITEM_IMAGE", pkJoinColumns = @PrimaryKeyJoinColumn(name = "ITEM_ID"))
 })
-public class ItemInformation {
+public class AccountItemDetailedInformation {
     @Id
     @Column(name = "ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private short id;
     @Column(name = "NAME")
     private String name;
+    @Column(name = "DESCRIPTION")
+    private String description;
     @Column(name = "SKU")
     private String sku;
     @Column(name = "PRICE")
@@ -37,16 +39,20 @@ public class ItemInformation {
     @Column(name = "DISCOUNT_AMOUNT", table = "DISCOUNT")
     private Double discountAmount;
     @Column(name = "QUANTITY", table = "ITEM_INVENTORY")
-    private short quantity;                                         // We need quantity to avoid toggling IS_ON_SALE if there is none.
+    private short quantity;
     @Column(name = "NAME", table = "ITEM_CATEGORY")
     private String categoryName;
     @Column(name = "URL_ROUTE_NAME", table = "ITEM_CATEGORY")
     private String categoryUrlRouteName;
 
-    @Where(clause = "SORT_NUMBER = 1")
+    @OrderBy(value = "SORT_NUMBER ASC")
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "ITEM_ID", referencedColumnName = "ID")
-    List<ItemImage> images = new ArrayList<>();
+    private List<ItemImage> images = new ArrayList<>();
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "ITEM_ID", referencedColumnName = "ID")
+    private List<CartItem> cartItems = new ArrayList<>();
 
     public short getId() {
         return id;
@@ -62,6 +68,14 @@ public class ItemInformation {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getSku() {
@@ -150,5 +164,13 @@ public class ItemInformation {
 
     public void setImages(List<ItemImage> images) {
         this.images = images;
+    }
+
+    public List<CartItem> getCartItems() {
+        return cartItems;
+    }
+
+    public void setCartItems(List<CartItem> cartItems) {
+        this.cartItems = cartItems;
     }
 }

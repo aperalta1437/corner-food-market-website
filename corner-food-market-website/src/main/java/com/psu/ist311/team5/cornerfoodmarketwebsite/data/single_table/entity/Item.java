@@ -17,8 +17,9 @@ public class Item {
     private String sku;
     @Column(name = "CATEGORY_ID")
     private short categoryId;
-    @Column(name = "INVENTORY_ID")
-    private short inventoryId;
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "INVENTORY_ID", referencedColumnName = "ID")
+    private ItemInventory itemInventory;
     @Column(name = "PRICE")
     private double price;
     @Column(name = "DISCOUNT_ID")
@@ -68,12 +69,12 @@ public class Item {
         this.categoryId = categoryId;
     }
 
-    public short getInventoryId() {
-        return inventoryId;
+    public ItemInventory getItemInventory() {
+        return itemInventory;
     }
 
-    public void setInventoryId(short inventoryId) {
-        this.inventoryId = inventoryId;
+    public void setItemInventory(ItemInventory itemInventory) {
+        this.itemInventory = itemInventory;
     }
 
     public double getPrice() {

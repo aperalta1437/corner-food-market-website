@@ -26,7 +26,7 @@ public class ItemDetailedInformation {
     @Column(name = "SKU")
     private String sku;
     @Column(name = "PRICE")
-    private String price;
+    private double price;
     @Column(name = "IS_ON_SALE")
     private boolean isOnSale;
     @Column(name = "IS_POPULAR")
@@ -38,7 +38,7 @@ public class ItemDetailedInformation {
     @Column(name = "DISCOUNT_AMOUNT", table = "DISCOUNT")
     private Double discountAmount;
     @Column(name = "QUANTITY", table = "ITEM_INVENTORY")
-    private short quantity;
+    private short quantity;                                         // We need quantity to avoid toggling IS_ON_SALE if there is none.
     @Column(name = "NAME", table = "ITEM_CATEGORY")
     private String categoryName;
     @Column(name = "URL_ROUTE_NAME", table = "ITEM_CATEGORY")
@@ -82,10 +82,10 @@ public class ItemDetailedInformation {
     }
 
     public String getPrice() {
-        return price;
+        return java.text.NumberFormat.getCurrencyInstance().format(price);
     }
 
-    public void setPrice(String price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 

@@ -10,6 +10,7 @@
 
     <th:block th:replace="fragments/imports::imports"></th:block>
     <!-- common-imports.// -->
+    <link th:href="@{/css/home.css}" rel="stylesheet" type="text/css" />
 
     <script type="text/javascript">
       /// some script
@@ -150,24 +151,52 @@
 
         <div th:each="itemInformationList: ${itemInformationLists}" class="row">
           <div th:each="itemInformation: ${itemInformationList}" class="col-md-3">
-            <div href="#" class="card card-product-grid">
-              <a href="#" class="img-wrap">
-                <img th:src="@{${itemInformation.images[0].getSourceRelativePathName()}}" />
-              </a>
-              <figcaption class="info-wrap">
+            <figure class="card card-product-grid card-lg p-0">
+              <!-- <div class="div-in-cart-amount">In Cart: 3</div> -->
+              <a href="#" class="img-wrap"
+                ><img th:src="@{'/' + ${itemInformation.images[0].getSourceRelativePathName()}}"
+              /></a>
+              <figcaption class="info-wrap pb-0">
                 <a
                   th:text="${itemInformation.name}"
                   th:href="@{'/categories/' + ${itemInformation.categoryUrlRouteName} + '/items/' + ${itemInformation.sku}}"
                   class="title"
                   >Item Name</a
                 >
-                <div th:text="${itemInformation.price}" class="price mt-1">Item Price</div>
-                <!-- price-wrap.// -->
-                <div th:text="' Available: ' + ${itemInformation.quantity}" class="price mt-1">
-                  Item Quantity
+              </figcaption>
+              <figcaption class="">
+                <div class="row m-0 w-100">
+                  <div class="col-12 div-discount-amount text-center border">
+                    <span class="h6">Item Discount</span>
+                  </div>
+                  <!-- price.// -->
                 </div>
               </figcaption>
-            </div>
+              <div class="bottom-wrap d-flex justify-content-end p-2">
+                <div class="row w-100">
+                  <div class="col-7 col-md-12 col-lg-6 col-xl-7">
+                    <span th:text="${itemInformation.getPrice()}" class="price h5">Item Price</span>
+                  </div>
+                  <!-- price.// -->
+                  <div class="col-5 col-md-12 col-lg-6 col-xl-5 d-flex justify-content-end">
+                    <form
+                      class="ml-auto form-inline"
+                      th:action="@{'/account/add-to-customer-cart/' + ${itemInformation.sku}}"
+                      method="GET"
+                      th:object="${addToCartItem}"
+                    >
+                      <input type="text" class="d-none" value="1" th:field="*{quantity}" />
+                      <button type="submit" class="btn btn-primary my-1 mr-1">
+                        <span class="span-non-breaking"
+                          ><span class="text">Add</span><i class="fa fa-shopping-cart"></i
+                        ></span>
+                      </button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+              <!-- bottom-wrap.// -->
+            </figure>
           </div>
           <!-- col.// -->
         </div>

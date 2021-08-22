@@ -1,13 +1,9 @@
 package com.psu.ist311.team5.cornerfoodmarketwebsite.controller;
 
-import com.psu.ist311.team5.cornerfoodmarketwebsite.data.domain.entity.ItemInformation;
-import com.psu.ist311.team5.cornerfoodmarketwebsite.data.domain.entity.ItemDetailedInformation;
-import com.psu.ist311.team5.cornerfoodmarketwebsite.business.dto.response.domain.ReviewInformation;
+import com.psu.ist311.team5.cornerfoodmarketwebsite.business.dto.request.domain.AddToCartItem;
 import com.psu.ist311.team5.cornerfoodmarketwebsite.business.service.ItemInformationService;
-import com.psu.ist311.team5.cornerfoodmarketwebsite.business.service.ReviewInformationService;
-import com.psu.ist311.team5.cornerfoodmarketwebsite.data.single_table.entity.GeneralReview;
-import com.psu.ist311.team5.cornerfoodmarketwebsite.data.single_table.entity.ItemReview;
-import com.psu.ist311.team5.cornerfoodmarketwebsite.data.single_table.entity.OrderReview;
+import com.psu.ist311.team5.cornerfoodmarketwebsite.data.domain.entity.ItemDetailedInformation;
+import com.psu.ist311.team5.cornerfoodmarketwebsite.data.domain.entity.ItemInformation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -38,6 +34,7 @@ public class HomeController {
         List<List<ItemInformation>> itemInformationLists = this.itemInformationService.getItemsInformation();
 
         model.addAttribute("itemInformationLists", itemInformationLists);
+        model.addAttribute("addToCartItem", new AddToCartItem());
         return "home";
     }
 

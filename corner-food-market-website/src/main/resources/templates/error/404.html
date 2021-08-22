@@ -1,50 +1,35 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <title>Corner Food Market - PAGE NOT FOUND</title>
 
-  <title>Corner Food Market - PAGE NOT FOUND</title>
+    <th:block th:replace="fragments/imports::imports"></th:block>
+    <!-- common-imports.// -->
+    <link rel="stylesheet" href="fonts/material-icon/css/round.css" />
+  </head>
 
-  <th:block th:replace="fragments/imports::imports"></th:block>
-  <!-- common-imports.// -->
-  <link rel="stylesheet" href="fonts/material-icon/css/round.css" />
+  <body>
+    <div th:replace="fragments/header::header"></div>
+    <!-- section-header.// -->
 
-</head>
-
-<body>
-<div th:replace="fragments/header::header"></div>
-<!-- section-header.// -->
-
-<section class="content-main">
-  <div class="row" style="margin-top: 60px">
-    <div class="col-sm-12">
-      <div class="w-50 mx-auto text-center">
-        <img src="images/not-found.png" width="350" alt="Page Not Found" />
-        <h3 class="mt-4">Oops! Page not found</h3>
-        <p>
-          It's looking like you may have taken a wrong turn. Don't worry... it happens to the
-          best of us. Here's a little tip that might help you get back on track.
-        </p>
-        <a th:href="@{/}" class="btn btn-primary mt-4">Back to Home</a>
+    <section class="content-main">
+      <div class="row" style="margin-top: 60px">
+        <div class="col-sm-12">
+          <div class="w-50 mx-auto text-center">
+            <img th:src="@{/images/not-found.png}" width="350" alt="Page Not Found" />
+            <h3 class="mt-4">Oops! Page not found</h3>
+            <p>
+              It's looking like you may have taken a wrong turn. Don't worry... it happens to the
+              best of us. Here's a little tip that might help you get back on track.
+            </p>
+            <a th:href="@{/}" class="btn btn-primary mt-4">Back to Home</a>
+          </div>
+        </div>
       </div>
-    </div>
-  </div>
-</section>
-<!-- content-main end// -->
-<script>
-  if (localStorage.getItem('darkmode')) {
-    var body_el = document.body;
-    body_el.className += 'dark';
-  }
-</script>
-
-<script src="js/v1-1/jquery-3.5.0.min.js?v=1.1"></script>
-<script src="js/v1-1/bootstrap.bundle.min.js?v=1.1"></script>
-
-<!-- Custom JS -->
-<script src="js/v1-1/script.js?v=1.1"></script>
-</body>
-
+    </section>
+    <!-- content-main end// -->
+  </body>
 </html>

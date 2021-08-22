@@ -1,9 +1,12 @@
 package com.psu.ist311.team5.cornerfoodmarketwebsite.data.single_table.entity;
 
+import org.hibernate.annotations.Where;
+
 import javax.persistence.*;
 
 @Entity
 @Table(name = "ITEM_INVENTORY")
+@Where(clause = "quantity>0")
 public class ItemInventory {
     @Id
     @Column(name = "ID")

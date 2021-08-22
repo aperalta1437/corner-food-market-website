@@ -5,7 +5,6 @@ $generalForm.on('submit', function (e) {
   $('#div-general-review-form').fadeOut(500, function () {
     $('#div-submitted-general-review-spinner').fadeIn(250);
   });
-  var url = '/reviews/process-general-review';
   $.ajax({
     url: $generalForm.attr('action'),
     type: 'POST',

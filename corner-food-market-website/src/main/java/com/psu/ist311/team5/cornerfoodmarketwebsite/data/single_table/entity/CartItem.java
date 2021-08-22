@@ -1,6 +1,11 @@
 package com.psu.ist311.team5.cornerfoodmarketwebsite.data.single_table.entity;
 
+import com.psu.ist311.team5.cornerfoodmarketwebsite.business.dto.request.domain.CustomUserDetails;
 import com.psu.ist311.team5.cornerfoodmarketwebsite.data.single_table.entity.composite_key.CartItemId;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
+import org.hibernate.annotations.Where;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import javax.persistence.*;
 
@@ -15,7 +20,16 @@ public class CartItem {
     @Column(name = "ITEM_ID")
     private short itemId;
     @Column(name = "QUANTITY")
-    private short providerId;
+    private short quantity;
+
+    public CartItem() {
+    }
+
+    public CartItem(short customerId, short itemId, short quantity) {
+        this.customerId = customerId;
+        this.itemId = itemId;
+        this.quantity = quantity;
+    }
 
     public short getCustomerId() {
         return customerId;
@@ -33,11 +47,11 @@ public class CartItem {
         this.itemId = itemId;
     }
 
-    public short getProviderId() {
-        return providerId;
+    public short getQuantity() {
+        return quantity;
     }
 
-    public void setProviderId(short providerId) {
-        this.providerId = providerId;
+    public void setQuantity(short quantity) {
+        this.quantity = quantity;
     }
 }

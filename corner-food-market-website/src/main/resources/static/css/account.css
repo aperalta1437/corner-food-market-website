@@ -1,0 +1,120 @@
+#div-add-to-cart-spinner-container {
+  display: none;
+}
+
+#div-add-to-cart-spinner-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: white;
+  opacity: 0.6;
+  z-index: 100;
+}
+
+#div-add-to-cart-spinner {
+  position: fixed;
+  width: 5rem;
+  height: 5rem;
+  top: 50%;
+  left: 50%;
+  margin-top: -2.5rem; /* Negative half of height. */
+  margin-left: -2.5rem; /* Negative half of width. */
+}
+
+.div-in-cart-amount {
+  /* position: absolute;
+  top: 0;
+  margin-left: 0%;
+  width: 100px;
+  height: 20px; */
+  background-color: #9acd32;
+  color: white;
+}
+
+#div-add-to-cart-response {
+  display: none;
+  position: fixed;
+  background-color: rgb(255, 159, 142);
+  width: 750px;
+  height: 75px;
+  left: 50%;
+  top: 35px;
+  margin-left: -375px;
+  z-index: 100;
+  text-align: center;
+  border-radius: 45px;
+  color: black;
+  padding: 15px 45px;
+  box-shadow: 0px 3px 6px grey;
+  justify-content: center;
+  align-items: center;
+  font-weight: 600;
+}
+
+@media (max-width: 960px) {
+  #div-add-to-cart-response {
+    width: 100%;
+    height: 100px;
+    left: 0;
+    top: 0;
+    margin-left: 0;
+    border-radius: 0px;
+    padding: 10px 15px;
+  }
+}
+
+.attention {
+  -webkit-animation: draw-attention linear 1s 3;
+  animation: draw-attention linear 1s 3;
+}
+@-webkit-keyframes draw-attention {
+  0% {
+    background-color: rgb(255, 159, 142);
+  }
+  50% {
+    background-color: red;
+  }
+  100% {
+    background-color: rgb(255, 159, 142);
+  }
+}
+@keyframes draw-attention {
+  0% {
+    background-color: rgb(255, 159, 142);
+  }
+  50% {
+    background-color: red;
+  }
+  100% {
+    background-color: rgb(255, 159, 142);
+  }
+}
+
+.change {
+  -webkit-animation: notify-change linear 1s 3;
+  animation: notify-change linear 1s 3;
+}
+@-webkit-keyframes notify-change {
+  0% {
+    background-color: #9acd32;
+  }
+  50% {
+    background-color: #c0dd86;
+  }
+  100% {
+    background-color: #9acd32;
+  }
+}
+@keyframes notify-change {
+  0% {
+    background-color: #9acd32;
+  }
+  50% {
+    background-color: #c0dd86;
+  }
+  100% {
+    background-color: #9acd32;
+  }
+}
