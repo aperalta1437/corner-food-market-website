@@ -9,6 +9,7 @@ import com.psu.ist311.team5.cornerfoodmarketwebsite.data.domain.entity.AccountIt
 import com.psu.ist311.team5.cornerfoodmarketwebsite.data.domain.repository.AccountItemDetailedInformationRepository;
 import com.psu.ist311.team5.cornerfoodmarketwebsite.data.domain.repository.AccountItemInformationRepository;
 import com.psu.ist311.team5.cornerfoodmarketwebsite.data.single_table.entity.CartItem;
+import com.psu.ist311.team5.cornerfoodmarketwebsite.data.single_table.entity.Customer;
 import com.psu.ist311.team5.cornerfoodmarketwebsite.data.single_table.entity.composite_key.CartItemId;
 import com.psu.ist311.team5.cornerfoodmarketwebsite.data.single_table.repository.CartItemRepository;
 import com.psu.ist311.team5.cornerfoodmarketwebsite.data.single_table.repository.CustomerRepository;
@@ -74,15 +75,15 @@ public class AccountItemInformationService {
     }
 
     public InCartResponse addItemToCart(AddToCartItem addToCartItem) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Customer customer = ((CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getCustomer();
 
-        short customerId = this.customerRepository.getIdByEmail(((CustomUserDetails) auth.getPrincipal()).getUsername());
+        short customerId = this.customerRepository.getIdByEmail(customer.getEmail());
         String requestedItemSku = addToCartItem.getSku();
         String addToCartResponse = null;
         boolean isSuccessfulResponse = false;
 
         List<ItemIdAndQuantity> itemIdAndQuantityList = this.itemRepository.getIdAndQuantityBySku(requestedItemSku);
-        if (itemIdAndQuantityList.size() > 1) {         // If there is more than one record in the result set, return server error.
+        if (itemIdAndQuantityList.size() > 1) {         // If there is more than one record in the result set (with the same sku), return server error.
             addToCartResponse = AddToCartResponse.SERVER_ERROR.getAddToCartMessage();
         }
         short itemId = itemIdAndQuantityList.get(0).getId();
@@ -98,16 +99,19 @@ public class AccountItemInformationService {
             cartItem = null;
         }
 
-        short totalRequestedAmount = (short) (requestedQuantity + ((cartItem == null) ? 0 : cartItem.getQuantity()));
+        short amountInCart = ((cartItem == null) ? 0 : cartItem.getQuantity());
+        short totalRequestedAmount = (short) (requestedQuantity + amountInCart);
+        short totalItemsToAdd = 0;
 
         if (itemQuantity == 0) {
             addToCartResponse = AddToCartResponse.NOT_AVAILABLE.getAddToCartMessage();
         } else if (itemQuantity < totalRequestedAmount) {
             addToCartResponse = AddToCartResponse.NOT_ENOUGH.getAddToCartMessage();
-
             if (cartItem == null) {
+                totalItemsToAdd = itemQuantity;
                 cartItem = new CartItem(customerId, itemId, itemQuantity);
             } else {
+                totalItemsToAdd += (itemQuantity - amountInCart);
                 cartItem.setQuantity(itemQuantity);
             }
         } else {
@@ -116,6 +120,7 @@ public class AccountItemInformationService {
             } else {
                 cartItem.setQuantity(totalRequestedAmount);
             }
+            totalItemsToAdd = requestedQuantity;
         }
 
         try {
@@ -124,15 +129,26 @@ public class AccountItemInformationService {
                 addToCartResponse =  AddToCartResponse.SUCCESS.getAddToCartMessage();
                 isSuccessfulResponse = true;
             }
+            customer.addNumberOfItemsToCart(totalItemsToAdd);
+            this.customerRepository.save(customer);
         } catch (Exception ex) {
             // TODO - Log the exception message.
             addToCartResponse = AddToCartResponse.SERVER_ERROR.getAddToCartMessage();
         }
 
-        short customerCartRequestedItemTotal = this.cartItemRepository.getCustomerRequestedItemTotal(customerId, itemId);
-        short customerCartTotalItems = this.cartItemRepository.getCustomerTotalItems(customerId);
+        Short customerCartRequestedItemTotal = this.cartItemRepository.getCustomerRequestedItemTotal(customerId, itemId);
+        short customerCartTotalItems = customer.getTotalCartItems();
 
-        return new InCartResponse(addToCartResponse, customerCartRequestedItemTotal, customerCartTotalItems, requestedItemSku, isSuccessfulResponse);
+        return new InCartResponse(addToCartResponse, (customerCartRequestedItemTotal == null ? 0: customerCartRequestedItemTotal),
+                customerCartTotalItems, requestedItemSku, isSuccessfulResponse);
+    }
+
+    public List<AccountItemInformation> getAllInCartItems() {
+        Customer customer = ((CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getCustomer();
+
+        short customerId = this.customerRepository.getIdByEmail(customer.getEmail());
+
+        return (List<AccountItemInformation>) this.accountItemInformationRepository.findAllInCart(customerId);
     }
 
 }

@@ -10,8 +10,13 @@ $('.form-add-to-cart').on('submit', function (e) {
     success: function (response) {
       spinner.fadeOut(250);
       var inCartAmountElement = $('#div-in-cart-' + response.requestedItemSku);
-      inCartAmountElement.find('.span-item-total').text(response.cartRequestedItemTotal);
-      inCartAmountElement.removeClass('invisible');
+      var cartRequestedItemTotal = response.cartRequestedItemTotal;
+
+      inCartAmountElement.find('.span-item-total').text(cartRequestedItemTotal);
+
+      if (cartRequestedItemTotal > 0) {
+        inCartAmountElement.removeClass('d-none');
+      }
       $('#span-cart-total-items').text(response.cartTotalItems);
 
       var addToCartResponseElement = $('#div-add-to-cart-response');

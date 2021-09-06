@@ -33,7 +33,7 @@
 			<div class="container">
 				<div class="row align-items-center">
 					<div class="col-lg-3 col-4">
-						<a href="http://bootstrap-ecommerce.com" class="brand-wrap">
+						<a th:href="@{/account}" class="brand-wrap">
 							<img class="img-fluid" th:src="@{/images/logo.png}">
 						</a> <!-- brand-wrap.// -->
 					</div>
@@ -52,9 +52,9 @@
 					<div class="col-lg-4 col-sm-6 col-12">
 						<div class="widgets-wrap float-md-right">
 							<div class="widget-header  mr-3">
-								<a href="#" class="icon icon-sm rounded-circle border"><i
+								<a th:href="@{/account/shopping-cart}" class="icon icon-sm rounded-circle border"><i
 										class="fa fa-shopping-cart"></i></a>
-								<span class="badge badge-pill badge-danger notify" id="span-cart-total-items">0</span>
+								<span class="badge badge-pill badge-danger notify" id="span-cart-total-items">[[${#request.userPrincipal.principal.getTotalCartItems()}]]</span>
 							</div>
 							<div class="widget-header icontext">
 								<a href="#" class="icon icon-sm rounded-circle border"><i class="fa fa-user"></i></a>

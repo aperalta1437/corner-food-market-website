@@ -185,7 +185,9 @@
                       method="GET"
                       th:object="${addToCartItem}"
                     >
-                      <input type="text" class="d-none" value="1" th:field="*{quantity}" />
+                      <select class="d-none" th:field="*{quantity}" />
+                        <option selected="selected">1</option>
+                      </select>
                       <button type="submit" class="btn btn-primary my-1 mr-1">
                         <span class="span-non-breaking"
                           ><span class="text">Add</span><i class="fa fa-shopping-cart"></i

@@ -10,8 +10,8 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface CartItemRepository extends JpaRepository<CartItem, CartItemId> {
     @Query(value = "SELECT CI1.quantity FROM CartItem CI1 WHERE CI1.customerId = ?1 AND CI1.itemId = ?2")
-    short getCustomerRequestedItemTotal(short customerId, short itemId);
+    Short getCustomerRequestedItemTotal(short customerId, short itemId);
 
     @Query(value = "SELECT SUM(CI1.quantity) FROM CartItem CI1 WHERE CI1.customerId = ?1")
-    short getCustomerTotalItems(short customerId);
+    Short getCustomerTotalItems(short customerId);
 }

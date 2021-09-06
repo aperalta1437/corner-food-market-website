@@ -1,0 +1,159 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="pragma" content="no-cache" />
+<meta http-equiv="cache-control" content="max-age=604800" />
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<title>Corner Food Market - Shopping Cart</title>
+
+	<th:block th:replace="fragments/imports::imports"></th:block>
+
+<script type="text/javascript">
+/// some script
+
+// jquery ready start
+$(document).ready(function() {
+	// jQuery code
+
+}); 
+// jquery end
+</script>
+
+</head>
+<body>
+
+
+<div th:replace="fragments/account-header::account-header"></div>
+<!-- section-header.// -->
+
+<!-- ========================= SECTION PAGETOP ========================= -->
+<section class="section-pagetop py-3 bg-white">
+<div class="container">
+	<h2 class="title-page">Shopping cart</h2>
+</div> <!-- container //  -->
+</section>
+<!-- ========================= SECTION INTRO END// ========================= -->
+
+<!-- ========================= SECTION CONTENT ========================= -->
+<section class="section-content padding-y">
+<div class="container">
+
+<div class="row">
+	<main class="col-md-9">
+<div class="card">
+
+<table class="table table-borderless table-shopping-cart">
+<thead class="text-muted">
+<tr class="small text-uppercase">
+  <th scope="col">Product</th>
+  <th scope="col">Quantity</th>
+  <th scope="col">Price</th>
+<!--  <th scope="col" class="text-right" width="200"> </th>-->
+</tr>
+</thead>
+<tbody>
+	<tr th:each="accountInCartItemInformation : ${accountInCartItemInformationList}">
+		<td>
+			<figure class="itemside">
+				<div class=""><img th:src="@{'/' + ${accountInCartItemInformation.images[0].getSourceRelativePathName()}}" class="img-sm"></div>
+				<figcaption class="info">
+					<a th:text="${accountInCartItemInformation.name}"
+					   th:href="@{'/categories/' + ${accountInCartItemInformation.categoryUrlRouteName} + '/items/' + ${accountInCartItemInformation.sku}}"
+					   class="title text-dark">Item Name</a>
+<!--					<p class="text-muted small">Size: XL, Color: blue, <br> Brand: Gucci</p>-->
+				</figcaption>
+			</figure>
+		</td>
+		<td>
+			<select class="form-control">
+				<option th:each="i : ${#numbers.sequence(1, accountInCartItemInformation.quantity)}" th:value="${i}" th:text="${i}"
+				th:selected="${i==accountInCartItemInformation.cartItems[0].quantity}"></option>
+			</select>
+		</td>
+		<td>
+			<div class="row">
+				<div class="price-wrap col">
+					<var th:text="${accountInCartItemInformation.getFormattedUnitsTotalPrice()}" class="price">Item Units Total Price</var>
+					<small th:text="${accountInCartItemInformation.getFormattedUnitPrice()} + ' each'" class="text-muted">Item Unit Price</small>
+				</div> <!-- price-wrap .// -->
+				<div class="text-right col mt-3">
+					<!--			<a data-original-title="Save to Wishlist" title="" href="" class="btn btn-light" data-toggle="tooltip"> <i class="fa fa-heart"></i></a>-->
+					<a href="" class="btn btn-light"> Remove</a>
+				</div>
+			</div>
+		</td>
+	</tr>
+</tbody>
+</table>
+
+<div class="card-body border-top">
+	<a th:href="@{/account/checkout}" class="btn btn-primary float-md-right"> Go to checkout <i class="fa fa-chevron-right"></i> </a>
+	<a th:href="@{/account}" class="btn btn-light"> <i class="fa fa-chevron-left"></i> Continue shopping </a>
+</div>	
+</div> <!-- card.// -->
+
+<div class="alert alert-success mt-3">
+	<p class="icontext"><i class="icon text-success fa fa-truck"></i> Free Delivery within 1-2 weeks</p>
+</div>
+
+	</main> <!-- col.// -->
+	<aside class="col-md-3">
+		<div class="card">
+			<div class="card-body">
+					<dl class="dlist-align">
+					  <dt>Total price:</dt>
+					  <dd class="text-right">USD 568</dd>
+					</dl>
+					<dl class="dlist-align">
+					  <dt>Discount:</dt>
+					  <dd class="text-right">USD 658</dd>
+					</dl>
+					<dl class="dlist-align">
+					  <dt>Total:</dt>
+					  <dd class="text-right  h5"><strong>$1,650</strong></dd>
+					</dl>
+					<hr>
+					<p class="text-center mb-3">
+						<img th:src="@{/images/misc/payment-paypal.png}" height="26">
+					</p>
+					
+			</div> <!-- card-body.// -->
+		</div>  <!-- card .// -->
+	</aside> <!-- col.// -->
+</div>
+
+</div> <!-- container .//  -->
+</section>
+<!-- ========================= SECTION CONTENT END// ========================= -->
+
+<!-- ========================= SECTION  ========================= -->
+<section class="section-name bg padding-y">
+<div class="container">
+<h6>Payment and refund policy</h6>
+<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+
+</div><!-- container // -->
+</section>
+<!-- ========================= SECTION  END// ========================= -->
+
+<!-- ========================= FOOTER ========================= -->
+<div th:replace="fragments/footer::footer"></div>
+<!-- ========================= FOOTER END // ========================= -->
+
+
+
+</body>
+</html>

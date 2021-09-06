@@ -38,15 +38,9 @@ public class SignupFormService {
     public boolean signupNewCustomer(SignupForm signupForm) {
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         String encodedPassword = encoder.encode(signupForm.getPassword());
-        Customer newCustomer = new Customer();
-
-        newCustomer.setEmail(signupForm.getEmail());
-        newCustomer.setPassword(encodedPassword);
-        newCustomer.setFirstName(signupForm.getFirstName());
-        newCustomer.setMiddleName(signupForm.getMiddleName());
-        newCustomer.setLastName(signupForm.getLastName());
-        newCustomer.setCellPhoneNumber(signupForm.getCellPhoneNumber());
-        newCustomer.setIsDisabled(false);
+        Customer newCustomer = new Customer(signupForm.getEmail(), encodedPassword, signupForm.getFirstName(),
+                signupForm.getMiddleName(), signupForm.getLastName(), signupForm.getCellPhoneNumber(), false,
+                (short) 0);
 
         boolean isNewCustomerSaved;
         try {

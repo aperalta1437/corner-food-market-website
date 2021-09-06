@@ -77,8 +77,16 @@ public class AccountItemInformation {
         this.sku = sku;
     }
 
-    public String getPrice() {
+    public String getFormattedUnitPrice() {
         return java.text.NumberFormat.getCurrencyInstance().format(price);
+    }
+
+    public String getFormattedUnitsTotalPrice() {
+        return java.text.NumberFormat.getCurrencyInstance().format(price * this.cartItems.get(0).getQuantity());
+    }
+
+    public double getPrice() {
+        return price;
     }
 
     public void setPrice(double price) {

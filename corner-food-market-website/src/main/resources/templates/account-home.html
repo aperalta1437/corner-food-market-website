@@ -167,7 +167,7 @@
 									Item Quantity
 								</div>
 								<div class="col-6 col-md-12 col-lg-6 text-right">
-									<span th:text="${accountItemInformation.getPrice()}" class="price h5">Item Price</span>
+									<span th:text="${accountItemInformation.getFormattedUnitPrice()}" class="price h5">Item Price</span>
 								</div>
 								<!-- price.// -->
 							</div>
@@ -177,10 +177,16 @@
 								<div class="col col-md-12 col-lg div-discount-amount text-center border">
 									<span class="h6">20% OFF</span>
 								</div>
-								<div class="col col-md-12 col-lg div-in-cart-amount text-center border invisible"
-									th:id="'div-in-cart-' + ${accountItemInformation.sku}">
-									<span class="h6">In Cart: <span class="span-item-total">0</span></span>
-								</div>
+								<th:block th:switch="${#lists.isEmpty(accountItemInformation.cartItems)}">
+									<div th:case="${true}" class="col col-md-12 col-lg div-in-cart-amount text-center border d-none"
+										 th:id="'div-in-cart-' + ${accountItemInformation.sku}">
+										<span class="h6">In Cart: <span class="span-item-total">0</span></span>
+									</div>
+									<div th:case="*" class="col col-md-12 col-lg div-in-cart-amount text-center border"
+										 th:id="'div-in-cart-' + ${accountItemInformation.sku}">
+										<span class="h6">In Cart: <span class="span-item-total" th:text="${accountItemInformation.cartItems[0].quantity}">0</span></span>
+									</div>
+								</th:block>
 								<!-- price.// -->
 							</div>
 						</figcaption>

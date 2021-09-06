@@ -52,14 +52,19 @@ public class CustomUserDetails implements UserDetails {
     public String getFullName() {
         String fullName;
 
-        System.out.println(this.customer.getMiddleName());
         if (this.customer.getMiddleName() != null && this.customer.getMiddleName() != "") {
-            System.out.println("Hello");
             fullName = this.customer.getFirstName() + " " + this.customer.getMiddleName() + " " + this.customer.getLastName();
         } else {
-            System.out.println("Hellaaaaa");
             fullName = this.customer.getFirstName() + " " + this.customer.getLastName();
         }
         return fullName;
+    }
+
+    public short getTotalCartItems() {
+        return this.customer.getTotalCartItems();
+    }
+
+    public Customer getCustomer() {
+        return this.customer;
     }
 }

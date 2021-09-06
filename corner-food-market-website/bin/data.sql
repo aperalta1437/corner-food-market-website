@@ -84,8 +84,8 @@ VALUES (1, '1.jpg', 1, 1);
 
 ----------------------------------------------------------------------------------------
 
-INSERT INTO CUSTOMER (EMAIL, PASSWORD, FIRST_NAME, LAST_NAME, IS_DISABLED)
-VALUES ('anonymoususer@cornerfoodmarket.com', '', 'Anonymous', 'User', TRUE);
+INSERT INTO CUSTOMER (EMAIL, PASSWORD, FIRST_NAME, LAST_NAME, IS_DISABLED, TOTAL_CART_ITEMS)
+VALUES ('anonymoususer@cornerfoodmarket.com', '', 'Anonymous', 'User', TRUE, 0);
 
 
 
