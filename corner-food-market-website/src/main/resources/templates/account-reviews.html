@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <meta name="author" content="Bootstrap-ecommerce by Vosidiy M." />
+
+  <title>Website title - bootstrap html template</title>
+
+  <th:block th:replace="fragments/imports::imports"></th:block>
+  <!-- common-imports.// -->
+  <script th:src="@{/js/reviews.js}" defer type="text/javascript"></script>
+
+  <!-- Fonticons -->
+  <link th:href="@{/fonts/feathericons/css/iconfont.css}" rel="stylesheet" type="text/css" />
+  <link
+          th:href="@{/fonts/material-icons/css/materialdesignicons.css}"
+          rel="stylesheet"
+          type="text/css"
+  />
+  <link th:href="@{/css/reviews.css}" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+<div th:replace="fragments/header::header"></div>
+<!-- section-header.// -->
+
+<section class="section-content padding-y bg-white">
+  <div class="container">
+    <!-- ============================ COMPONENT 1 ================================= -->
+    <div class="row">
+      <div class="col-md-9">
+        <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+          <li class="nav-item">
+            <a
+                    class="nav-link active"
+                    id="pills-home-tab"
+                    data-toggle="pill"
+                    href="#pills-home"
+                    role="tab"
+                    aria-controls="pills-home"
+                    aria-selected="true"
+            >General Reviews</a
+            >
+          </li>
+          <li class="nav-item">
+            <a
+                    class="nav-link"
+                    id="pills-profile-tab"
+                    data-toggle="pill"
+                    href="#pills-profile"
+                    role="tab"
+                    aria-controls="pills-profile"
+                    aria-selected="false"
+            >Order Reviews</a
+            >
+          </li>
+          <li class="nav-item">
+            <a
+                    class="nav-link"
+                    id="pills-contact-tab"
+                    data-toggle="pill"
+                    href="#pills-contact"
+                    role="tab"
+                    aria-controls="pills-contact"
+                    aria-selected="false"
+            >Item Reviews</a
+            >
+          </li>
+        </ul>
+        <div class="tab-content" id="pills-tabContent">
+          <div
+                  class="tab-pane fade show active"
+                  id="pills-home"
+                  role="tabpanel"
+                  aria-labelledby="pills-home-tab"
+          >
+            <header class="section-heading">
+              <h3>General Reviews</h3>
+              <div class="rating-wrap">
+                <ul class="rating-stars stars-lg">
+                  <li style="width: 80%" class="stars-active">
+                    <img th:src="@{/images/icons/stars-active.svg}" alt="" />
+                  </li>
+                  <li>
+                    <img th:src="@{/images/icons/starts-disable.svg}" alt="" />
+                  </li>
+                </ul>
+                <strong class="label-rating text-lg">
+                  4.5 <span class="text-muted">| 112 reviews</span></strong
+                >
+              </div>
+            </header>
+
+            <article class="box mb-3 w-100">
+              <div class="icontext w-100">
+                <img
+                        th:src="@{/images/avatars/avatar1.jpg}"
+                        class="img-xs icon rounded-circle"
+                />
+                <div class="text">
+                  <span class="date text-muted float-md-right">24.04.2020 </span>
+                  <h6 class="mb-1">Mike John</h6>
+                  <ul class="rating-stars">
+                    <li style="width: 80%" class="stars-active">
+                      <img th:src="@{/images/icons/stars-active.svg}" alt="" />
+                    </li>
+                    <li>
+                      <img th:src="@{/images/icons/starts-disable.svg}" alt="" />
+                    </li>
+                  </ul>
+                  <span class="label-rating text-warning">Good</span>
+                </div>
+              </div>
+              <!-- icontext.// -->
+              <div class="mt-3">
+                <p>
+                  Dummy comment Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
+                  eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
+                  veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
+                </p>
+              </div>
+            </article>
+            <article class="box mb-3 w-100">
+              <div class="icontext w-100">
+                <img
+                        th:src="@{/images/avatars/avatar1.jpg}"
+                        class="img-xs icon rounded-circle"
+                />
+                <div class="text">
+                  <span class="date text-muted float-md-right">24.04.2020 </span>
+                  <h6 class="mb-1">Mike John</h6>
+                  <ul class="rating-stars">
+                    <li style="width: 80%" class="stars-active">
+                      <img th:src="@{/images/icons/stars-active.svg}" alt="" />
+                    </li>
+                    <li>
+                      <img th:src="@{/images/icons/starts-disable.svg}" alt="" />
+                    </li>
+                  </ul>
+                  <span class="label-rating text-warning">Good</span>
+                </div>
+              </div>
+              <!-- icontext.// -->
+              <div class="mt-3">
+                <p>
+                  Dummy comment Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
+                  eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
+                  veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
+                </p>
+              </div>
+            </article>
+            <article class="box mb-3 w-100">
+              <div class="icontext w-100">
+                <img
+                        th:src="@{/images/avatars/avatar1.jpg}"
+                        class="img-xs icon rounded-circle"
+                />
+                <div class="text">
+                  <span class="date text-muted float-md-right">24.04.2020 </span>
+                  <h6 class="mb-1">Mike John</h6>
+                  <ul class="rating-stars">
+                    <li style="width: 80%" class="stars-active">
+                      <img th:src="@{/images/icons/stars-active.svg}" alt="" />
+                    </li>
+                    <li>
+                      <img th:src="@{/images/icons/starts-disable.svg}" alt="" />
+                    </li>
+                  </ul>
+                  <span class="label-rating text-warning">Good</span>
+                </div>
+              </div>
+              <!-- icontext.// -->
+              <div class="mt-3">
+                <p>
+                  Dummy comment Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
+                  eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
+                  veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
+                </p>
+              </div>
+            </article>
+            <div
+                    class="mx-auto my-5 text-center spinner-component"
+                    id="div-submitted-general-review-spinner"
+            >
+              <div
+                      class="spinner-border spinner-component"
+                      style="width: 3rem; height: 3rem"
+                      role="status"
+              >
+                <span class="sr-only">Loading...</span>
+              </div>
+            </div>
+            <div
+                    class="card mx-auto"
+                    style="max-width: 520px; margin-top: 40px"
+                    id="div-submitted-general-review-response"
+            ></div>
+            <div
+                    class="card mx-auto"
+                    style="max-width: 520px; margin-top: 40px"
+                    id="div-general-review-form"
+            >
+              <article class="card-body">
+                <form
+                        th:action="@{/reviews/process-general-review}"
+                        th:object="${anonymousGeneralReviewForm}"
+                        method="post"
+                        id="form-general-review"
+                >
+                  <header class="mb-4">
+                    <h4 class="card-title">Leave a General Review</h4>
+                  </header>
+                  <div class="form-group">
+                    <label>Subject Line</label>
+                    <input
+                            type="text"
+                            class="form-control"
+                            placeholder=""
+                            th:field="*{subjectLine}"
+                            minlength="3"
+                            maxlength="50"
+                    />
+                  </div>
+                  <!-- form-group end.// -->
+                  <div class="form-group">
+                    <label>Comment</label>
+                    <textarea
+                            class="form-control"
+                            placeholder=""
+                            th:field="*{comment}"
+                            required
+                            minlength="25"
+                            maxlength="300"
+                    >
+                        </textarea>
+                  </div>
+                  <div class="form-group">
+                    <label>Rating</label>
+                    <div class="rating">
+                      <input
+                              type="radio"
+                              th:field="*{starRating}"
+                              name="rating"
+                              value="5"
+                              id="5-general"
+                              required
+                      /><label for="5-general">☆</label>
+                      <input
+                              type="radio"
+                              th:field="*{starRating}"
+                              name="rating"
+                              value="4"
+                              id="4-general"
+                              required
+                      /><label for="4-general">☆</label>
+                      <input
+                              type="radio"
+                              th:field="*{starRating}"
+                              name="rating"
+                              value="3"
+                              id="3-general"
+                              required
+                      /><label for="3-general">☆</label>
+                      <input
+                              type="radio"
+                              th:field="*{starRating}"
+                              name="rating"
+                              value="2"
+                              id="2-general"
+                              required
+                      /><label for="2-general">☆</label>
+                      <input
+                              type="radio"
+                              th:field="*{starRating}"
+                              name="rating"
+                              value="1"
+                              id="1-general"
+                              required
+                      /><label for="1-general">☆</label>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <button
+                            type="submit"
+                            class="btn btn-primary btn-block"
+                            id="btn-submit-general-review"
+                    >
+                      Submit Review
+                    </button>
+                  </div>
+                  <!-- form-group// -->
+                  <div class="form-group">
+                    <label class="custom-control custom-checkbox">
+                      <input
+                              type="checkbox"
+                              class="custom-control-input"
+                              id="chkbox-general-review-terms-n-conditions"
+                      />
+                      <div class="custom-control-label">
+                        I agree with <a href="#">terms and conditions</a>
+                      </div>
+                    </label>
+                  </div>
+                  <!-- form-group end.// -->
+                  <!-- form-group end.// -->
+                </form>
+              </article>
+              <!-- card-body.// -->
+            </div>
+            <!-- card .// -->
+          </div>
+          <div
+                  class="tab-pane fade"
+                  id="pills-profile"
+                  role="tabpanel"
+                  aria-labelledby="pills-profile-tab"
+          >
+            ...
+          </div>
+          <div
+                  class="tab-pane fade"
+                  id="pills-contact"
+                  role="tabpanel"
+                  aria-labelledby="pills-contact-tab"
+          >
+            ...
+          </div>
+        </div>
+      </div>
+      <!-- col.// -->
+    </div>
+    <!-- row.// -->
+    <!-- ============================ COMPONENT 1 END .// ================================= -->
+  </div>
+  <!-- container .//  -->
+</section>
+<!-- ========================= SECTION CONTENT END// ========================= -->
+
+<!-- ========================= FOOTER ========================= -->
+<div th:replace="fragments/footer::footer"></div>
+<!-- ========================= FOOTER END // ========================= -->
+</body>
+</html>

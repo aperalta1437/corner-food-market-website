@@ -57,10 +57,14 @@ $(document).ready(function() {
 	<tr th:each="accountInCartItemInformation : ${accountInCartItemInformationList}">
 		<td>
 			<figure class="itemside">
-				<div class=""><img th:src="@{'/' + ${accountInCartItemInformation.images[0].getSourceRelativePathName()}}" class="img-sm"></div>
+				<div class="">
+					<a th:href="@{'/account/categories/' + ${accountInCartItemInformation.categoryUrlRouteName} + '/items/' + ${accountInCartItemInformation.sku}}">
+						<img th:src="@{'/' + ${accountInCartItemInformation.mainImage.getSourceRelativePathName()}}" class="img-sm">
+					</a>
+				</div>
 				<figcaption class="info">
 					<a th:text="${accountInCartItemInformation.name}"
-					   th:href="@{'/categories/' + ${accountInCartItemInformation.categoryUrlRouteName} + '/items/' + ${accountInCartItemInformation.sku}}"
+					   th:href="@{'/account/categories/' + ${accountInCartItemInformation.categoryUrlRouteName} + '/items/' + ${accountInCartItemInformation.sku}}"
 					   class="title text-dark">Item Name</a>
 <!--					<p class="text-muted small">Size: XL, Color: blue, <br> Brand: Gucci</p>-->
 				</figcaption>
@@ -69,7 +73,7 @@ $(document).ready(function() {
 		<td>
 			<select class="form-control">
 				<option th:each="i : ${#numbers.sequence(1, accountInCartItemInformation.quantity)}" th:value="${i}" th:text="${i}"
-				th:selected="${i==accountInCartItemInformation.cartItems[0].quantity}"></option>
+				th:selected="${i==accountInCartItemInformation.inCartQuantity}"></option>
 			</select>
 		</td>
 		<td>
@@ -104,15 +108,15 @@ $(document).ready(function() {
 			<div class="card-body">
 					<dl class="dlist-align">
 					  <dt>Total price:</dt>
-					  <dd class="text-right">USD 568</dd>
+					  <dd th:text="${accountInCartItemInformationList.getFormattedTotalPrice()}" class="text-right">Total Price</dd>
 					</dl>
 					<dl class="dlist-align">
 					  <dt>Discount:</dt>
-					  <dd class="text-right">USD 658</dd>
+					  <dd th:text="${accountInCartItemInformationList.getFormattedTotalDiscountAmount()}" class="text-right">Total Discount Amount</dd>
 					</dl>
 					<dl class="dlist-align">
 					  <dt>Total:</dt>
-					  <dd class="text-right  h5"><strong>$1,650</strong></dd>
+					  <dd th:text="${accountInCartItemInformationList.getFormattedTotalPostDiscountPrice()}" class="text-right  h5"><strong>Total Post-Discount Price</strong></dd>
 					</dl>
 					<hr>
 					<p class="text-center mb-3">

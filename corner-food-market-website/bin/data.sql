@@ -59,13 +59,20 @@ VALUES  ('Foods & Drinks', 'Ready-to-eat foods and drinks', NULL, 0, 'foods-and-
 -----------------------------------------------------------------------------------------------
 
 INSERT INTO ITEM_INVENTORY (QUANTITY)
-VALUES (18);
+VALUES  (18),
+        (24);
 
 
 ---------------------------------------------------------------------------------------------
 
+--INSERT INTO DISCOUNT (NAME, )
+--VALUES  ();
+
+---------------------------------------------------------------------------------------------
+
 INSERT INTO ITEM (NAME, DESCRIPTION, SKU, CATEGORY_ID, INVENTORY_ID, PRICE, DISCOUNT_ID, IS_ON_SALE, IS_POPULAR)
-VALUES ('Coca-Cola bottle (16 oz)', '16 ounces Coca Cola bottle', '074312028328', 33, 1, 2.50, NULL, TRUE, TRUE);
+VALUES  ('Coca-Cola bottle (16 oz)', '16 ounces Coca Cola bottle', '074312028328', 33, 1, 2.50, NULL, TRUE, TRUE),
+        ('Red apple (Medium)', 'Medium-sized red apple', '028312928428', 19, 2, 0.50, NULL, TRUE, TRUE);
 
 --------------------------------------------------------------------------------------------------------------
 
@@ -80,12 +87,15 @@ VALUES (1, 'images/items/');
 -------------------------------------------------------------------------------------------------
 
 INSERT INTO ITEM_IMAGE (ITEM_ID, FILE_NAME, SORT_NUMBER, RELATIVE_PATH_ID)
-VALUES (1, '1.jpg', 1, 1);
+VALUES  (1, '1.jpg', 1, 1),
+        (2, '2.jpg', 1, 1);
 
 ----------------------------------------------------------------------------------------
 
 INSERT INTO CUSTOMER (EMAIL, PASSWORD, FIRST_NAME, LAST_NAME, IS_DISABLED, TOTAL_CART_ITEMS)
 VALUES ('anonymoususer@cornerfoodmarket.com', '', 'Anonymous', 'User', TRUE, 0);
+
+---------------------------------------------------------------------------------------
 
 
 

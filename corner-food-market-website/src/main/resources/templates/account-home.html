@@ -155,11 +155,11 @@
 				<div th:each="accountItemInformation: ${accountItemInformationList}" class="col-md-3">
 					<figure class="card card-product-grid card-lg p-0">
 						<!-- <div class="div-in-cart-amount">In Cart: 3</div> -->
-						<a href="#" class="img-wrap"><img
-								th:src="@{'/' + ${accountItemInformation.images[0].getSourceRelativePathName()}}" /></a>
+						<a th:href="@{'/account/categories/' + ${accountItemInformation.categoryUrlRouteName} + '/items/' + ${accountItemInformation.sku}}" class="img-wrap"><img
+								th:src="@{'/' + ${accountItemInformation.mainImage.getSourceRelativePathName()}}" /></a>
 						<figcaption class="info-wrap pb-0">
 							<a th:text="${accountItemInformation.name}"
-								th:href="@{'/categories/' + ${accountItemInformation.categoryUrlRouteName} + '/items/' + ${accountItemInformation.sku}}"
+								th:href="@{'/account/categories/' + ${accountItemInformation.categoryUrlRouteName} + '/items/' + ${accountItemInformation.sku}}"
 								class="title">Item Name</a>
 							<div class="row">
 								<div th:text="' Available: ' + ${accountItemInformation.quantity}"
@@ -177,14 +177,14 @@
 								<div class="col col-md-12 col-lg div-discount-amount text-center border">
 									<span class="h6">20% OFF</span>
 								</div>
-								<th:block th:switch="${#lists.isEmpty(accountItemInformation.cartItems)}">
+								<th:block th:switch="${accountItemInformation.inCartQuantity == null}">
 									<div th:case="${true}" class="col col-md-12 col-lg div-in-cart-amount text-center border d-none"
 										 th:id="'div-in-cart-' + ${accountItemInformation.sku}">
 										<span class="h6">In Cart: <span class="span-item-total">0</span></span>
 									</div>
 									<div th:case="*" class="col col-md-12 col-lg div-in-cart-amount text-center border"
 										 th:id="'div-in-cart-' + ${accountItemInformation.sku}">
-										<span class="h6">In Cart: <span class="span-item-total" th:text="${accountItemInformation.cartItems[0].quantity}">0</span></span>
+										<span class="h6">In Cart: <span class="span-item-total" th:text="${accountItemInformation.inCartQuantity}">0</span></span>
 									</div>
 								</th:block>
 								<!-- price.// -->
@@ -195,9 +195,8 @@
 								th:action="@{'/account/add-to-cart/' + ${accountItemInformation.sku}}" method="POST"
 								th:object="${addToCartItem}">
 								<select class="form-control mr-2" th:field="*{quantity}" />
-								<option>1</option>
-								<option>2</option>
-								<option>3</option>
+									<option th:each="i : ${#numbers.sequence(1, accountItemInformation.quantity)}" th:value="${i}" th:text="${i}"
+											th:selected="${i==1}"></option>
 								</select>
 								<button type="submit" class="btn btn-primary my-1 mr-1">
 									<span class="span-non-breaking">
