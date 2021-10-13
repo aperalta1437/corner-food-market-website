@@ -34,17 +34,17 @@
           <h4 class="card-title mb-4">Log In</h4>
           <th:block th:switch="${loginProcessIssue}">
             <h6
-              th:case="${T(com.psu.ist311.team5.cornerfoodmarketwebsite.controller.utils.LoginProcessIssue).FAILED_LOGIN}"
+              th:case="${T(com.cornerfoodmarketwebsite.controller.utils.LoginProcessIssue).FAILED_LOGIN}"
               th:text="${loginProcessIssue.getLoginIssueMessage()}"
               class="text-danger"
             ></h6>
             <h6
-              th:case="${T(com.psu.ist311.team5.cornerfoodmarketwebsite.controller.utils.LoginProcessIssue).DISABLED_ACCOUNT}"
+              th:case="${T(com.cornerfoodmarketwebsite.controller.utils.LoginProcessIssue).DISABLED_ACCOUNT}"
               th:text="${loginProcessIssue.getLoginIssueMessage()}"
               class="text-danger"
             ></h6>
             <h6
-              th:case="${T(com.psu.ist311.team5.cornerfoodmarketwebsite.controller.utils.LoginProcessIssue).EXPIRED_SESSION}"
+              th:case="${T(com.cornerfoodmarketwebsite.controller.utils.LoginProcessIssue).EXPIRED_SESSION}"
               th:text="${loginProcessIssue.getLoginIssueMessage()}"
               class="text-danger"
             ></h6>

@@ -1,10 +1,13 @@
 package com.cornerfoodmarketwebsite.config;
 
+import com.cornerfoodmarketwebsite.business.service.CustomerUserDetailsService;
 import com.cornerfoodmarketwebsite.controller.utils.LoginProcessIssue;
-import com.cornerfoodmarketwebsite.business.service.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
+import org.springframework.core.annotation.Order;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -13,19 +16,28 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import javax.sql.DataSource;
 
 @Configuration
 @EnableWebSecurity
-public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+@Order(1)
+public class CustomerConfigurationAdapter extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private DataSource dataSource;
 
     @Bean
-    public UserDetailsService userDetailsService() {
-        return new CustomUserDetailsService();
+    public UserDetailsService customerUserDetailsService() {
+        return new CustomerUserDetailsService();
+    }
+
+    @Primary
+    @Override
+    @Bean(name = "customerAuthenticationManagerBean")
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
     }
 
     @Bean
@@ -36,7 +48,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-        authProvider.setUserDetailsService(this.userDetailsService());
+        authProvider.setUserDetailsService(this.customerUserDetailsService());
         authProvider.setPasswordEncoder(this.passwordEncoder());
 
         return authProvider;
@@ -49,24 +61,24 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.ALWAYS);
-        http
-                    .authorizeRequests()
-                        .antMatchers("/account/**").authenticated()
-                        .anyRequest().permitAll()
+//        http.sessionManagement()
+//                .sessionCreationPolicy(SessionCreationPolicy.ALWAYS);
+//        http.authorizeRequests().antMatchers("/account/**").authenticated()
+        http.requestMatcher(new AntPathRequestMatcher("/account/**")).csrf().disable().authorizeRequests().antMatchers("/account/**").authenticated()
                 .and()
-                    .formLogin()
-                        .loginPage("/login").permitAll()
-                        .loginProcessingUrl("/login")
-                        .usernameParameter("email")
-                        .passwordParameter("password")
-                        .defaultSuccessUrl("/account").permitAll()
-                        .failureForwardUrl("/login?failed=true")
+                .formLogin()
+                .loginPage("/login").permitAll()
+                .loginProcessingUrl("/login")
+                .usernameParameter("email")
+                .passwordParameter("password")
+                .defaultSuccessUrl("/account").permitAll()
+                .failureForwardUrl("/login?failed=true")
                 .and()
-                    .logout()
-                        .logoutSuccessUrl("/login")
+                .logout()
+                .logoutSuccessUrl("/login")
                 .and()
-                    .exceptionHandling().accessDeniedPage("/login?issue=" + LoginProcessIssue.EXPIRED_SESSION.name());
+                .exceptionHandling().accessDeniedPage("/login?issue=" + LoginProcessIssue.EXPIRED_SESSION.name());
     }
 }
+
+

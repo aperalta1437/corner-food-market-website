@@ -41,6 +41,7 @@ public class LoginController {
     @PostMapping
     public void processLogin(@RequestParam(name = "issue", required = false)String loginIssue, HttpServletResponse response) throws IOException {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        System.out.println(auth.getClass());
 
         if ((auth != null) && auth.isAuthenticated() && !(auth instanceof AnonymousAuthenticationToken)) {
             response.sendRedirect("/account");

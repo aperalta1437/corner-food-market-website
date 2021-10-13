@@ -86,10 +86,27 @@
 		<!-- https://mvnrepository.com/artifact/com.querydsl/querydsl-apt -->
 		<dependency>
 			<groupId>com.querydsl</groupId>
-			<artifactId>querydsl-apt</artifactId>
+			<artifactId>querydsl-apt</artifactId>		<!--Not needed, DELETE-->
 			<version>4.1.0</version>
 		</dependency>
 
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt</artifactId>
+			<version>0.9.1</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.codehaus.jettison/jettison -->
+		<dependency>
+			<groupId>org.codehaus.jettison</groupId>
+			<artifactId>jettison</artifactId>
+			<version>1.4.1</version>
+		</dependency>
+
+		<!--		<dependency>-->
+<!--			<groupId>javax.xml.bind</groupId>-->
+<!--			<artifactId>jaxb-api</artifactId>-->
+<!--			<version>2.3.0</version>-->
+<!--		</dependency>-->
 
 	</dependencies>
 
@@ -117,6 +134,41 @@
 					</execution>
 				</executions>
 			</plugin>
+
+			<plugin>
+				<groupId>com.github.eirslett</groupId>
+				<artifactId>frontend-maven-plugin</artifactId>
+				<version>1.6</version>
+				<configuration>
+					<nodeVersion>v8.11.3</nodeVersion>
+					<npmVersion>6.1.0</npmVersion>
+					<workingDirectory>client</workingDirectory>
+				</configuration>
+				<executions>
+					<execution>
+						<id>install node and npm</id>
+						<goals>
+							<goal>install-node-and-npm</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>npm install</id>
+						<goals>
+							<goal>npm</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>npm run build</id>
+						<goals>
+							<goal>npm</goal>
+						</goals>
+						<configuration>
+							<arguments>run build</arguments>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
 		</plugins>
 	</build>
 

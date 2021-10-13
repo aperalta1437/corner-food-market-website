@@ -26,14 +26,14 @@
 			</header><!-- sect-heading -->
 			<th:block th:switch="${signupResponse}">
 				<h4
-					th:case="${T(com.psu.ist311.team5.cornerfoodmarketwebsite.business.dto.response.SignupResponse).SUCCESS}">
+					th:case="${T(com.cornerfoodmarketwebsite.business.dto.response.SignupResponse).SUCCESS}">
 					<a th:href="@{/login}">Click here to log in</a></h4>
 				<h4
-					th:case="${T(com.psu.ist311.team5.cornerfoodmarketwebsite.business.dto.response.SignupResponse).EXISTING_EMAIL}">
+					th:case="${T(com.cornerfoodmarketwebsite.business.dto.response.SignupResponse).EXISTING_EMAIL}">
 					Forgot your password? <a th:href="@{/forgot-password}">Click here to reset it</a><br>
 					Otherwise, <a th:href="@{/login}">click here to log in</a></h4>
 				<h4
-					th:case="${T(com.psu.ist311.team5.cornerfoodmarketwebsite.business.dto.response.SignupResponse).SERVER_ERROR}">
+					th:case="${T(com.cornerfoodmarketwebsite.business.dto.response.SignupResponse).SERVER_ERROR}">
 					If you have an urgent need, please <a th:href="@{/contact-us}">contact us</a>. We appreciate your
 					patience!</h4>
 			</th:block>

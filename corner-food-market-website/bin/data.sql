@@ -97,8 +97,10 @@ VALUES ('anonymoususer@cornerfoodmarket.com', '', 'Anonymous', 'User', TRUE, 0);
 
 ---------------------------------------------------------------------------------------
 
+INSERT INTO ADMINISTRATOR (EMAIL, PASSWORD, FIRST_NAME, LAST_NAME, IS_DISABLED)
+VALUES ('amiguelp007@gmail.com', '$2a$10$N.kPTlzpYt6EsPPrpLavo.zxXOdg2Cr.vDet4kff5g53Q/.G6hry6', 'Angel', 'Peralta', FALSE);
 
-
+---------------------------------------------------------------------------------------
 
 
 

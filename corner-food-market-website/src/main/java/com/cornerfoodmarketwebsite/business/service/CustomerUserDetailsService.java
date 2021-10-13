@@ -1,6 +1,6 @@
 package com.cornerfoodmarketwebsite.business.service;
 
-import com.cornerfoodmarketwebsite.business.dto.request.domain.CustomUserDetails;
+import com.cornerfoodmarketwebsite.business.dto.request.domain.CustomerUserDetails;
 import com.cornerfoodmarketwebsite.data.single_table.entity.Customer;
 import com.cornerfoodmarketwebsite.data.single_table.repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +8,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
-public class CustomUserDetailsService implements UserDetailsService {
+public class CustomerUserDetailsService implements UserDetailsService {
 
     @Autowired
     private CustomerRepository customerRepository;
@@ -19,6 +19,6 @@ public class CustomUserDetailsService implements UserDetailsService {
         if (customer == null) {
             throw new UsernameNotFoundException("User not found");
         }
-        return new CustomUserDetails(customer);
+        return new CustomerUserDetails(customer);
     }
 }

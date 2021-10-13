@@ -5,7 +5,7 @@ import com.cornerfoodmarketwebsite.data.domain.repository.AccountItemDetailedInf
 import com.cornerfoodmarketwebsite.data.domain.repository.AccountItemInformationRepository;
 import com.cornerfoodmarketwebsite.data.utils.ItemIdAndQuantity;
 import com.cornerfoodmarketwebsite.business.dto.request.domain.AddToCartItem;
-import com.cornerfoodmarketwebsite.business.dto.request.domain.CustomUserDetails;
+import com.cornerfoodmarketwebsite.business.dto.request.domain.CustomerUserDetails;
 import com.cornerfoodmarketwebsite.business.dto.response.InCartResponse;
 import com.cornerfoodmarketwebsite.business.dto.response.utils.AddToCartResponse;
 import com.cornerfoodmarketwebsite.data.domain.entity.AccountItemInformation;
@@ -51,7 +51,7 @@ public class AccountItemInformationService {
 
     public List<List<AccountItemInformation>> getItemsInformation() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        short customerId = this.customerRepository.getIdByEmail(((CustomUserDetails) auth.getPrincipal()).getUsername());
+        short customerId = this.customerRepository.getIdByEmail(((CustomerUserDetails) auth.getPrincipal()).getUsername());
 
 //        //Obtain the entity manager for the current transaction
 //        EntityManagerHolder holder = (EntityManagerHolder) TransactionSynchronizationManager.getResource(entityManagerFactory);
@@ -92,14 +92,14 @@ public class AccountItemInformationService {
 
     public AccountItemDetailedInformation getItemDetailedInformation(String itemSku) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        short customerId = this.customerRepository.getIdByEmail(((CustomUserDetails) auth.getPrincipal()).getUsername());
+        short customerId = this.customerRepository.getIdByEmail(((CustomerUserDetails) auth.getPrincipal()).getUsername());
         AccountItemDetailedInformation accountItemDetailedInformation = this.accountItemDetailedInformationRepository.findBySku(itemSku, customerId);
 
         return accountItemDetailedInformation;
     }
 
     public InCartResponse addItemToCart(AddToCartItem addToCartItem) {
-        Customer customer = ((CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getCustomer();
+        Customer customer = ((CustomerUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getCustomer();
 
         short customerId = this.customerRepository.getIdByEmail(customer.getEmail());
         String requestedItemSku = addToCartItem.getSku();
@@ -168,7 +168,7 @@ public class AccountItemInformationService {
     }
 
     public ShoppingCartItemsList getAllInCartItems() {
-        Customer customer = ((CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getCustomer();
+        Customer customer = ((CustomerUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getCustomer();
 
         short customerId = this.customerRepository.getIdByEmail(customer.getEmail());
 
