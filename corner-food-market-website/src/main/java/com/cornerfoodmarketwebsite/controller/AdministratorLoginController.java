@@ -1,6 +1,6 @@
 package com.cornerfoodmarketwebsite.controller;
 
-import com.cornerfoodmarketwebsite.config.JwtTokenProvider;
+import com.cornerfoodmarketwebsite.configuration.administrator.JwtTokenProvider;
 import com.cornerfoodmarketwebsite.data.single_table.entity.Administrator;
 import com.cornerfoodmarketwebsite.data.single_table.repository.AdministratorRepository;
 import org.codehaus.jettison.json.JSONObject;
@@ -16,7 +16,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(value = "/admin/login")
+@RequestMapping(value = "/api/admin/login")
 @CrossOrigin(origins = "http://localhost:3000")
 public class AdministratorLoginController {
 

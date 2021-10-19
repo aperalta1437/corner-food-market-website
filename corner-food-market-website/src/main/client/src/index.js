@@ -1,7 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import AdminApp from "./admin/AdminApp";
-import logo from "./images/logo.png";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
@@ -9,7 +8,7 @@ ReactDOM.render(
   <React.StrictMode>
     <Router>
       <Switch>
-        <Route path="/admin" component={(props) => <AdminApp logo={logo} />} />
+        <Route path="/admin" component={(props) => <AdminApp />} />
       </Switch>
     </Router>
   </React.StrictMode>,

@@ -1,4 +1,4 @@
-package com.cornerfoodmarketwebsite.config;
+package com.cornerfoodmarketwebsite.configuration.administrator;
 
 import org.codehaus.jettison.json.JSONException;
 import org.springframework.security.core.context.SecurityContextHolder;

@@ -5,4 +5,4 @@ Start-Sleep 3
 $env:PGPASSWORD=postgres
 psql -U postgres -d dev -h localhost -f schema.sql
 psql -U postgres -d dev -h localhost -f triggers.sql
-psql -U postgres -d dev -h localhost -f data.sql
+psql -U postgres -d dev -h localhost -f data.sqlå

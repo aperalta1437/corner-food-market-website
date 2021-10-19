@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { setAuthentication } from "../Global/AdminAuthentication";
+import { setAuthentication } from "../Global/adminAuthentication";
 import axios from "axios";
+import { useHistory } from "react-router";
 
-const AdminLoginForm = () => {
+const AdminLoginForm = ( {fromRoute} ) => {
+  const routerHistory = useHistory();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -12,7 +14,7 @@ const AdminLoginForm = () => {
   const submitLoginForm = (event) => {
     event.preventDefault();
     axios
-      .post("http://localhost:8080/admin/login/authenticate", {
+      .post("http://localhost:8080/api/admin/login/authenticate", {
         email: email,
         password: password,
       })
@@ -25,7 +27,12 @@ const AdminLoginForm = () => {
               accessToken: response.data.token,
             })
           );
+          if (fromRoute) {
+            routerHistory.push(fromRoute);
+          }
         }
+      }).catch((error) => {
+        console.log("Error: " + error);
       });
   };
 
@@ -41,7 +48,7 @@ const AdminLoginForm = () => {
           className="form-control"
           placeholder="Email"
           name="email"
-          autoComplete="off"
+          // autoComplete="off"
           type="text"
           onChange={(event) => {
             setEmail(event.target.value);

@@ -2,7 +2,7 @@ import AdminAccountAsideMenu from "./account/AdminAccountAsideMenu";
 import { Switch, Route, Redirect } from "react-router-dom";
 import { configureStore } from "@reduxjs/toolkit";
 import { Provider } from "react-redux";
-import adminAuthenticationReducer from "./Global/AdminAuthentication";
+import adminAuthenticationReducer from "./Global/adminAuthentication";
 import AdminLoginPage from "./login/AdminLoginPage";
 import AdminAccountPage from "./account/AdminAccountPage";
 import ProtectedRoute from "./account/Utils/ProtectedRoute";
@@ -13,7 +13,7 @@ const adminStore = configureStore({
   },
 });
 
-function AdminApp({ logo }) {
+function AdminApp() {
   if (window.location.pathname === "/admin") {
     return <Redirect to="/admin/login" />;
   } else {

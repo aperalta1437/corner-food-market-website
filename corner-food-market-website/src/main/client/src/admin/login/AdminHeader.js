@@ -1,6 +1,8 @@
 import React from "react";
+import logo from "../../images/logo.png";
 
-function AdminHeader({ logo }) {
+
+function AdminHeader() {
   return (
     <>
       <header className="main-header navbar">

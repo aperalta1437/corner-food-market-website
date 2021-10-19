@@ -1,4 +1,4 @@
-package com.cornerfoodmarketwebsite.config;
+package com.cornerfoodmarketwebsite.configuration.administrator;
 
 import com.cornerfoodmarketwebsite.business.dto.request.domain.AdministratorUserDetails;
 import com.cornerfoodmarketwebsite.business.service.AdministratorUserDetailsService;

@@ -1,4 +1,4 @@
-package com.cornerfoodmarketwebsite.config;
+package com.cornerfoodmarketwebsite.configuration.administrator;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

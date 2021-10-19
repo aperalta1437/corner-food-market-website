@@ -1,6 +1,9 @@
 package com.cornerfoodmarketwebsite.data.single_table.entity;
 
+import com.cornerfoodmarketwebsite.data.single_table.entity.utils.TfaType;
+
 import javax.persistence.*;
+import java.sql.Date;
 
 @Entity
 @Table(name = "ADMINISTRATOR")
@@ -23,11 +26,25 @@ public class Administrator {
     private String cellPhoneNumber;
     @Column(name = "IS_DISABLED")
     private boolean isDisabled;
+    @Column(name = "IS_TFA_ENABLED")
+    private boolean isTfaEnabled;
+    @Column(name = "TFA_CODE")
+    private String tfaCode;
+    @Column(name = "TFA_EXPIRATION_TIME")
+    private Date tfaExpirationTime;
+    @Column(name = "TFA_CHOSEN_TYPE")
+    private TfaType tfaChosenType;
+    @Column(name = "CREATED_AT")
+    private Date createdAt;
+    @Column(name = "MODIFIED_AT")
+    private Date modifiedAt;
 
     public Administrator() {
     }
 
-    public Administrator(String email, String password, String firstName, String middleName, String lastName, String cellPhoneNumber, boolean isDisabled, short totalCartItems) {
+    public Administrator(String email, String password, String firstName, String middleName, String lastName,
+                         String cellPhoneNumber, boolean isDisabled, boolean isTfaEnabled, String tfaCode,
+                         Date tfaExpirationTime, TfaType tfaChosenType) {
         this.email = email;
         this.password = password;
         this.firstName = firstName;
@@ -35,6 +52,10 @@ public class Administrator {
         this.lastName = lastName;
         this.cellPhoneNumber = cellPhoneNumber;
         this.isDisabled = isDisabled;
+        this.isTfaEnabled = isTfaEnabled;
+        this.tfaCode = tfaCode;
+        this.tfaExpirationTime = tfaExpirationTime;
+        this.tfaChosenType = tfaChosenType;
     }
 
     public short getId() {
@@ -95,5 +116,45 @@ public class Administrator {
 
     public void setIsDisabled(boolean isDisabled) {
         this.isDisabled = isDisabled;
+    }
+
+    public boolean isTfaEnabled() {
+        return isTfaEnabled;
+    }
+
+    public void setTfaEnabled(boolean tfaEnabled) {
+        isTfaEnabled = tfaEnabled;
+    }
+
+    public String getTfaCode() {
+        return tfaCode;
+    }
+
+    public void setTfaCode(String tfaCode) {
+        this.tfaCode = tfaCode;
+    }
+
+    public Date getTfaExpirationTime() {
+        return tfaExpirationTime;
+    }
+
+    public void setTfaExpirationTime(Date tfaExpirationTime) {
+        this.tfaExpirationTime = tfaExpirationTime;
+    }
+
+    public TfaType getTfaChosenType() {
+        return tfaChosenType;
+    }
+
+    public void setTfaChosenType(TfaType tfaChosenType) {
+        this.tfaChosenType = tfaChosenType;
+    }
+
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public Date getModifiedAt() {
+        return modifiedAt;
     }
 }
