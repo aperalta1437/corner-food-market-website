@@ -1,6 +1,6 @@
 package com.cornerfoodmarketwebsite.data.single_table.entity;
 
-import com.cornerfoodmarketwebsite.data.single_table.entity.utils.TfaType;
+import com.cornerfoodmarketwebsite.data.single_table.entity.utils.TfaTypeEnum;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -33,7 +33,7 @@ public class Administrator {
     @Column(name = "TFA_EXPIRATION_TIME")
     private Timestamp tfaExpirationTime;
     @Column(name = "TFA_CHOSEN_TYPE")
-    private TfaType tfaChosenType;
+    private TfaTypeEnum tfaChosenType;
     @Column(name = "CREATED_AT")
     private Timestamp createdAt;
     @Column(name = "MODIFIED_AT")
@@ -44,7 +44,7 @@ public class Administrator {
 
     public Administrator(String email, String password, String firstName, String middleName, String lastName,
                          String cellPhoneNumber, boolean isDisabled, boolean isTfaEnabled, String tfaCode,
-                         Timestamp tfaExpirationTime, TfaType tfaChosenType) {
+                         Timestamp tfaExpirationTime, TfaTypeEnum tfaChosenType) {
         this.email = email;
         this.password = password;
         this.firstName = firstName;
@@ -142,11 +142,11 @@ public class Administrator {
         this.tfaExpirationTime = tfaExpirationTime;
     }
 
-    public TfaType getTfaChosenType() {
+    public TfaTypeEnum getTfaChosenType() {
         return tfaChosenType;
     }
 
-    public void setTfaChosenType(TfaType tfaChosenType) {
+    public void setTfaChosenType(TfaTypeEnum tfaChosenType) {
         this.tfaChosenType = tfaChosenType;
     }
 

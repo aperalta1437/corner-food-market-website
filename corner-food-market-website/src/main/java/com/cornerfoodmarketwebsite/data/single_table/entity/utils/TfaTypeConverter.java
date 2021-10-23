@@ -5,22 +5,22 @@ import javax.persistence.Converter;
 import java.util.stream.Stream;
 
 @Converter(autoApply = true)
-public class TfaTypeConverter implements AttributeConverter<TfaType, String> {
+public class TfaTypeConverter implements AttributeConverter<TfaTypeEnum, String> {
     @Override
-    public String convertToDatabaseColumn(TfaType tfaType) {
-        if (tfaType == null) {
+    public String convertToDatabaseColumn(TfaTypeEnum tfaTypeEnum) {
+        if (tfaTypeEnum == null) {
             return null;
         }
-        return tfaType.name();
+        return tfaTypeEnum.name();
     }
 
     @Override
-    public TfaType convertToEntityAttribute(String strTfaType) {
+    public TfaTypeEnum convertToEntityAttribute(String strTfaType) {
         if (strTfaType == null) {
             return null;
         }
-        return Stream.of(TfaType.values())
-                .filter(currTfaType -> currTfaType.name().equals(strTfaType))
+        return Stream.of(TfaTypeEnum.values())
+                .filter(currTfaTypeEnum -> currTfaTypeEnum.name().equals(strTfaType))
                 .findFirst()
                 .orElseThrow(IllegalArgumentException::new);
     }

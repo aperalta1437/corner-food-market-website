@@ -1,6 +1,6 @@
 package com.cornerfoodmarketwebsite.controller;
 
-import com.cornerfoodmarketwebsite.controller.utils.LoginProcessIssue;
+import com.cornerfoodmarketwebsite.controller.utils.LoginProcessIssueEnum;
 import com.cornerfoodmarketwebsite.data.single_table.repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
@@ -27,14 +27,14 @@ public class LoginController {
 
     @GetMapping
     public String getLoginPage(@RequestParam(name = "issue", required = false)String loginIssue, Model model, HttpServletResponse response) throws IOException {
-        LoginProcessIssue loginProcessIssue;
+        LoginProcessIssueEnum loginProcessIssueEnum;
 
         if (loginIssue != null) {
-            loginProcessIssue = LoginProcessIssue.valueOf(loginIssue);
+            loginProcessIssueEnum = LoginProcessIssueEnum.valueOf(loginIssue);
         } else {
-            loginProcessIssue = LoginProcessIssue.NONE;
+            loginProcessIssueEnum = LoginProcessIssueEnum.NONE;
         }
-        model.addAttribute("loginProcessIssue", loginProcessIssue);
+        model.addAttribute("loginProcessIssueEnum", loginProcessIssueEnum);
         return "login";
     }
 
@@ -47,9 +47,9 @@ public class LoginController {
             response.sendRedirect("/account");
         } else {
             if (loginIssue == null) {
-                loginIssue = LoginProcessIssue.FAILED_LOGIN.name();
+                loginIssue = LoginProcessIssueEnum.FAILED_LOGIN.name();
             } else {
-                loginIssue = LoginProcessIssue.EXPIRED_SESSION.name();
+                loginIssue = LoginProcessIssueEnum.EXPIRED_SESSION.name();
             }
             response.sendRedirect("/login?issue=" + loginIssue);
         }

@@ -21,10 +21,10 @@
 	<section class="section-content padding-y">
 		<div class="container">
 			<header class="section-heading mb-5">
-				<h3 th:text="${signupResponse.getSignupMessage()}" class="section-title">You have signed up
+				<h3 th:text="${signupResponseEnum.getSignupMessage()}" class="section-title">You have signed up
 					successfully!</h3>
 			</header><!-- sect-heading -->
-			<th:block th:switch="${signupResponse}">
+			<th:block th:switch="${signupResponseEnum}">
 				<h4
 					th:case="${T(com.cornerfoodmarketwebsite.business.dto.response.SignupResponse).SUCCESS}">
 					<a th:href="@{/login}">Click here to log in</a></h4>

@@ -32,20 +32,20 @@
       <div class="card mx-auto" style="max-width: 380px; margin-top: 100px">
         <div class="card-body">
           <h4 class="card-title mb-4">Log In</h4>
-          <th:block th:switch="${loginProcessIssue}">
+          <th:block th:switch="${loginProcessIssueEnum}">
             <h6
               th:case="${T(com.cornerfoodmarketwebsite.controller.utils.LoginProcessIssue).FAILED_LOGIN}"
-              th:text="${loginProcessIssue.getLoginIssueMessage()}"
+              th:text="${loginProcessIssueEnum.getLoginIssueMessage()}"
               class="text-danger"
             ></h6>
             <h6
               th:case="${T(com.cornerfoodmarketwebsite.controller.utils.LoginProcessIssue).DISABLED_ACCOUNT}"
-              th:text="${loginProcessIssue.getLoginIssueMessage()}"
+              th:text="${loginProcessIssueEnum.getLoginIssueMessage()}"
               class="text-danger"
             ></h6>
             <h6
               th:case="${T(com.cornerfoodmarketwebsite.controller.utils.LoginProcessIssue).EXPIRED_SESSION}"
-              th:text="${loginProcessIssue.getLoginIssueMessage()}"
+              th:text="${loginProcessIssueEnum.getLoginIssueMessage()}"
               class="text-danger"
             ></h6>
           </th:block>

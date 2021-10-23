@@ -1,7 +1,7 @@
 package com.cornerfoodmarketwebsite.controller;
 
 import com.cornerfoodmarketwebsite.business.dto.request.form.SignupForm;
-import com.cornerfoodmarketwebsite.business.dto.response.SignupResponse;
+import com.cornerfoodmarketwebsite.business.dto.response.SignupResponseEnum;
 import com.cornerfoodmarketwebsite.business.service.SignupFormService;
 import com.cornerfoodmarketwebsite.data.single_table.repository.DeliveryAddressRepository;
 import com.cornerfoodmarketwebsite.data.single_table.repository.CustomerRepository;
@@ -44,8 +44,8 @@ public class SignupController {
     public String processSignup(SignupForm signupForm, Model model) {
         SignupFormService signupFormService = new SignupFormService(this.customerRepository,
                 this.deliveryAddressRepository);
-        SignupResponse signupResponse = signupFormService.processNewSignup(signupForm);
-        model.addAttribute("signupResponse", signupResponse);
+        SignupResponseEnum signupResponseEnum = signupFormService.processNewSignup(signupForm);
+        model.addAttribute("signupResponseEnum", signupResponseEnum);
         return "signup-response";
     }
 

@@ -1,7 +1,7 @@
 //package com.cornerfoodmarketwebsite.configuration.customer;
 //
 //import com.cornerfoodmarketwebsite.business.service.CustomerUserDetailsService;
-//import com.cornerfoodmarketwebsite.controller.utils.LoginProcessIssue;
+//import com.cornerfoodmarketwebsite.controller.utils.LoginProcessIssueEnum;
 //import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.context.annotation.Bean;
 //import org.springframework.context.annotation.Configuration;
@@ -77,7 +77,7 @@
 //                .logout()
 //                .logoutSuccessUrl("/login")
 //                .and()
-//                .exceptionHandling().accessDeniedPage("/login?issue=" + LoginProcessIssue.EXPIRED_SESSION.name());
+//                .exceptionHandling().accessDeniedPage("/login?issue=" + LoginProcessIssueEnum.EXPIRED_SESSION.name());
 //    }
 //}
 //

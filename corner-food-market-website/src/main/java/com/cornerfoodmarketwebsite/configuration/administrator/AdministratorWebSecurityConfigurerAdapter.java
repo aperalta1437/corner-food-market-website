@@ -88,7 +88,7 @@ public class AdministratorWebSecurityConfigurerAdapter {
 ////                .and()
 ////                .logout()
 ////                .logoutSuccessUrl("/api/admin/login");
-////                .exceptionHandling().accessDeniedPage("/api/admin/login?issue=" + LoginProcessIssue.EXPIRED_SESSION.name());    // todo fix this
+////                .exceptionHandling().accessDeniedPage("/api/admin/login?issue=" + LoginProcessIssueEnum.EXPIRED_SESSION.name());    // todo fix this
 //        http.csrf().disable().sessionManagement().disable();
 ////        sessionCreationPolicy(SessionCreationPolicy.NEVER);
 ////        http.requestMatcher(new AntPathRequestMatcher("/admin/account/**")).authorizeRequests().anyRequest().authenticated();
@@ -187,7 +187,7 @@ public class AdministratorWebSecurityConfigurerAdapter {
 ////                .and()
 ////                .logout()
 ////                .logoutSuccessUrl("/api/admin/login");
-////                .exceptionHandling().accessDeniedPage("/api/admin/login?issue=" + LoginProcessIssue.EXPIRED_SESSION.name());    // todo fix this
+////                .exceptionHandling().accessDeniedPage("/api/admin/login?issue=" + LoginProcessIssueEnum.EXPIRED_SESSION.name());    // todo fix this
 //        http.csrf().disable().sessionManagement().disable();
 ////        sessionCreationPolicy(SessionCreationPolicy.NEVER);
 ////        http.requestMatcher(new AntPathRequestMatcher("/admin/account/**")).authorizeRequests().anyRequest().authenticated();

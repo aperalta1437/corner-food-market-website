@@ -5,7 +5,7 @@ import com.cornerfoodmarketwebsite.business.service.utils.NotSupportedTfaTypeExc
 import com.cornerfoodmarketwebsite.business.service.utils.RoleInformationEnum;
 import com.cornerfoodmarketwebsite.business.service.utils.ServiceExceptionInformationEnum;
 import com.cornerfoodmarketwebsite.data.single_table.entity.Administrator;
-import com.cornerfoodmarketwebsite.data.single_table.entity.utils.TfaType;
+import com.cornerfoodmarketwebsite.data.single_table.entity.utils.TfaTypeEnum;
 import com.cornerfoodmarketwebsite.data.single_table.repository.AdministratorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -34,13 +34,13 @@ public class AdministratorLoginService {
     }
 
     public int sendTfaCodeAndGetExpirationTime(Administrator administrator) throws NotProvidedTfaTypeException, NotSupportedTfaTypeException {
-        TfaType tfaType = administrator.getTfaChosenType();
+        TfaTypeEnum tfaTypeEnum = administrator.getTfaChosenType();
         int tfaCode = this.generateTfaCodeForAdministrator(administrator.getId());
 
-        if (tfaType == TfaType.EMAIL) {
+        if (tfaTypeEnum == TfaTypeEnum.EMAIL) {
             this.emailService.sendTfaCodeEmail(administrator.getEmail(), tfaCode);
-        } else {    // TODO Implement SMS TfaType
-            if (tfaType == null) {
+        } else {    // TODO Implement SMS TfaTypeEnum
+            if (tfaTypeEnum == null) {
                 throw new NotProvidedTfaTypeException(ServiceExceptionInformationEnum.NOT_PROVIDED_TFA_TYPE_EXCEPTION.getExceptionMessage());
             } else {
                 throw new NotSupportedTfaTypeException(ServiceExceptionInformationEnum.NOT_SUPPORTED_TFA_TYPE_EXCEPTION.getExceptionMessage());

@@ -1,7 +1,7 @@
 package com.cornerfoodmarketwebsite.data.single_table.repository;
 
 import com.cornerfoodmarketwebsite.data.single_table.entity.Administrator;
-import com.cornerfoodmarketwebsite.data.single_table.entity.utils.TfaType;
+import com.cornerfoodmarketwebsite.data.single_table.entity.utils.TfaTypeEnum;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -27,7 +27,7 @@ public interface AdministratorRepository extends JpaRepository<Administrator, Sh
     String getFullNameById(short id);
 
     @Query(value = "SELECT A1.tfaChosenType FROM Administrator A1 WHERE A1.id = ?1")
-    TfaType getTfaChosenTypeById(short id);
+    TfaTypeEnum getTfaChosenTypeById(short id);
 
     @Transactional
     @Modifying

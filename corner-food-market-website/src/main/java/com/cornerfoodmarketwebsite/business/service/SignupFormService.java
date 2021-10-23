@@ -1,7 +1,7 @@
 package com.cornerfoodmarketwebsite.business.service;
 
 import com.cornerfoodmarketwebsite.business.dto.request.form.SignupForm;
-import com.cornerfoodmarketwebsite.business.dto.response.SignupResponse;
+import com.cornerfoodmarketwebsite.business.dto.response.SignupResponseEnum;
 import com.cornerfoodmarketwebsite.business.service.utils.CountryAlpha2CodeEnum;
 import com.cornerfoodmarketwebsite.data.single_table.entity.Customer;
 import com.cornerfoodmarketwebsite.data.single_table.repository.CustomerRepository;
@@ -22,14 +22,14 @@ public class SignupFormService {
         this.deliveryAddressRepository = deliveryAddressRepository;
     }
 
-    public SignupResponse processNewSignup(SignupForm signupForm) {
+    public SignupResponseEnum processNewSignup(SignupForm signupForm) {
         if (this.customerRepository.existsByEmail(signupForm.getEmail())) {
-            return SignupResponse.EXISTING_EMAIL;
+            return SignupResponseEnum.EXISTING_EMAIL;
         } else {
             if (this.signupNewCustomer(signupForm)) {
-                return SignupResponse.SUCCESS;
+                return SignupResponseEnum.SUCCESS;
             } else {
-                return SignupResponse.SERVER_ERROR;
+                return SignupResponseEnum.SERVER_ERROR;
             }
         }
     }

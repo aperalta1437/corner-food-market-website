@@ -1,6 +1,6 @@
 package com.cornerfoodmarketwebsite.controller.utils;
 
-public enum LoginProcessIssue {
+public enum LoginProcessIssueEnum {
     NONE("You have logged in successfully!"),
     FAILED_LOGIN("The email and/or password you provided don't match any existing account"),
     EXPIRED_SESSION("Your previous session expired"),
@@ -8,7 +8,7 @@ public enum LoginProcessIssue {
 
     private final String loginIssueMessage;
 
-    LoginProcessIssue(String loginIssueMessage) {
+    LoginProcessIssueEnum(String loginIssueMessage) {
         this.loginIssueMessage = loginIssueMessage;
     }
 

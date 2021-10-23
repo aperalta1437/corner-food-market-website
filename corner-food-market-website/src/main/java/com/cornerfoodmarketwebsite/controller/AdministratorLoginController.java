@@ -63,7 +63,7 @@ public class AdministratorLoginController {
                 jsonResponse.put("Email", authentication.getName());
                 jsonResponse.put("Authorities", authentication.getAuthorities());
                 jsonResponse.put("Token", tfaJwtTokenProvider.createToken(administrator.getEmail()));    // TODO implement roles
-                jsonResponse.put("Tfa-Code-Expiration-Time-In-Milliseconds",
+                jsonResponse.put("Tfa-Expiration-Time-In-Milliseconds",
                         this.administratorLoginService.sendTfaCodeAndGetExpirationTime(
                                 ((AdministratorUserDetails) authentication.getPrincipal()).getAdministrator()));
             }
