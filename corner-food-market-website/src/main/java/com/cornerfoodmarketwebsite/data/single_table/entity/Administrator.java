@@ -3,7 +3,7 @@ package com.cornerfoodmarketwebsite.data.single_table.entity;
 import com.cornerfoodmarketwebsite.data.single_table.entity.utils.TfaType;
 
 import javax.persistence.*;
-import java.sql.Date;
+import java.sql.Timestamp;
 
 @Entity
 @Table(name = "ADMINISTRATOR")
@@ -31,20 +31,20 @@ public class Administrator {
     @Column(name = "TFA_CODE")
     private String tfaCode;
     @Column(name = "TFA_EXPIRATION_TIME")
-    private Date tfaExpirationTime;
+    private Timestamp tfaExpirationTime;
     @Column(name = "TFA_CHOSEN_TYPE")
     private TfaType tfaChosenType;
     @Column(name = "CREATED_AT")
-    private Date createdAt;
+    private Timestamp createdAt;
     @Column(name = "MODIFIED_AT")
-    private Date modifiedAt;
+    private Timestamp modifiedAt;
 
     public Administrator() {
     }
 
     public Administrator(String email, String password, String firstName, String middleName, String lastName,
                          String cellPhoneNumber, boolean isDisabled, boolean isTfaEnabled, String tfaCode,
-                         Date tfaExpirationTime, TfaType tfaChosenType) {
+                         Timestamp tfaExpirationTime, TfaType tfaChosenType) {
         this.email = email;
         this.password = password;
         this.firstName = firstName;
@@ -134,11 +134,11 @@ public class Administrator {
         this.tfaCode = tfaCode;
     }
 
-    public Date getTfaExpirationTime() {
+    public Timestamp getTfaExpirationTime() {
         return tfaExpirationTime;
     }
 
-    public void setTfaExpirationTime(Date tfaExpirationTime) {
+    public void setTfaExpirationTime(Timestamp tfaExpirationTime) {
         this.tfaExpirationTime = tfaExpirationTime;
     }
 
@@ -150,11 +150,11 @@ public class Administrator {
         this.tfaChosenType = tfaChosenType;
     }
 
-    public Date getCreatedAt() {
+    public Timestamp getCreatedAt() {
         return createdAt;
     }
 
-    public Date getModifiedAt() {
+    public Timestamp getModifiedAt() {
         return modifiedAt;
     }
 }

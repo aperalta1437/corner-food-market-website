@@ -1,11 +1,11 @@
 package com.cornerfoodmarketwebsite.business.service.utils;
 
-public enum UnregisteredCustomer {
+public enum NotRegisteredCustomerEnum {
     ANONYMOUS_CUSTOMER((short) 1);
 
     private final short customerId;
 
-    UnregisteredCustomer(short customerId) {
+    NotRegisteredCustomerEnum(short customerId) {
         this.customerId = customerId;
     }
 

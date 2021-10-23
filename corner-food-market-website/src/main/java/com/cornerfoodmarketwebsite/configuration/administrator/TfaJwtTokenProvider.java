@@ -12,16 +12,15 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
-import javax.management.relation.Role;
 import java.io.Serializable;
 import java.util.Base64;
 import java.util.Date;
 
 @Component
-public class JwtTokenProvider implements Serializable {
+public class TfaJwtTokenProvider implements Serializable {
     private static final long serialVersionUID = 2569800841756370596L;
 
-    @Value(value = "${jwt.admin-secret-key}")
+    @Value(value = "${jwt.admin-tfa-secret-key}")
     private String secretKey;
 
     @PostConstruct      // So it executes after dependency injection takes place.
@@ -30,8 +29,7 @@ public class JwtTokenProvider implements Serializable {
         secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes());
     }
 
-    // TODO change to proper JWT reset time.
-    private long validityInMilliseconds = 10 * 60 * 60;
+    private long validityInMilliseconds = 2 * 60 * 1000;    // 2 minutes
 
     public String createToken(String email) {
         Claims claims = Jwts.claims().setSubject(email);
@@ -55,3 +53,4 @@ public class JwtTokenProvider implements Serializable {
         return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody();
     }
 }
+

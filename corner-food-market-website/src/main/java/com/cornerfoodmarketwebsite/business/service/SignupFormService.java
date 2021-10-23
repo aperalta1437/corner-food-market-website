@@ -2,7 +2,7 @@ package com.cornerfoodmarketwebsite.business.service;
 
 import com.cornerfoodmarketwebsite.business.dto.request.form.SignupForm;
 import com.cornerfoodmarketwebsite.business.dto.response.SignupResponse;
-import com.cornerfoodmarketwebsite.business.service.utils.CountryAlpha2Code;
+import com.cornerfoodmarketwebsite.business.service.utils.CountryAlpha2CodeEnum;
 import com.cornerfoodmarketwebsite.data.single_table.entity.Customer;
 import com.cornerfoodmarketwebsite.data.single_table.repository.CustomerRepository;
 import com.cornerfoodmarketwebsite.data.single_table.repository.DeliveryAddressRepository;
@@ -35,7 +35,7 @@ public class SignupFormService {
     }
 
     public boolean signupNewCustomer(SignupForm signupForm) {
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();        // TODO replaced this encoder with spring security bean for customer.
         String encodedPassword = encoder.encode(signupForm.getPassword());
         Customer newCustomer = new Customer(signupForm.getEmail(), encodedPassword, signupForm.getFirstName(),
                 signupForm.getMiddleName(), signupForm.getLastName(), signupForm.getCellPhoneNumber(), false,
@@ -67,7 +67,7 @@ public class SignupFormService {
 
         String countryAlpha2Code = signupForm.getCountryAlpha2Code();
 
-        if (CountryAlpha2Code.valueOf(countryAlpha2Code) == CountryAlpha2Code.US) {
+        if (CountryAlpha2CodeEnum.valueOf(countryAlpha2Code) == CountryAlpha2CodeEnum.US) {
             newDeliveryAddress.setStateCode(signupForm.getStateCode());
         }
         newDeliveryAddress.setPostalCode(signupForm.getPostalCode());

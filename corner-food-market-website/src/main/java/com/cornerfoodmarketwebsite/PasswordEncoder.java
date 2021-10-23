@@ -14,7 +14,7 @@ public class PasswordEncoder {
 
         Random rand = new Random();
 
-        int n = rand.nextInt(8999999) + 1000000;
+        int n = rand.nextInt(899999) + 100000;
 
         System.out.println(n);
 

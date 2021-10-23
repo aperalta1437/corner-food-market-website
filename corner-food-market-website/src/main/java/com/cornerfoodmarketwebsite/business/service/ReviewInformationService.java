@@ -1,7 +1,7 @@
 package com.cornerfoodmarketwebsite.business.service;
 
 import com.cornerfoodmarketwebsite.business.dto.request.form.AnonymousGeneralReviewForm;
-import com.cornerfoodmarketwebsite.business.service.utils.UnregisteredCustomer;
+import com.cornerfoodmarketwebsite.business.service.utils.NotRegisteredCustomerEnum;
 import com.cornerfoodmarketwebsite.data.single_table.entity.GeneralReview;
 import com.cornerfoodmarketwebsite.data.single_table.entity.ItemReview;
 import com.cornerfoodmarketwebsite.data.single_table.entity.OrderReview;
@@ -53,7 +53,7 @@ public class ReviewInformationService {
     }
 
     public Boolean saveAnonymousGeneralReview(AnonymousGeneralReviewForm anonymousGeneralReviewForm) {
-        GeneralReview generalReview = new GeneralReview(this.customerRepository.getById(UnregisteredCustomer.ANONYMOUS_CUSTOMER.getCustomerId()), true, true, false,
+        GeneralReview generalReview = new GeneralReview(this.customerRepository.getById(NotRegisteredCustomerEnum.ANONYMOUS_CUSTOMER.getCustomerId()), true, true, false,
                 false, anonymousGeneralReviewForm.getSubjectLine(), anonymousGeneralReviewForm.getComment(), anonymousGeneralReviewForm.getStarRating(), false);
 
         boolean isNewGeneralReviewSaved;

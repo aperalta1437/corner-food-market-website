@@ -1,14 +1,14 @@
 package com.cornerfoodmarketwebsite.configuration.administrator;
 
-import com.cornerfoodmarketwebsite.controller.AdministratorLoginController;
 import io.jsonwebtoken.Claims;
 import org.codehaus.jettison.json.JSONException;
+import org.codehaus.jettison.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
-import org.codehaus.jettison.json.JSONObject;
+
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -16,24 +16,23 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Date;
 
-public class JwtTokenFilter extends OncePerRequestFilter {
-
+public class TfaJwtTokenFilter extends OncePerRequestFilter {
     private static Logger log = LoggerFactory.getLogger(JwtTokenFilter.class);
 
-    private JwtTokenProvider jwtTokenProvider;
+    private TfaJwtTokenProvider tfaJwtTokenProvider;
 
-    public JwtTokenFilter(JwtTokenProvider jwtTokenProvider) {
-        this.jwtTokenProvider = jwtTokenProvider;
+    public TfaJwtTokenFilter(TfaJwtTokenProvider tfaJwtTokenProvider) {
+        this.tfaJwtTokenProvider = tfaJwtTokenProvider;
     }
 
     @Override
     public void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
-        String jwtToken = httpServletRequest.getHeader("Authorization");
-        if (jwtToken != null) {
+        String tfaJwtToken = httpServletRequest.getHeader("Authorization");
+        if (tfaJwtToken != null) {
             try {
-                Claims claims = jwtTokenProvider.getClaimsFromToken(jwtToken);
+                Claims claims = tfaJwtTokenProvider.getClaimsFromToken(tfaJwtToken);
                 if (!claims.getExpiration().before(new Date())) {
-                    Authentication authentication = jwtTokenProvider.getAuthentication(claims.getSubject());
+                    Authentication authentication = tfaJwtTokenProvider.getAuthentication(claims.getSubject());
                     if (authentication.isAuthenticated()) {
                         SecurityContextHolder.getContext().setAuthentication(authentication);
                     }
