@@ -1,9 +1,6 @@
 package com.cornerfoodmarketwebsite.business.service;
 
-import com.cornerfoodmarketwebsite.business.service.utils.NotProvidedTfaTypeException;
-import com.cornerfoodmarketwebsite.business.service.utils.NotSupportedTfaTypeException;
-import com.cornerfoodmarketwebsite.business.service.utils.RoleInformationEnum;
-import com.cornerfoodmarketwebsite.business.service.utils.ServiceExceptionInformationEnum;
+import com.cornerfoodmarketwebsite.business.service.utils.*;
 import com.cornerfoodmarketwebsite.data.single_table.entity.Administrator;
 import com.cornerfoodmarketwebsite.data.single_table.entity.utils.TfaTypeEnum;
 import com.cornerfoodmarketwebsite.data.single_table.repository.AdministratorRepository;
@@ -12,6 +9,11 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+import java.security.*;
+import java.security.spec.InvalidKeySpecException;
 import java.sql.Timestamp;
 import java.util.Random;
 
@@ -29,13 +31,16 @@ public class AdministratorLoginService {
     private EmailService emailService;
 
     @Autowired
+    private RsaUtil rsaUtil;
+
+    @Autowired
     public AdministratorLoginService(AdministratorRepository administratorRepository) {
         this.administratorRepository = administratorRepository;
     }
 
     public int sendTfaCodeAndGetExpirationTime(Administrator administrator) throws NotProvidedTfaTypeException, NotSupportedTfaTypeException {
         TfaTypeEnum tfaTypeEnum = administrator.getTfaChosenType();
-        int tfaCode = this.generateTfaCodeForAdministrator(administrator.getId());
+        int tfaCode = this.generateTfaCodeByAdministrator(administrator.getId());
 
         if (tfaTypeEnum == TfaTypeEnum.EMAIL) {
             this.emailService.sendTfaCodeEmail(administrator.getEmail(), tfaCode);
@@ -50,14 +55,37 @@ public class AdministratorLoginService {
         return RoleInformationEnum.ADMINISTRATOR.getTfaExpirationTimeInMilliseconds();
     }
 
-    private int generateTfaCodeForAdministrator(short administratorId) {
+    private int generateTfaCodeByAdministrator(short administratorId) {
         Random rand = new Random();
         int tfaCode = rand.nextInt(899999) + 100000;
-        String encodedTfaCode = this.bCryptPasswordEncoder.encode(String.valueOf(tfaCode));
+        String encryptedTfaCode = this.bCryptPasswordEncoder.encode(String.valueOf(tfaCode));
 
-        this.administratorRepository.setTfaCodeDetailsById(encodedTfaCode, new Timestamp(
+        this.administratorRepository.setTfaCodeDetailsById(encryptedTfaCode, new Timestamp(
                 System.currentTimeMillis() + RoleInformationEnum.ADMINISTRATOR.getTfaExpirationTimeInMilliseconds()), administratorId);
 
         return tfaCode;
+    }
+
+    public String getBase64RsaPublicKeyByAdministrator(short administratorId) {
+        Base64RsaKeyPair base64RsaKeyPair = this.rsaUtil.generateBase64RsaKeyPair();
+        System.out.println(base64RsaKeyPair.getBase64PrivateKey());
+        System.out.println(base64RsaKeyPair.getBase64PrivateKey().length());
+        this.administratorRepository.setRsaPrivateKeyById(base64RsaKeyPair.getBase64PrivateKey(), administratorId);
+        return base64RsaKeyPair.getBase64PublicKey();
+    }
+
+    public String decryptTextByAdministrator(String base64EncryptedText, short adminitratorId) throws NoSuchPaddingException, IllegalBlockSizeException, NoSuchAlgorithmException, InvalidKeySpecException, BadPaddingException, InvalidKeyException {
+        return this.rsaUtil.decrypt(base64EncryptedText, this.administratorRepository.getRsaPrivateKeyById(adminitratorId));
+    }
+
+    public boolean isCorrectTfaCodeByAdministrator(String tfaCode, short administratorId) {
+        String encryptedTfaCode = this.bCryptPasswordEncoder.encode(tfaCode);
+
+        return (encryptedTfaCode.equals(this.administratorRepository.getTfaCodeById(administratorId)));
+    }
+
+    public boolean isCorrectCredentials(String email, String password) {
+        String encryptedPassword = this.bCryptPasswordEncoder.encode(password);
+        return this.administratorRepository.getPasswordByEmail(email).equals(encryptedPassword);
     }
 }

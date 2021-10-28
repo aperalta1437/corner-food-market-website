@@ -3,7 +3,7 @@ import { useState, useEffect, useCallback } from "react";
 import AdminAccountItem from "./AdminAccountItem";
 import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
-import {useHistory} from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { resetAuthentication } from "../Global/adminAuthentication";
 import { LoginProcessIssueEnum } from "../login/Utils/loginProcessIssueEnum";
 
@@ -19,51 +19,56 @@ function AdminAccountItemsList() {
   let [itemsList, setItemsList] = useState([]);
 
   const fetchItemsList = useCallback(() => {
-    axios.get("http://localhost:8080/api/admin/account/", {
-      headers: {
-        "Authorization": adminAuthentication.accessToken,
-      }
-    })
-    .then(response => {
-      console.log(adminAuthentication.accessToken);
-      setItemsList(response.data)
-      console.log(response.data)
-    }).catch((error) => {
-      if (error.response.status == 401) {
-        dispatch(resetAuthentication());
-        routerHistory.push("/admin/login?issue=" + LoginProcessIssueEnum.EXPIRED_SESSION.name);
-      }
-      console.log("Error: " + error);
-    });
-  }, []);
-  
-  useEffect(() => {
-    fetchItemsList()
-  }, [fetchItemsList])
-
-    const onRemoveItem = (itemId) => {
-
-      axios.post("http://localhost:8080/api/admin/account/remove-item/" + itemId, {
+    axios
+      .get("http://localhost:8080/api/admin/account/", {
         headers: {
-          "Authorization": adminAuthentication.accessToken,
-          // 'Content-Type': 'application/json',
-          // 'Access-Control-Allow-Origin': 'http://localhost:3000',
-        }
+          Authorization: adminAuthentication.accessToken,
+        },
       })
-      .then(response => {
-        if (response.data != null) {
-          console.log(response)
-          setItemsList(itemsList.filter(item => item.id != itemId));
-        }
-      }).catch((error) => {
-        console.log(error.response);
+      .then((response) => {
+        console.log(adminAuthentication.accessToken);
+        setItemsList(response.data);
+        console.log(response.data);
+      })
+      .catch((error) => {
         if (error.response.status == 401) {
           dispatch(resetAuthentication());
-          routerHistory.push("/admin/login")
+          routerHistory.push(
+            "/admin/login?issue=" + LoginProcessIssueEnum.EXPIRED_SESSION.name
+          );
         }
         console.log("Error: " + error);
       });
-    };
+  }, []);
+
+  useEffect(() => {
+    fetchItemsList();
+  }, [fetchItemsList]);
+
+  const onRemoveItem = (itemId) => {
+    axios
+      .post("http://localhost:8080/api/admin/account/remove-item/" + itemId, {
+        headers: {
+          Authorization: adminAuthentication.accessToken,
+          // 'Content-Type': 'application/json',
+          // 'Access-Control-Allow-Origin': 'http://localhost:3000',
+        },
+      })
+      .then((response) => {
+        if (response.data != null) {
+          console.log(response);
+          setItemsList(itemsList.filter((item) => item.id != itemId));
+        }
+      })
+      .catch((error) => {
+        console.log(error.response);
+        if (error.response.status == 401) {
+          dispatch(resetAuthentication());
+          routerHistory.push("/admin/login");
+        }
+        console.log("Error: " + error);
+      });
+  };
 
   return (
     <section className="content-main">
@@ -111,13 +116,13 @@ function AdminAccountItemsList() {
         </header>
         <div className="card-body">
           <div className="row gx-3 row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4 row-cols-xxl-5">
-            {itemsList.map(item => (
-              <AdminAccountItem key={item.id}
-              item={item}
-              onRemoveItem={onRemoveItem}
+            {itemsList.map((item) => (
+              <AdminAccountItem
+                key={item.id}
+                item={item}
+                onRemoveItem={onRemoveItem}
               />
-              ))
-            }
+            ))}
           </div>
 
           <nav className="float-end mt-4" aria-label="Page navigation">

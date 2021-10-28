@@ -34,6 +34,8 @@ public class Administrator {
     private Timestamp tfaExpirationTime;
     @Column(name = "TFA_CHOSEN_TYPE")
     private TfaTypeEnum tfaChosenType;
+    @Column(name = "RSA_PRIVATE_KEY")
+    private String rsaPrivateKey;
     @Column(name = "CREATED_AT")
     private Timestamp createdAt;
     @Column(name = "MODIFIED_AT")
@@ -148,6 +150,14 @@ public class Administrator {
 
     public void setTfaChosenType(TfaTypeEnum tfaChosenType) {
         this.tfaChosenType = tfaChosenType;
+    }
+
+    public String getRsaPrivateKey() {
+        return rsaPrivateKey;
+    }
+
+    public void setRsaPrivateKey(String rsaPrivateKey) {
+        this.rsaPrivateKey = rsaPrivateKey;
     }
 
     public Timestamp getCreatedAt() {

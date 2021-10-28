@@ -1,88 +1,50 @@
-import React, { useState } from "react";
-import { useDispatch } from "react-redux";
-import { setAuthentication } from "../Global/adminAuthentication";
-import axios from "axios";
-import { useHistory } from "react-router";
+import React from "react";
+import { useLocation, Switch, Route } from "react-router";
+import AdminFirstFactorLoginFields from "./AdminFirstFactorLoginFields";
+import AdminSecondFactorLoginFields from "./2fa-code/AdminSecondFactorLoginFields";
+import { LoginProcessIssueEnum } from "./Utils/loginProcessIssueEnum";
 
-const AdminLoginForm = ( {fromRoute} ) => {
-  const routerHistory = useHistory();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+const AdminLoginForm = () => {
+  const location = useLocation();
+  const fromRoute =
+    location.state !== undefined && location.state.fromRoute !== undefined
+      ? location.state.fromRoute
+      : null;
 
-  const dispatch = useDispatch();
-
-  const submitLoginForm = (event) => {
-    event.preventDefault();
-    axios
-      .post("http://localhost:8080/api/admin/login/authenticate", {
-        email: email,
-        password: password,
-      })
-      .then((response) => {
-        if (response.status === 200) {
-          console.log(response.data.token);
-          dispatch(
-            setAuthentication({
-              isAuthenticated: true,
-              accessToken: response.data.token,
-            })
-          );
-          if (fromRoute) {
-            routerHistory.push(fromRoute);
-          }
-        }
-      }).catch((error) => {
-        console.log("Error: " + error);
-      });
-  };
-
-  const resetLoginForm = () => {
-    setEmail("");
-    setPassword("");
-  };
+  const issue = new URLSearchParams(useLocation().search).get("issue");
+  const loginIssueMessage = issue ? LoginProcessIssueEnum[issue].message : null;
 
   return (
-    <form onReset={resetLoginForm} onSubmit={submitLoginForm}>
-      <div className="mb-3">
-        <input
-          className="form-control"
-          placeholder="Email"
-          name="email"
-          // autoComplete="off"
-          type="text"
-          onChange={(event) => {
-            setEmail(event.target.value);
-          }}
-          required
-        />
+    <div
+      id="login"
+      className="card shadow mx-auto"
+      style={{ maxWidth: "380px", marginTop: "100px" }}
+    >
+      <div className="card-body">
+        <h4 className="card-title mb-4">Log In</h4>
+        {loginIssueMessage ? (
+          <div className="alert alert-danger" role="alert">
+            {loginIssueMessage}
+          </div>
+        ) : null}
+        <Switch>
+          <Route
+            path="/admin/login"
+            exact
+            component={(props) => (
+              <AdminFirstFactorLoginFields fromRoute={fromRoute} />
+            )}
+          />
+          <Route
+            path="/admin/login/2fa-code"
+            exact
+            component={(props) => (
+              <AdminSecondFactorLoginFields fromRoute={fromRoute} />
+            )}
+          />
+        </Switch>
       </div>
-      <div className="mb-3">
-        <input
-          className="form-control"
-          placeholder="Password"
-          name="password"
-          type="password"
-          onChange={(event) => {
-            setPassword(event.target.value);
-          }}
-          required
-        />
-      </div>
-      <div className="mb-3">
-        <a href="#" className="float-end">
-          Forgot password?
-        </a>
-        <label className="form-check">
-          <input type="checkbox" class="form-check-input" checked="" />
-          <span className="form-check-label">Remember</span>
-        </label>
-      </div>
-      <div className="mb-4">
-        <button type="submit" className="btn btn-primary w-100">
-          Login
-        </button>
-      </div>
-    </form>
+    </div>
   );
 };
 

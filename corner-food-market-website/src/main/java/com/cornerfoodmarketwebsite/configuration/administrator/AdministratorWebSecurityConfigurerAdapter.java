@@ -196,7 +196,7 @@ public class AdministratorWebSecurityConfigurerAdapter {
                     .exceptionHandling().authenticationEntryPoint(new Http403ForbiddenEntryPoint()).and()
                     .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
 //                    .authorizeRequests().antMatchers("/**").permitAll()
-                    .authorizeRequests().antMatchers("/api/admin/login/**").authenticated()
+                    .authorizeRequests().antMatchers("/api/admin/login/tfa-post-authenticate").authenticated()
                     .and()
                     .logout().deleteCookies("JSESSIONID");
 

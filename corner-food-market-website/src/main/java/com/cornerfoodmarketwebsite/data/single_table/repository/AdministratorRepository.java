@@ -33,4 +33,21 @@ public interface AdministratorRepository extends JpaRepository<Administrator, Sh
     @Modifying
     @Query(value = "UPDATE Administrator SET tfaCode = ?1, tfaExpirationTime = ?2 WHERE id = ?3")
     int setTfaCodeDetailsById(String tfaCode, Timestamp tfaExpirationTime, short id);
+
+    @Transactional
+    @Modifying
+    @Query(value = "UPDATE Administrator SET rsaPrivateKey = ?1 WHERE id = ?2")
+    int setRsaPrivateKeyById(String rsaPrivateKey, short id);
+
+    @Query(value = "SELECT A1.rsaPrivateKey FROM Administrator A1 WHERE A1.id = ?1")
+    String getRsaPrivateKeyById(short id);
+
+    @Query(value = "SELECT A1.tfaCode FROM Administrator A1 WHERE A1.id = ?1")
+    String getTfaCodeById(short id);
+
+    @Query(value = "SELECT A1.password FROM Administrator A1 WHERE A1.email = ?1")
+    String getPasswordByEmail(String email);
+
+    @Query(value = "SELECT A1.isTfaEnabled FROM Administrator A1 WHERE A1.email = ?1")
+    boolean getIsTfaEnabledByEmail(String email);
 }

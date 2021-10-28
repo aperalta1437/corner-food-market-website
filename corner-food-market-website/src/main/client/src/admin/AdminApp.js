@@ -1,8 +1,10 @@
+import React from "react";
 import AdminAccountAsideMenu from "./account/AdminAccountAsideMenu";
 import { Switch, Route, Redirect } from "react-router-dom";
 import { configureStore } from "@reduxjs/toolkit";
 import { Provider } from "react-redux";
 import adminAuthenticationReducer from "./Global/adminAuthentication";
+import adminFirstFactorAuthenticationReducer from "./Global/adminFirstFactorAuthentication";
 import AdminLoginPage from "./login/AdminLoginPage";
 import AdminAccountPage from "./account/AdminAccountPage";
 import ProtectedRoute from "./account/Utils/ProtectedRoute";
@@ -10,7 +12,9 @@ import ProtectedRoute from "./account/Utils/ProtectedRoute";
 const adminStore = configureStore({
   reducer: {
     adminAuthentication: adminAuthenticationReducer,
+    adminFirstFactorAuthentication: adminFirstFactorAuthenticationReducer,
   },
+  // devTools: false, // Disable Redux toolkit Devtools
 });
 
 function AdminApp() {
@@ -31,7 +35,7 @@ function AdminApp() {
           }
         >
           <Switch>
-            <Route path="/admin/login" exact component={AdminLoginPage} />
+            <Route path="/admin/login" component={AdminLoginPage} />
             <ProtectedRoute
               path="/admin/account"
               component={AdminAccountPage}
