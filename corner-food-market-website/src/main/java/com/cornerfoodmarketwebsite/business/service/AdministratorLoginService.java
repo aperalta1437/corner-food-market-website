@@ -40,7 +40,7 @@ public class AdministratorLoginService {
 
     public int sendTfaCodeAndGetExpirationTime(Administrator administrator) throws NotProvidedTfaTypeException, NotSupportedTfaTypeException {
         TfaTypeEnum tfaTypeEnum = administrator.getTfaChosenType();
-        int tfaCode = this.generateTfaCodeByAdministrator(administrator.getId());
+        int tfaCode = this.generateTfaCodeByAdministratorId(administrator.getId());
 
         if (tfaTypeEnum == TfaTypeEnum.EMAIL) {
             this.emailService.sendTfaCodeEmail(administrator.getEmail(), tfaCode);
@@ -55,7 +55,7 @@ public class AdministratorLoginService {
         return RoleInformationEnum.ADMINISTRATOR.getTfaExpirationTimeInMilliseconds();
     }
 
-    private int generateTfaCodeByAdministrator(short administratorId) {
+    private int generateTfaCodeByAdministratorId(short administratorId) {
         Random rand = new Random();
         int tfaCode = rand.nextInt(899999) + 100000;
         String encryptedTfaCode = this.bCryptPasswordEncoder.encode(String.valueOf(tfaCode));
@@ -66,7 +66,7 @@ public class AdministratorLoginService {
         return tfaCode;
     }
 
-    public String getBase64RsaPublicKeyByAdministrator(short administratorId) {
+    public String getBase64RsaPublicKeyByAdministratorId(short administratorId) {
         Base64RsaKeyPair base64RsaKeyPair = this.rsaUtil.generateBase64RsaKeyPair();
         System.out.println(base64RsaKeyPair.getBase64PrivateKey());
         System.out.println(base64RsaKeyPair.getBase64PrivateKey().length());
@@ -85,7 +85,6 @@ public class AdministratorLoginService {
     }
 
     public boolean isCorrectCredentials(String email, String password) {
-        String encryptedPassword = this.bCryptPasswordEncoder.encode(password);
-        return this.administratorRepository.getPasswordByEmail(email).equals(encryptedPassword);
+        return this.bCryptPasswordEncoder.matches(password, this.administratorRepository.getPasswordByEmail(email));
     }
 }
