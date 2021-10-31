@@ -1,9 +1,12 @@
 import React, { useState } from "react";
 import { setAuthentication } from "../Global/adminAuthentication";
 import { setFirstFactorAuthentication } from "../Global/adminFirstFactorAuthentication";
+import { flipIsLoading } from "../Global/adminHttpResponseLoaderGlobalState";
 import axios from "axios";
+import { StatusCodes } from "http-status-codes";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory, Redirect } from "react-router";
+import { LoginProcessIssueEnum } from "./Utils/loginProcessIssueEnum";
 
 function AdminFirstFactorLoginFields({ fromRoute }) {
   const [email, setEmail] = useState("");
@@ -15,51 +18,65 @@ function AdminFirstFactorLoginFields({ fromRoute }) {
     (state) => state.adminFirstFactorAuthentication.value
   );
 
-  const adminAuthentication = useSelector(
+  const authentication = useSelector(
     (state) => state.adminAuthentication.value
+  );
+
+  const httpResponseLoaderGlobalState = useSelector(
+    (state) => state.adminHttpResponseLoaderGlobalState.value
   );
 
   const submitFirstFactorLoginForm = (event) => {
     event.preventDefault();
+
+    dispatch(flipIsLoading());
+
     axios
-      .post("http://localhost:8080/api/admin/login/tfa-pre-authenticate", {
+      .post("http://localhost:8080/api/admin/login/authenticate", {
         email: email,
         password: password,
       })
       .then((response) => {
-        if (response.status === 200) {
-          if (
-            response.data["Tfa-Expiration-Time-In-Milliseconds"] === undefined
-          ) {
-            dispatch(
-              setAuthentication({
-                isAuthenticated: true,
-                accessToken: response.data["Access-Token"],
-              })
+        if (response.status === StatusCodes.OK) {
+          if (response.data["Is-Tfa-Enabled"]) {
+            console.log(
+              "Base64 public key: " + response.data["Base64-Rsa-Public-Key"]
             );
-            console.log(adminAuthentication.isAuthenticated);
-            console.log(adminAuthentication.accessToken);
-          } else {
             dispatch(
               setFirstFactorAuthentication({
                 isAuthenticated: true,
                 accessToken: response.data["Access-Token"],
                 email: email,
                 password: password,
-                rsaPublicKey: response.data["RSA-Public-Key"],
+                base64RsaPublicKey: response.data["Base64-Rsa-Public-Key"],
               })
             );
             routerHistory.push("/admin/login/tfa-code");
             // console.log(adminFirstFactorAuthentication);
             // console.log("Hello: " + adminFirstFactorAuthentication.accessToken);
             // console.log("Ho: " + response.data["Access-Token"]);
+          } else {
+            dispatch(
+              setAuthentication({
+                isAuthenticated: true,
+                accessToken: response.data["Access-Token"],
+              })
+            );
+            console.log(authentication.isAuthenticated);
+            console.log(authentication.accessToken);
           }
 
           routerHistory.push(fromRoute ? fromRoute : "/admin/account");
+        } else if ((response.status = StatusCodes.UNAUTHORIZED)) {
+          routerHistory.push(
+            fromRoute
+              ? fromRoute
+              : `/admin/login?issue=${LoginProcessIssueEnum.FAILED_LOGIN.name}`
+          );
+        } else if ((response.status = StatusCodes.INTERNAL_SERVER_ERROR)) {
         }
-      })
-      .catch((error) => {
-        console.log("Error: " + error);
+
+        dispatch(flipIsLoading());
       });
   };
 

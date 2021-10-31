@@ -3,6 +3,7 @@ import AdminHeader from "./AdminHeader";
 import AdminLoginForm from "./AdminLoginForm";
 import { Switch, Route, Redirect } from "react-router-dom";
 import { useSelector } from "react-redux";
+import HttpResponseLoader from "../Utils/HttpResponseLoader";
 
 function AdminLoginPage() {
   // const location = useLocation();
@@ -11,15 +12,22 @@ function AdminLoginPage() {
   //     ? location.state.fromRoute
   //     : null;
 
-  const adminAuthentication = useSelector(
+  const authentication = useSelector(
     (state) => state.adminAuthentication.value
   );
 
-  if (adminAuthentication.isAuthenticated) {
+  const httpResponseLoaderGlobalState = useSelector(
+    (state) => state.adminHttpResponseLoaderGlobalState.value
+  );
+
+  if (authentication.isAuthenticated) {
     return <Redirect to="/admin/account" />;
   } else {
     return (
       <>
+        <HttpResponseLoader
+          isLoading={httpResponseLoaderGlobalState.isLoading}
+        />
         <AdminHeader />
         <section className="content-main">
           <Switch>

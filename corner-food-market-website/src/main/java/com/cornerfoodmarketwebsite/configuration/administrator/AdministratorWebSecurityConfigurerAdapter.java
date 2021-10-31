@@ -25,7 +25,7 @@ import java.util.Properties;
 @Configuration
 public class AdministratorWebSecurityConfigurerAdapter {
     @Configuration
-    @Order(1)
+    @Order(2)
     public static class AdministratorPostTfaWebSecurityConfigurerAdapter  extends WebSecurityConfigurerAdapter {
 
         @Autowired
@@ -106,7 +106,7 @@ public class AdministratorWebSecurityConfigurerAdapter {
     }
 
     @Configuration
-    @Order(2)
+    @Order(1)
     public static class AdministratorPreTfaWebSecurityConfigurerAdapter  extends WebSecurityConfigurerAdapter {
 
         @Autowired

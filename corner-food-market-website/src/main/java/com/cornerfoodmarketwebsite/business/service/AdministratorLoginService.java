@@ -70,18 +70,18 @@ public class AdministratorLoginService {
         Base64RsaKeyPair base64RsaKeyPair = this.rsaUtil.generateBase64RsaKeyPair();
         System.out.println(base64RsaKeyPair.getBase64PrivateKey());
         System.out.println(base64RsaKeyPair.getBase64PrivateKey().length());
-        this.administratorRepository.setRsaPrivateKeyById(base64RsaKeyPair.getBase64PrivateKey(), administratorId);
-        return base64RsaKeyPair.getBase64PublicKey();
+        this.administratorRepository.setBase64RsaPrivateKeyById(base64RsaKeyPair.getBase64PrivateKey(), administratorId);
+        String base64PublicKey = base64RsaKeyPair.getBase64PublicKey();
+        System.out.println(base64PublicKey);
+        return base64PublicKey;
     }
 
     public String decryptTextByAdministrator(String base64EncryptedText, short adminitratorId) throws NoSuchPaddingException, IllegalBlockSizeException, NoSuchAlgorithmException, InvalidKeySpecException, BadPaddingException, InvalidKeyException {
-        return this.rsaUtil.decrypt(base64EncryptedText, this.administratorRepository.getRsaPrivateKeyById(adminitratorId));
+        return this.rsaUtil.decrypt(base64EncryptedText, this.administratorRepository.getBase64RsaPrivateKeyById(adminitratorId));
     }
 
     public boolean isCorrectTfaCodeByAdministrator(String tfaCode, short administratorId) {
-        String encryptedTfaCode = this.bCryptPasswordEncoder.encode(tfaCode);
-
-        return (encryptedTfaCode.equals(this.administratorRepository.getTfaCodeById(administratorId)));
+        return this.bCryptPasswordEncoder.matches(tfaCode, this.administratorRepository.getTfaCodeById(administratorId));
     }
 
     public boolean isCorrectCredentials(String email, String password) {

@@ -17,7 +17,11 @@ function ProtectedRoute({ component: Component, ...rest }) {
         } else {
           return (
             <Redirect
-              to={{ pathname: "/admin/login", search: "?issue=" + LoginProcessIssueEnum.REDIRECTED.name, state: { fromRoute: props.location } }}
+              to={{
+                pathname: "/admin/login",
+                search: `?issue=${LoginProcessIssueEnum.REDIRECTED.name}`,
+                state: { fromRoute: props.location },
+              }}
             />
           );
         }

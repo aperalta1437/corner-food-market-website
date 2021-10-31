@@ -5,6 +5,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import { Provider } from "react-redux";
 import adminAuthenticationReducer from "./Global/adminAuthentication";
 import adminFirstFactorAuthenticationReducer from "./Global/adminFirstFactorAuthentication";
+import adminHttpResponseLoaderGlobalStateReducer from "./Global/adminHttpResponseLoaderGlobalState";
 import AdminLoginPage from "./login/AdminLoginPage";
 import AdminAccountPage from "./account/AdminAccountPage";
 import ProtectedRoute from "./account/Utils/ProtectedRoute";
@@ -13,6 +14,8 @@ const adminStore = configureStore({
   reducer: {
     adminAuthentication: adminAuthenticationReducer,
     adminFirstFactorAuthentication: adminFirstFactorAuthenticationReducer,
+    adminHttpResponseLoaderGlobalState:
+      adminHttpResponseLoaderGlobalStateReducer,
   },
   // devTools: false, // Disable Redux toolkit Devtools
 });

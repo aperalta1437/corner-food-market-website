@@ -104,11 +104,9 @@ public class AdministratorLoginController {
 
                     if (authentication.isAuthenticated()) {
                         jsonResponse.put("Is-Tfa-Enabled", false);
-                        jsonResponse.put("Email", authentication.getName());
-                        jsonResponse.put("Authorities", authentication.getAuthorities());
                         jsonResponse.put("Access-Token", jwtTokenProvider.createToken(administratorFirstFactorLoginFields.getEmail()));    // TODO implement roles
                     } else {
-                        jsonResponse.put("message", "We were unable to authenticate your account. Please try again later. If the issue persist, please contact your system administrator.");
+                        jsonResponse.put("Message", "We were unable to authenticate your account. Please try again later. If the issue persist, please contact your system administrator.");
                         return new ResponseEntity<>(jsonResponse.toString(), HttpStatus.SERVICE_UNAVAILABLE);
                     }
                 }
@@ -116,13 +114,13 @@ public class AdministratorLoginController {
                 throw new BadCredentialsException("Incorrect credentials were given");
             }
         } catch (BadCredentialsException badCredentialsException) {
-            jsonResponse.put("message", "Invalid email and/or password.");
+            jsonResponse.put("Message", "Invalid email and/or password.");
 
             badCredentialsException.printStackTrace();
 
             return new ResponseEntity<>(jsonResponse.toString(), HttpStatus.UNAUTHORIZED);
         } catch (Exception exception) {
-            jsonResponse.put("message", "An issue happened at the server. Please try again later. If the issue persist, please contact your system administrator");
+            jsonResponse.put("Message", "An issue happened at the server. Please try again later. If the issue persist, please contact your system administrator");
 
             exception.printStackTrace();
 
@@ -141,13 +139,11 @@ public class AdministratorLoginController {
             Administrator administrator = ((AdministratorUserDetails) authentication.getPrincipal()).getAdministrator();
 
             jsonResponse.put("Is-Tfa-Enabled", true);
-            jsonResponse.put("Email", authentication.getName());
-            jsonResponse.put("Authorities", authentication.getAuthorities());
             jsonResponse.put("Access-Token", tfaJwtTokenProvider.createToken(administrator.getEmail()));    // TODO implement roles
             jsonResponse.put("Tfa-Expiration-Time-In-Milliseconds", this.administratorLoginService.sendTfaCodeAndGetExpirationTime(administrator));
-            jsonResponse.put("rsa-public-key", this.administratorLoginService.getBase64RsaPublicKeyByAdministratorId(administrator.getId()));
+            jsonResponse.put("Base64-Rsa-Public-Key", this.administratorLoginService.getBase64RsaPublicKeyByAdministratorId(administrator.getId()));
         } else {
-            jsonResponse.put("message", "We were unable to authenticate your account. Please try again later. If the issue persist, please contact your system administrator.");
+            jsonResponse.put("Message", "We were unable to authenticate your account. Please try again later. If the issue persist, please contact your system administrator.");
             return new ResponseEntity<>(jsonResponse.toString(), HttpStatus.SERVICE_UNAVAILABLE);
         }
         return new ResponseEntity<>(jsonResponse.toString(), HttpStatus.OK);
@@ -155,6 +151,8 @@ public class AdministratorLoginController {
 
     @PostMapping(value = "/tfa-post-authenticate", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> tfaPostAuthenticate(@RequestBody AdministratorSecondFactorLoginFields administratorSecondFactorLoginFields) throws Exception {
+        System.out.println("Inside tfaPostAuthenticate HEREEEEEEEE!");
+
         JSONObject jsonResponse = new JSONObject();
         String administratorEmail = administratorSecondFactorLoginFields.getEmail();
 
@@ -166,25 +164,23 @@ public class AdministratorLoginController {
                         administratorEmail, this.administratorLoginService.decryptTextByAdministrator(administratorSecondFactorLoginFields.getPassword(), administratorId)));
 
                 if (authentication.isAuthenticated()) {
-                    jsonResponse.put("Email", authentication.getName());
-                    jsonResponse.put("Authorities", authentication.getAuthorities());
                     jsonResponse.put("Access-Token", jwtTokenProvider.createToken(administratorEmail));    // TODO implement roles
                 } else {
-                    jsonResponse.put("message", "We were unable to authenticate your account. Please try again later. If the issue persist, please contact your system administrator.");
+                    jsonResponse.put("Message", "We were unable to authenticate your account. Please try again later. If the issue persist, please contact your system administrator.");
                     return new ResponseEntity<>(jsonResponse.toString(), HttpStatus.SERVICE_UNAVAILABLE);
                 }
             } else {
-                jsonResponse.put("message", "Incorrect security code was given.");
+                jsonResponse.put("Message", "Incorrect security code was given.");
                 return new ResponseEntity<>(jsonResponse.toString(), HttpStatus.UNPROCESSABLE_ENTITY);
             }
         } catch (BadCredentialsException badCredentialsException) {
-            jsonResponse.put("message", "Invalid email and/or password.");
+            jsonResponse.put("Message", "Invalid email and/or password.");
 
             badCredentialsException.printStackTrace();
 
             return new ResponseEntity<>(jsonResponse.toString(), HttpStatus.UNAUTHORIZED);
         } catch (Exception exception) {
-            jsonResponse.put("message", "An issue happened at the server. Please try again later. If the issue persist, please contact your system administrator");
+            jsonResponse.put("Message", "An issue happened at the server. Please try again later. If the issue persist, please contact your system administrator");
 
             exception.printStackTrace();
 

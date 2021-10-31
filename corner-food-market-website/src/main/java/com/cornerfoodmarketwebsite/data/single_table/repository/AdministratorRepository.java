@@ -37,10 +37,10 @@ public interface AdministratorRepository extends JpaRepository<Administrator, Sh
     @Transactional
     @Modifying
     @Query(value = "UPDATE Administrator SET rsaPrivateKey = ?1 WHERE id = ?2")
-    int setRsaPrivateKeyById(String rsaPrivateKey, short id);
+    int setBase64RsaPrivateKeyById(String rsaPrivateKey, short id);
 
     @Query(value = "SELECT A1.rsaPrivateKey FROM Administrator A1 WHERE A1.id = ?1")
-    String getRsaPrivateKeyById(short id);
+    String getBase64RsaPrivateKeyById(short id);
 
     @Query(value = "SELECT A1.tfaCode FROM Administrator A1 WHERE A1.id = ?1")
     String getTfaCodeById(short id);
