@@ -77,6 +77,7 @@ public class AdministratorLoginService {
     }
 
     public String decryptTextByAdministrator(String base64EncryptedText, short adminitratorId) throws NoSuchPaddingException, IllegalBlockSizeException, NoSuchAlgorithmException, InvalidKeySpecException, BadPaddingException, InvalidKeyException {
+        System.out.println("Inside decryptTextByAdministrator");
         return this.rsaUtil.decrypt(base64EncryptedText, this.administratorRepository.getBase64RsaPrivateKeyById(adminitratorId));
     }
 

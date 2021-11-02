@@ -24,6 +24,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
@@ -160,11 +161,17 @@ public class AdministratorLoginController {
             short administratorId = this.administratorRepository.getIdByEmail(administratorEmail);
 
             if (this.administratorLoginService.isCorrectTfaCodeByAdministrator(administratorSecondFactorLoginFields.getTfaCode(), administratorId)) {
+                SecurityContextHolder.clearContext();
                 Authentication authentication = administratorPostTfaAuthenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                         administratorEmail, this.administratorLoginService.decryptTextByAdministrator(administratorSecondFactorLoginFields.getPassword(), administratorId)));
-
+                System.out.println("Inside tfaPostAuthenticate HEREEEEEEEE 222222222222222222222222!");
+                System.out.println(this.administratorLoginService.decryptTextByAdministrator(administratorSecondFactorLoginFields.getPassword(), administratorId));
                 if (authentication.isAuthenticated()) {
+                    System.out.println("Inside tfaPostAuthenticate HEREEEEEEEE 333333333333333333333333!");
+
                     jsonResponse.put("Access-Token", jwtTokenProvider.createToken(administratorEmail));    // TODO implement roles
+
+                    System.out.println("Inside tfaPostAuthenticate HEREEEEEEEE 444444444444444444444444!");
                 } else {
                     jsonResponse.put("Message", "We were unable to authenticate your account. Please try again later. If the issue persist, please contact your system administrator.");
                     return new ResponseEntity<>(jsonResponse.toString(), HttpStatus.SERVICE_UNAVAILABLE);

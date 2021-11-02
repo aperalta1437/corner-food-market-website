@@ -49,7 +49,7 @@ public class TfaJwtTokenFilter extends OncePerRequestFilter {
                 return;
             }
         } else {
-            log.info("Access Token is being created - authenticate method");
+            httpServletResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         }
         filterChain.doFilter(httpServletRequest, httpServletResponse);
     }

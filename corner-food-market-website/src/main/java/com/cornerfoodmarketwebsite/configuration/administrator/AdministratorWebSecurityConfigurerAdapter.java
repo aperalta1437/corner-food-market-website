@@ -5,6 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -17,6 +19,8 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.Http403ForbiddenEntryPoint;
+import org.springframework.security.web.authentication.HttpStatusEntryPoint;
+import org.springframework.security.web.authentication.logout.HttpStatusReturningLogoutSuccessHandler;
 
 import javax.sql.DataSource;
 import java.util.Properties;
@@ -94,12 +98,17 @@ public class AdministratorWebSecurityConfigurerAdapter {
 ////        http.requestMatcher(new AntPathRequestMatcher("/admin/account/**")).authorizeRequests().anyRequest().authenticated();
 
             http.cors().and().csrf().disable()
-                    .exceptionHandling().authenticationEntryPoint(new Http403ForbiddenEntryPoint()).and()
+                    .exceptionHandling().authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)).and()
                     .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
 //                    .authorizeRequests().antMatchers("/**").permitAll()
-                    .authorizeRequests().antMatchers("/api/admin/account/**").authenticated()
+                    .requestMatchers().antMatchers("/api/admin/account/**")
                     .and()
-                            .logout().deleteCookies("JSESSIONID");
+                    .authorizeRequests().anyRequest().authenticated()
+                    .and()
+                    .logout().permitAll()
+                    .logoutSuccessHandler(new HttpStatusReturningLogoutSuccessHandler(HttpStatus.OK))
+                    .logoutUrl("/api/admin/account/logout")
+                    .deleteCookies("JSESSIONID");
 
             http.apply(new JwtTokenConfigurer(this.jwtTokenProvider));
         }
@@ -193,12 +202,17 @@ public class AdministratorWebSecurityConfigurerAdapter {
 ////        http.requestMatcher(new AntPathRequestMatcher("/admin/account/**")).authorizeRequests().anyRequest().authenticated();
 
             http.cors().and().csrf().disable()
-                    .exceptionHandling().authenticationEntryPoint(new Http403ForbiddenEntryPoint()).and()
+                    .exceptionHandling().authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)).and()
                     .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
 //                    .authorizeRequests().antMatchers("/**").permitAll()
-                    .authorizeRequests().antMatchers("/api/admin/login/tfa-post-authenticate").authenticated()
+                    .requestMatchers().antMatchers("/api/admin/login/tfa-post-authenticate/**")
                     .and()
-                    .logout().deleteCookies("JSESSIONID");
+                    .authorizeRequests().anyRequest().authenticated()
+                    .and()
+                    .logout().permitAll()
+                    .logoutSuccessHandler(new HttpStatusReturningLogoutSuccessHandler(HttpStatus.OK))
+                    .logoutUrl("/api/admin/login/tfa-post-authenticate/logout")
+                    .deleteCookies("JSESSIONID");
 
             http.apply(new TfaJwtTokenConfigurer(this.tfaJwtTokenProvider));
         }

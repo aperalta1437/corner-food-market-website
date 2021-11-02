@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Redirect, useHistory } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { setAuthentication } from "../../Global/adminAuthentication";
+import { resetFirstFactorAuthentication } from "../../Global/adminFirstFactorAuthentication";
 import axios from "axios";
 import { StatusCodes } from "http-status-codes";
 import { flipIsLoading } from "../../Global/adminHttpResponseLoaderGlobalState";
@@ -48,6 +49,33 @@ function AdminSecondFactorLoginFields({ fromRoute }) {
               accessToken: response.data["Access-Token"],
             })
           );
+
+          axios
+            .post(
+              "http://localhost:8080/api/admin/login/tfa-post-authenticate/logout",
+              {
+                email: firstFactorAuthentication.email,
+                password: firstFactorAuthentication.rsaEncryptedPassword,
+                tfaCode: tfaCode,
+              },
+              {
+                headers: {
+                  Authorization: firstFactorAuthentication.accessToken,
+                  "Content-Type": "application/json",
+                  "Access-Control-Allow-Origin": "http://localhost:3000",
+                },
+              }
+            )
+            .then((response) => {
+              if (response.status === StatusCodes.OK) {
+                console.log("First factor logged out successfully.");
+              }
+            })
+            .catch((error) => {
+              console.log("Error: " + error);
+            });
+
+          dispatch(resetFirstFactorAuthentication());
         }
 
         if (fromRoute) {
