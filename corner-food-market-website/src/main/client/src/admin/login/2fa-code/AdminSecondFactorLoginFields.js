@@ -6,6 +6,7 @@ import { resetFirstFactorAuthentication } from "../../Global/adminFirstFactorAut
 import axios from "axios";
 import { StatusCodes } from "http-status-codes";
 import { flipIsLoading } from "../../Global/adminHttpResponseLoaderGlobalState";
+import Cookies from "js-cookie";
 
 function AdminSecondFactorLoginFields({ fromRoute }) {
   const dispatch = useDispatch();
@@ -21,20 +22,16 @@ function AdminSecondFactorLoginFields({ fromRoute }) {
 
     dispatch(flipIsLoading());
 
-    const base64RsaEncryptedPassword = window.btoa(
-      firstFactorAuthentication.rsaEncryptedPassword
-    );
-
     axios
       .post(
         "http://localhost:8080/api/admin/login/tfa-post-authenticate",
         {
-          email: firstFactorAuthentication.email,
-          password: firstFactorAuthentication.rsaEncryptedPassword,
+          password: firstFactorAuthentication.base64RsaEncryptedPassword,
           tfaCode: tfaCode,
         },
         {
           headers: {
+            // "X-XSRF-TOKEN": Cookies.get("XSRF-TOKEN"),
             Authorization: firstFactorAuthentication.accessToken,
             "Content-Type": "application/json",
             "Access-Control-Allow-Origin": "http://localhost:3000",
@@ -49,15 +46,11 @@ function AdminSecondFactorLoginFields({ fromRoute }) {
               accessToken: response.data["Access-Token"],
             })
           );
+          console.log(response.data["Access-Token"]);
 
           axios
             .post(
               "http://localhost:8080/api/admin/login/tfa-post-authenticate/logout",
-              {
-                email: firstFactorAuthentication.email,
-                password: firstFactorAuthentication.rsaEncryptedPassword,
-                tfaCode: tfaCode,
-              },
               {
                 headers: {
                   Authorization: firstFactorAuthentication.accessToken,

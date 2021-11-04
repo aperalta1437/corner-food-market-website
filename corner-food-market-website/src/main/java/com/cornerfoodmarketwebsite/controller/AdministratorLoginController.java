@@ -11,6 +11,7 @@ import com.cornerfoodmarketwebsite.configuration.administrator.TfaJwtTokenProvid
 import com.cornerfoodmarketwebsite.data.single_table.entity.Administrator;
 import com.cornerfoodmarketwebsite.data.single_table.entity.utils.TfaTypeEnum;
 import com.cornerfoodmarketwebsite.data.single_table.repository.AdministratorRepository;
+import io.jsonwebtoken.Claims;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 import org.slf4j.Logger;
@@ -151,17 +152,20 @@ public class AdministratorLoginController {
     }
 
     @PostMapping(value = "/tfa-post-authenticate", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> tfaPostAuthenticate(@RequestBody AdministratorSecondFactorLoginFields administratorSecondFactorLoginFields) throws Exception {
+    public ResponseEntity<String> tfaPostAuthenticate(@RequestHeader("Authorization") String tfaJwtToken, @RequestBody AdministratorSecondFactorLoginFields administratorSecondFactorLoginFields) throws Exception {
         System.out.println("Inside tfaPostAuthenticate HEREEEEEEEE!");
 
         JSONObject jsonResponse = new JSONObject();
-        String administratorEmail = administratorSecondFactorLoginFields.getEmail();
+
+        Claims claims = tfaJwtTokenProvider.getClaimsFromToken(tfaJwtToken);
+
+        String administratorEmail = claims.getSubject();
 
         try {
             short administratorId = this.administratorRepository.getIdByEmail(administratorEmail);
 
             if (this.administratorLoginService.isCorrectTfaCodeByAdministrator(administratorSecondFactorLoginFields.getTfaCode(), administratorId)) {
-                SecurityContextHolder.clearContext();
+//                SecurityContextHolder.clearContext();
                 Authentication authentication = administratorPostTfaAuthenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                         administratorEmail, this.administratorLoginService.decryptTextByAdministrator(administratorSecondFactorLoginFields.getPassword(), administratorId)));
                 System.out.println("Inside tfaPostAuthenticate HEREEEEEEEE 222222222222222222222222!");

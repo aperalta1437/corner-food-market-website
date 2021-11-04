@@ -5,10 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -18,18 +15,17 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.web.authentication.Http403ForbiddenEntryPoint;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.logout.HttpStatusReturningLogoutSuccessHandler;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import javax.sql.DataSource;
-import java.util.Properties;
 
 @EnableWebSecurity
 @Configuration
 public class AdministratorWebSecurityConfigurerAdapter {
     @Configuration
-    @Order(2)
+    @Order(1)
     public static class AdministratorPostTfaWebSecurityConfigurerAdapter  extends WebSecurityConfigurerAdapter {
 
         @Autowired
@@ -101,9 +97,9 @@ public class AdministratorWebSecurityConfigurerAdapter {
                     .exceptionHandling().authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)).and()
                     .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
 //                    .authorizeRequests().antMatchers("/**").permitAll()
-                    .requestMatchers().antMatchers("/api/admin/account/**")
-                    .and()
-                    .authorizeRequests().anyRequest().authenticated()
+                    .requestMatcher(new AntPathRequestMatcher("/api/admin/account/**")).authorizeRequests().anyRequest().authenticated()
+//                    .antMatcher("/api/admin/account/**").authorizeRequests().anyRequest().authenticated()
+//                    .authorizeRequests().antMatchers("/api/admin/account/**").authenticated()
                     .and()
                     .logout().permitAll()
                     .logoutSuccessHandler(new HttpStatusReturningLogoutSuccessHandler(HttpStatus.OK))
@@ -115,7 +111,7 @@ public class AdministratorWebSecurityConfigurerAdapter {
     }
 
     @Configuration
-    @Order(1)
+    @Order(2)
     public static class AdministratorPreTfaWebSecurityConfigurerAdapter  extends WebSecurityConfigurerAdapter {
 
         @Autowired
@@ -205,14 +201,13 @@ public class AdministratorWebSecurityConfigurerAdapter {
                     .exceptionHandling().authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)).and()
                     .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
 //                    .authorizeRequests().antMatchers("/**").permitAll()
-                    .requestMatchers().antMatchers("/api/admin/login/tfa-post-authenticate/**")
-                    .and()
-                    .authorizeRequests().anyRequest().authenticated()
+                    .antMatcher("/api/admin/login/tfa-post-authenticate/**").authorizeRequests().anyRequest().authenticated()
+//                    .authorizeRequests().antMatchers("/api/admin/login/tfa-post-authenticate/**").authenticated()
                     .and()
                     .logout().permitAll()
                     .logoutSuccessHandler(new HttpStatusReturningLogoutSuccessHandler(HttpStatus.OK))
-                    .logoutUrl("/api/admin/login/tfa-post-authenticate/logout")
-                    .deleteCookies("JSESSIONID");
+                    .logoutUrl("/api/admin/login/tfa-post-authenticate/logout");
+//                    .deleteCookies("JSESSIONID");
 
             http.apply(new TfaJwtTokenConfigurer(this.tfaJwtTokenProvider));
         }

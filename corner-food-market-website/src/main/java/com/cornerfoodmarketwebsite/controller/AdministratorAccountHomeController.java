@@ -26,7 +26,7 @@ public class AdministratorAccountHomeController {
 
     @PostMapping(value = "/remove-item/{item-id}")
     public ResponseEntity<Object> removeOnSaleItem(@PathVariable(value = "item-id") String itemId) {
-        System.out.println("Hello");
+        System.out.println("Inside removeOnSaleItem");
         if (this.administratorAccountItemInformationService.removeOnSaleItem(Integer.parseInt(itemId))) {
             return new ResponseEntity<>(HttpStatus.OK);
         } else {

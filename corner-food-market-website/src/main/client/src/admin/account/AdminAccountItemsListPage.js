@@ -6,6 +6,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { resetAuthentication } from "../Global/adminAuthentication";
 import { LoginProcessIssueEnum } from "../login/Utils/loginProcessIssueEnum";
+import { StatusCodes } from "http-status-codes";
+import Cookies from "js-cookie";
 
 function AdminAccountItemsList() {
   const routerHistory = useHistory();
@@ -46,25 +48,42 @@ function AdminAccountItemsList() {
   }, [fetchItemsList]);
 
   const onRemoveItem = (itemId) => {
+    axios.interceptors.request.use(
+      function (config) {
+        // Do something before request is sent
+        console.log(config);
+        return config;
+      },
+      function (error) {
+        // Do something with request error
+        return Promise.reject(error);
+      }
+    );
+
     axios
-      .post("http://localhost:8080/api/admin/account/remove-item/" + itemId, {
-        headers: {
-          Authorization: adminAuthentication.accessToken,
-          // 'Content-Type': 'application/json',
-          // 'Access-Control-Allow-Origin': 'http://localhost:3000',
-        },
-      })
+      .post(
+        "http://localhost:8080/api/admin/account/remove-item/" + itemId,
+        {},
+        {
+          headers: {
+            Authorization: adminAuthentication.accessToken,
+            "X-XSRF-TOKEN": Cookies.get("XSRF-TOKEN"),
+            // 'Content-Type': 'application/json',
+            "Access-Control-Allow-Origin": "http://localhost:3000",
+          },
+        }
+      )
       .then((response) => {
-        if (response.data != null) {
+        if (response.status === StatusCodes.OK) {
           console.log(response);
           setItemsList(itemsList.filter((item) => item.id != itemId));
         }
       })
       .catch((error) => {
         console.log(error.response);
-        if (error.response.status == 401) {
-          dispatch(resetAuthentication());
-          routerHistory.push("/admin/login");
+        if (error.response.status === StatusCodes.UNAUTHORIZED) {
+          // dispatch(resetAuthentication());
+          // routerHistory.push("/admin/login");
         }
         console.log("Error: " + error);
       });

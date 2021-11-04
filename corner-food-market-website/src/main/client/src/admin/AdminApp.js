@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import AdminAccountAsideMenu from "./account/AdminAccountAsideMenu";
 import { Switch, Route, Redirect } from "react-router-dom";
 import { configureStore } from "@reduxjs/toolkit";
@@ -9,6 +9,8 @@ import adminHttpResponseLoaderGlobalStateReducer from "./Global/adminHttpRespons
 import AdminLoginPage from "./login/AdminLoginPage";
 import AdminAccountPage from "./account/AdminAccountPage";
 import ProtectedRoute from "./account/Utils/ProtectedRoute";
+import { useBeforeunload } from "react-beforeunload";
+import { setAuthentication } from "./Global/adminAuthentication";
 
 const adminStore = configureStore({
   reducer: {
@@ -17,10 +19,30 @@ const adminStore = configureStore({
     adminHttpResponseLoaderGlobalState:
       adminHttpResponseLoaderGlobalStateReducer,
   },
-  // devTools: false, // Disable Redux toolkit Devtools
+  // devTools: process.env.NODE_ENV !== "production", // Disable Redux toolkit Devtools in production application.
 });
 
 function AdminApp() {
+  useBeforeunload((event) => {
+    const adminStoreState = (({ adminAuthentication }) => ({
+      adminAuthentication,
+    }))(adminStore.getState());
+    window.sessionStorage.setItem(
+      "adminStoreState",
+      JSON.stringify(adminStoreState)
+    );
+  });
+
+  useEffect(() => {
+    const adminStoreState = JSON.parse(
+      window.sessionStorage.getItem("adminStoreState")
+    );
+    window.sessionStorage.removeItem("adminStoreState");
+    adminStore.dispatch(
+      setAuthentication(adminStoreState.adminAuthentication.value)
+    );
+  }, []);
+
   if (window.location.pathname === "/admin") {
     return <Redirect to="/admin/login" />;
   } else {

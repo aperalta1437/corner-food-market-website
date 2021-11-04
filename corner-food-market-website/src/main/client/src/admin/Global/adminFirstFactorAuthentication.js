@@ -4,8 +4,7 @@ import JSEncrypt from "jsencrypt";
 const initialStateValue = {
   isAuthenticated: false,
   accessToken: "",
-  email: "",
-  rsaEncryptedPassword: "",
+  base64RsaEncryptedPassword: "",
 };
 
 let rsaEncrypter = new JSEncrypt();
@@ -19,19 +18,9 @@ export const adminFirstFactorAuthenticationSlice = createSlice({
     setFirstFactorAuthentication: (state, action) => {
       state.value.isAuthenticated = action.payload.isAuthenticated;
       state.value.accessToken = action.payload.accessToken;
-      state.value.email = action.payload.email;
-
-      let decodedBase64RsaPublicKey;
-      try {
-        decodedBase64RsaPublicKey = window.atob(
-          action.payload.base64RsaPublicKey
-        );
-      } catch (e) {
-        decodedBase64RsaPublicKey = action.payload.base64RsaPublicKey;
-      }
 
       rsaEncrypter.setPublicKey(action.payload.base64RsaPublicKey);
-      state.value.rsaEncryptedPassword = rsaEncrypter.encrypt(
+      state.value.base64RsaEncryptedPassword = rsaEncrypter.encrypt(
         action.payload.password
       );
     },
