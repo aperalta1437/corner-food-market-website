@@ -8,7 +8,7 @@ import adminFirstFactorAuthenticationReducer from "./Global/adminFirstFactorAuth
 import adminHttpResponseLoaderGlobalStateReducer from "./Global/adminHttpResponseLoaderGlobalState";
 import AdminLoginPage from "./login/AdminLoginPage";
 import AdminAccountPage from "./account/AdminAccountPage";
-import ProtectedRoute from "./account/Utils/ProtectedRoute";
+import AdminProtectedRoute from "./account/Utils/AdminProtectedRoute";
 import { useBeforeunload } from "react-beforeunload";
 import { setAuthentication } from "./Global/adminAuthentication";
 
@@ -19,7 +19,7 @@ const adminStore = configureStore({
     adminHttpResponseLoaderGlobalState:
       adminHttpResponseLoaderGlobalStateReducer,
   },
-  // devTools: process.env.NODE_ENV !== "production", // Disable Redux toolkit Devtools in production application.
+  devTools: process.env.NODE_ENV !== "production", // Disable Redux toolkit Devtools in production application.
 });
 
 function AdminApp() {
@@ -38,9 +38,11 @@ function AdminApp() {
       window.sessionStorage.getItem("adminStoreState")
     );
     window.sessionStorage.removeItem("adminStoreState");
-    adminStore.dispatch(
-      setAuthentication(adminStoreState.adminAuthentication.value)
-    );
+    if (adminStoreState) {
+      adminStore.dispatch(
+        setAuthentication(adminStoreState.adminAuthentication.value)
+      );
+    }
   }, []);
 
   if (window.location.pathname === "/admin") {
@@ -49,7 +51,7 @@ function AdminApp() {
     return (
       <Provider store={adminStore}>
         <Switch>
-          <ProtectedRoute
+          <AdminProtectedRoute
             path="/admin/account"
             component={AdminAccountAsideMenu}
           />
@@ -61,7 +63,7 @@ function AdminApp() {
         >
           <Switch>
             <Route path="/admin/login" component={AdminLoginPage} />
-            <ProtectedRoute
+            <AdminProtectedRoute
               path="/admin/account"
               component={AdminAccountPage}
             />

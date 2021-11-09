@@ -38,22 +38,22 @@ public class LoginController {
         return "login";
     }
 
-    @PostMapping
-    public void processLogin(@RequestParam(name = "issue", required = false)String loginIssue, HttpServletResponse response) throws IOException {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        System.out.println(auth.getClass());
-
-        if ((auth != null) && auth.isAuthenticated() && !(auth instanceof AnonymousAuthenticationToken)) {
-            response.sendRedirect("/account");
-        } else {
-            if (loginIssue == null) {
-                loginIssue = LoginProcessIssueEnum.FAILED_LOGIN.name();
-            } else {
-                loginIssue = LoginProcessIssueEnum.EXPIRED_SESSION.name();
-            }
-            response.sendRedirect("/login?issue=" + loginIssue);
-        }
-    }
+//    @PostMapping
+//    public void processLogin(@RequestParam(name = "issue", required = false)String loginIssue, HttpServletResponse response) throws IOException {
+//        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+////        System.out.println(auth.getClass());
+//
+//        if ((auth != null) && auth.isAuthenticated() && !(auth instanceof AnonymousAuthenticationToken)) {
+//            response.sendRedirect("/account");
+//        } else {
+//            if (loginIssue == null) {
+//                loginIssue = LoginProcessIssueEnum.FAILED_LOGIN.name();
+//            } else {
+//                loginIssue = LoginProcessIssueEnum.EXPIRED_SESSION.name();
+//            }
+//            response.sendRedirect("/login?issue=" + loginIssue);
+//        }
+//    }
 
     @ModelAttribute
     public void checkAuth(HttpServletResponse response) throws IOException {

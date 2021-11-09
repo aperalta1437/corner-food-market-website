@@ -4,21 +4,19 @@ import { useSelector } from "react-redux";
 import { LoginProcessIssueEnum } from "../../login/Utils/loginProcessIssueEnum";
 
 function ProtectedRoute({ component: Component, ...rest }) {
-  const adminAuthentication = useSelector(
-    (state) => state.adminAuthentication.value
-  );
+  const authentication = useSelector((state) => state.authentication.value);
 
   return (
     <Route
       {...rest}
       render={(props) => {
-        if (adminAuthentication.isAuthenticated) {
+        if (authentication.isAuthenticated) {
           return <Component />;
         } else {
           return (
             <Redirect
               to={{
-                pathname: "/admin/login",
+                pathname: "/login",
                 search: `?issue=${LoginProcessIssueEnum.REDIRECTED.name}`,
                 state: { fromRoute: props.location },
               }}

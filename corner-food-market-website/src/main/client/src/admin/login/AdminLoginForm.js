@@ -2,7 +2,7 @@ import React from "react";
 import { useLocation, Switch, Route } from "react-router";
 import AdminFirstFactorLoginFields from "./AdminFirstFactorLoginFields";
 import AdminSecondFactorLoginFields from "./2fa-code/AdminSecondFactorLoginFields";
-import { LoginProcessIssueEnum } from "./Utils/loginProcessIssueEnum";
+import { AdminLoginProcessIssueEnum } from "./Utils/adminLoginProcessIssueEnum";
 
 const AdminLoginForm = () => {
   const location = useLocation();
@@ -12,7 +12,9 @@ const AdminLoginForm = () => {
       : null;
 
   const issue = new URLSearchParams(useLocation().search).get("issue");
-  const loginIssueMessage = issue ? LoginProcessIssueEnum[issue].message : null;
+  const loginIssueMessage = issue
+    ? AdminLoginProcessIssueEnum[issue].message
+    : null;
 
   return (
     <div

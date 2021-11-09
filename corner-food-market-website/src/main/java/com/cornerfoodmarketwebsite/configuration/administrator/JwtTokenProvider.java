@@ -31,7 +31,7 @@ public class JwtTokenProvider implements Serializable {
     }
 
     // TODO change to proper JWT reset time.
-    private long validityInMilliseconds = 10 * 60 * 60;
+    private long validityInMilliseconds = 10 * 60 * 60 * 100;
 
     public String createToken(String email) {
         Claims claims = Jwts.claims().setSubject(email);

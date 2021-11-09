@@ -5,9 +5,8 @@ import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { resetAuthentication } from "../Global/adminAuthentication";
-import { LoginProcessIssueEnum } from "../login/Utils/loginProcessIssueEnum";
+import { AdminLoginProcessIssueEnum } from "../login/Utils/adminLoginProcessIssueEnum";
 import { StatusCodes } from "http-status-codes";
-import Cookies from "js-cookie";
 
 function AdminAccountItemsList() {
   const routerHistory = useHistory();
@@ -36,7 +35,8 @@ function AdminAccountItemsList() {
         if (error.response.status == 401) {
           dispatch(resetAuthentication());
           routerHistory.push(
-            "/admin/login?issue=" + LoginProcessIssueEnum.EXPIRED_SESSION.name
+            "/admin/login?issue=" +
+              AdminLoginProcessIssueEnum.EXPIRED_SESSION.name
           );
         }
         console.log("Error: " + error);
@@ -67,7 +67,6 @@ function AdminAccountItemsList() {
         {
           headers: {
             Authorization: adminAuthentication.accessToken,
-            "X-XSRF-TOKEN": Cookies.get("XSRF-TOKEN"),
             // 'Content-Type': 'application/json',
             "Access-Control-Allow-Origin": "http://localhost:3000",
           },

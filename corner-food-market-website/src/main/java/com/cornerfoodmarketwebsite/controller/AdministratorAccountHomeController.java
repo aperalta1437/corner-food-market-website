@@ -33,4 +33,14 @@ public class AdministratorAccountHomeController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+
+    @PostMapping(value = "/add-item")
+    public ResponseEntity<Object> addOnSaleItem(@PathVariable(value = "item-id") String itemId) {
+        System.out.println("Inside removeOnSaleItem");
+        if (this.administratorAccountItemInformationService.removeOnSaleItem(Integer.parseInt(itemId))) {
+            return new ResponseEntity<>(HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
 }

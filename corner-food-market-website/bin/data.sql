@@ -86,9 +86,9 @@ VALUES (1, 'images/items/');
 
 -------------------------------------------------------------------------------------------------
 
-INSERT INTO ITEM_IMAGE (ITEM_ID, FILE_NAME, SORT_NUMBER, RELATIVE_PATH_ID)
-VALUES  (1, '1.jpg', 1, 1),
-        (2, '2.jpg', 1, 1);
+INSERT INTO ITEM_IMAGE (ITEM_ID, FILE_EXTENSION, SORT_NUMBER, RELATIVE_PATH_ID)
+VALUES  (1, 'jpg', 1, 1),
+        (2, 'jpg', 1, 1);
 
 ----------------------------------------------------------------------------------------
 

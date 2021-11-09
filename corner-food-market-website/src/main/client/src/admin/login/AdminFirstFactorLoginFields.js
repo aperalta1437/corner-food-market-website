@@ -6,7 +6,7 @@ import axios from "axios";
 import { StatusCodes } from "http-status-codes";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory, Redirect } from "react-router";
-import { LoginProcessIssueEnum } from "./Utils/loginProcessIssueEnum";
+import { AdminLoginProcessIssueEnum } from "./Utils/adminLoginProcessIssueEnum";
 
 function AdminFirstFactorLoginFields({ fromRoute }) {
   const [email, setEmail] = useState("");
@@ -71,7 +71,7 @@ function AdminFirstFactorLoginFields({ fromRoute }) {
           routerHistory.push(
             fromRoute
               ? fromRoute
-              : `/admin/login?issue=${LoginProcessIssueEnum.FAILED_LOGIN.name}`
+              : `/admin/login?issue=${AdminLoginProcessIssueEnum.FAILED_LOGIN.name}`
           );
         } else if ((response.status = StatusCodes.INTERNAL_SERVER_ERROR)) {
         }
