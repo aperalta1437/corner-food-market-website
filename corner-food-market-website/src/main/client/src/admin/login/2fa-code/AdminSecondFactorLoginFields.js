@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Redirect, useHistory } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
-import { setAuthentication } from "../../Global/adminAuthentication";
+import { setAuthentication } from "../../Global/administratorAuthentication";
 import { resetFirstFactorAuthentication } from "../../Global/adminFirstFactorAuthentication";
 import axios from "axios";
 import { StatusCodes } from "http-status-codes";

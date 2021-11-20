@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import logo from "../../images/logo.png"
+import logo from "../../images/logo.png";
 
 function AdminAccountAsideMenu() {
   return (
@@ -11,7 +11,7 @@ function AdminAccountAsideMenu() {
             src={logo}
             height="60"
             className="img-fluid"
-            alt="Ecommerce dashboard template"
+            alt="Corner Food Market logo"
           />
         </a>
         <div>
@@ -30,14 +30,14 @@ function AdminAccountAsideMenu() {
               {" "}
               <i class="icon material-icons md-shopping_bag"></i>
               <span className="text">Items</span>
-            </ Link>
+            </Link>
           </li>
           <li className="menu-item">
             <Link className="menu-link" to="/admin/account/add-item">
               {" "}
               <i className="icon material-icons md-add_box"></i>
               <span className="text">Add Item</span>
-            </ Link>
+            </Link>
           </li>
         </ul>
         <br />

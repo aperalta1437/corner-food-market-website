@@ -5,11 +5,15 @@ import { Provider } from "react-redux";
 import authenticationReducer from "./Global/authentication";
 import firstFactorAuthenticationReducer from "./Global/firstFactorAuthentication";
 import httpResponseLoaderGlobalStateReducer from "./Global/httpResponseLoaderGlobalState";
-import HomePage from "./HomePage";
-import AccountPage from "./account/AccountPage";
+import PublicPages from "./PublicPages";
+import AccountPages from "./account/AccountPages";
 import ProtectedRoute from "./account/Utils/ProtectedRoute";
 import { useBeforeunload } from "react-beforeunload";
 import { setAuthentication } from "./Global/authentication";
+import Header from "./Header";
+import NavigationBar from "./NavigationBar";
+import Footer from "./Footer";
+import AccountHeader from "./account/AccountHeader";
 
 const store = configureStore({
   reducer: {
@@ -36,18 +40,25 @@ function App() {
     }
   }, []);
 
+  // require("./Static/Customer/css/bootstrap.css");
   return (
     <Provider store={store}>
+      <Switch>
+        <Route path="/" component={Header} />
+        <ProtectedRoute path="/account" component={AccountHeader} />
+      </Switch>
+      <NavigationBar />
       <main
         className={
           window.location.pathname.includes("/login") ? "" : "main-wrap"
         }
       >
         <Switch>
-          <Route path="/" component={HomePage} />
-          <ProtectedRoute path="/account" component={AccountPage} />
+          <Route path="/" component={PublicPages} />
+          <ProtectedRoute path="/account" component={AccountPages} />
         </Switch>
       </main>
+      <Footer />
     </Provider>
   );
 }

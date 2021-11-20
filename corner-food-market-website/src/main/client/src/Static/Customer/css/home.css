@@ -1,0 +1,14 @@
+.div-discount-amount {
+  /* display: none; */
+  /* position: absolute;
+  top: 0;
+  margin-left: 0%;
+  width: 100px;
+  height: 20px; */
+  background-color: #b22222;
+  color: white;
+}
+
+.span-non-breaking {
+  white-space: nowrap;
+}

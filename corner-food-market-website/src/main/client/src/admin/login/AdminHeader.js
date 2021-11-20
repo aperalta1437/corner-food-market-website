@@ -1,7 +1,6 @@
 import React from "react";
 import logo from "../../images/logo.png";
 
-
 function AdminHeader() {
   return (
     <>
@@ -13,22 +12,16 @@ function AdminHeader() {
                 src={logo}
                 height="46"
                 className="img-fluid"
-                alt="Ecommerce dashboard template"
+                alt="Corner Food Market logo"
               />
             </a>
           </div>
           <div className="col-nav">
-            <button
-              className="btn btn-icon btn-mobile me-auto"
-              data-trigger="#offcanvas_aside"
-            >
-              <i className="md-28 material-icons md-menu"></i>
-            </button>
             <ul className="nav">
               <li className="nav-item">
                 <a
                   className="nav-link btn-icon"
-                  onclick="darkmode(this)"
+                  onClick={(e) => window.darkmode(e.target)}
                   title="Dark mode"
                   href="#"
                 >
@@ -36,39 +29,10 @@ function AdminHeader() {
                 </a>
               </li>
               <li className="nav-item">
-                <a className="nav-link btn-icon" href="#">
-                  <i class="material-icons md-notifications_active"></i>
-                </a>
-              </li>
-              <li className="nav-item">
                 <a className="nav-link" href="#">
                   {" "}
                   English{" "}
                 </a>
-              </li>
-              <li className="dropdown nav-item">
-                <a
-                  className="dropdown-toggle"
-                  data-bs-toggle="dropdown"
-                  href="#"
-                >
-                  <img
-                    className="img-xs rounded-circle"
-                    src="images/people/avatar1.jpg"
-                    alt="User"
-                  />
-                </a>
-                <div className="dropdown-menu dropdown-menu-end">
-                  <a className="dropdown-item" href="#">
-                    My profile
-                  </a>
-                  <a className="dropdown-item" href="#">
-                    Settings
-                  </a>
-                  <a className="dropdown-item text-danger" href="#">
-                    Exit
-                  </a>
-                </div>
               </li>
             </ul>
           </div>

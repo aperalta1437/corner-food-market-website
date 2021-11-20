@@ -8,9 +8,10 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 ReactDOM.render(
   <React.StrictMode>
     <Router>
+      {/* DO NOT CHANGE ROUTING ORDER BELOW. Otherwise, admin app will be inaccessible. */}
       <Switch>
-        <Route path="/" component={(props) => <App />} />
         <Route path="/admin" component={(props) => <AdminApp />} />
+        <Route path="/" component={(props) => <App />} />
       </Switch>
     </Router>
   </React.StrictMode>,

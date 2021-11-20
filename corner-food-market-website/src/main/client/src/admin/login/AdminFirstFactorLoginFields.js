@@ -119,19 +119,12 @@ function AdminFirstFactorLoginFields({ fromRoute }) {
           <a href="#" className="float-end">
             Forgot password?
           </a>
-          <label className="form-check">
-            <input type="checkbox" class="form-check-input" checked="" />
-            <span className="form-check-label">Remember</span>
-          </label>
         </div>
         <div className="mb-4">
-          <button type="submit" className="btn btn-primary w-100">
+          <button type="submit" className="btn btn-primary mt-3 w-100">
             Log In
           </button>
         </div>
-        <p className="text-center mb-4">
-          Don't have account? <a href="#">Sign up</a>
-        </p>
       </form>
     );
   }

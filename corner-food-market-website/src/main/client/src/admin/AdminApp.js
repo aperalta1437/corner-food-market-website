@@ -7,7 +7,7 @@ import adminAuthenticationReducer from "./Global/adminAuthentication";
 import adminFirstFactorAuthenticationReducer from "./Global/adminFirstFactorAuthentication";
 import adminHttpResponseLoaderGlobalStateReducer from "./Global/adminHttpResponseLoaderGlobalState";
 import AdminLoginPage from "./login/AdminLoginPage";
-import AdminAccountPage from "./account/AdminAccountPage";
+import AdminAccountPages from "./account/AdminAccountPages";
 import AdminProtectedRoute from "./account/Utils/AdminProtectedRoute";
 import { useBeforeunload } from "react-beforeunload";
 import { setAuthentication } from "./Global/adminAuthentication";
@@ -45,6 +45,7 @@ function AdminApp() {
     }
   }, []);
 
+  // require("../Static/Administrator/css/bootstrap.css");
   if (window.location.pathname === "/admin") {
     return <Redirect to="/admin/login" />;
   } else {
@@ -65,7 +66,7 @@ function AdminApp() {
             <Route path="/admin/login" component={AdminLoginPage} />
             <AdminProtectedRoute
               path="/admin/account"
-              component={AdminAccountPage}
+              component={AdminAccountPages}
             />
           </Switch>
         </main>

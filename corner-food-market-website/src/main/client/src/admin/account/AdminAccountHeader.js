@@ -37,18 +37,12 @@ function AdminAccountHeader() {
           <li className="nav-item">
             <a
               className="nav-link btn-icon"
-              onclick="darkmode(this)"
+              onClick={(e) => window.darkmode(e.target)}
               title="Dark mode"
               href="#"
             >
               {" "}
               <i className="material-icons md-nights_stay"></i>{" "}
-            </a>
-          </li>
-          <li className="nav-item">
-            <a className="nav-link btn-icon" href="#">
-              {" "}
-              <i className="material-icons md-notifications_active"></i>{" "}
             </a>
           </li>
           <li class="nav-item">
