@@ -6,7 +6,6 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "ITEM_INVENTORY")
-@Where(clause = "quantity>0")
 public class ItemInventory {
     @Id
     @Column(name = "ID")
@@ -15,12 +14,12 @@ public class ItemInventory {
     @Column(name = "QUANTITY")
     private short quantity;
 
-    public short getId() {
-        return id;
+    public ItemInventory(short quantity) {
+        this.quantity = quantity;
     }
 
-    public void setId(short id) {
-        this.id = id;
+    public short getId() {
+        return id;
     }
 
     public short getQuantity() {

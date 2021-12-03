@@ -22,12 +22,21 @@ public class Item {
     private ItemInventory itemInventory;
     @Column(name = "PRICE")
     private double price;
-    @Column(name = "DISCOUNT_ID")
-    private Short discountId;
     @Column(name = "IS_ON_SALE")
     private boolean isOnSale;
     @Column(name = "IS_POPULAR")
     private boolean isPopular;
+
+    public Item(String name, String description, String sku, short categoryId, ItemInventory itemInventory, double price, boolean isOnSale, boolean isPopular) {
+        this.name = name;
+        this.description = description;
+        this.sku = sku;
+        this.categoryId = categoryId;
+        this.itemInventory = itemInventory;
+        this.price = price;
+        this.isOnSale = isOnSale;
+        this.isPopular = isPopular;
+    }
 
     public short getId() {
         return id;
@@ -83,14 +92,6 @@ public class Item {
 
     public void setPrice(double price) {
         this.price = price;
-    }
-
-    public Short getDiscountId() {
-        return discountId;
-    }
-
-    public void setDiscountId(Short discountId) {
-        this.discountId = discountId;
     }
 
     public boolean getIsOnSale() {

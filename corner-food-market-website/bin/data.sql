@@ -15,20 +15,20 @@ VALUES  ('Foods & Drinks', 'Ready-to-eat foods and drinks', NULL, 0, 'foods-and-
         ('Snacks', 'Snacks such as cookies, chips and sweets', 1, 1, 'snacks'),                   -- 11
         ('Beverages', 'Beverages such as soda, juices and hot beverages', 1, 1, 'beverages'),
 
-        ('Hoagies', 'Different kids of hoagies', 2, 1, 'hoagies'),
-        ('Sandwiches', 'Different kids of sandwiches', 2, 1, 'sandwiches'),
-        ('Lunch Meat', 'Different kids of lunch meat', 2, 1, 'lunch-meat'),
-        ('Cheese', 'Different kids of cheese', 2, 1, 'cheese'),
+        ('Hoagies', 'Different kinds of hoagies', 2, 1, 'hoagies'),
+        ('Sandwiches', 'Different kinds of sandwiches', 2, 1, 'sandwiches'),
+        ('Lunch Meat', 'Different kinds of lunch meat', 2, 1, 'lunch-meat'),
+        ('Cheese', 'Different kinds of cheese', 2, 1, 'cheese'),
 
         ('Frozen Food', 'Food that is conserved frozen', 3, 1, 'frozen-food'),
         ('Frozen Utilities', 'Utilities that must be conserved frozen such as ice cubes', 3, 1, 'frozen-utilities'),
 
-        ('Fruits', 'Different kids of fruits', 5, 1, 'fruits'),
-        ('Vegetables', 'Different kids of vegetables', 5, 1, 'vegetables'),
+        ('Fruits', 'Different kinds of fruits', 5, 1, 'fruits'),
+        ('Vegetables', 'Different kinds of vegetables', 5, 1, 'vegetables'),
         ('Animal Products', 'Different products produced by animals', 5, 1, 'animal-products'),
 
-        ('Rice', 'Different kids of rice', 6, 1, 'rice'),
-        ('Bread', 'Different kids of bread', 6, 1, 'bread'),
+        ('Rice', 'Different kinds of rice', 6, 1, 'rice'),
+        ('Bread', 'Different kinds of bread', 6, 1, 'bread'),
 
         ('Home Utilities', 'Utilities to do house work such as cleaning', 8, 1, 'home-utilities'),
         ('Personal Care', 'Utilities to do house work such as cleaning', 8, 1, 'personal-care'),
@@ -41,19 +41,19 @@ VALUES  ('Foods & Drinks', 'Ready-to-eat foods and drinks', NULL, 0, 'foods-and-
 --------------------------------------------------------------------------------------------
 
         ('Sweets & Candies', 'Tobacco products such as cigarettes and cigars among others', 11, 2, 'sweets-and-candies'),     -- 30
-        ('Chips', 'Different Kids of bags of Chips', 11, 2, 'chips'),
-        ('Cookies', 'Different kids of cookies', 11, 2, 'cookies'),
-        ('Soda', 'Different kids of Soda', 12, 2, 'soda'),
-        ('Juices', 'Different kids of juices', 12, 2, 'juices'),
-        ('Hot Beverages', 'Different kids of hot beverages', 12, 2, 'hot-beverages'),
+        ('Chips', 'Different kinds of bags of Chips', 11, 2, 'chips'),
+        ('Cookies', 'Different kinds of cookies', 11, 2, 'cookies'),
+        ('Soda', 'Different kinds of Soda', 12, 2, 'soda'),
+        ('Juices', 'Different kinds of juices', 12, 2, 'juices'),
+        ('Hot Beverages', 'Different kinds of hot beverages', 12, 2, 'hot-beverages'),
 
-        ('Green Veggies', 'Different kids of green veggies', 20, 2, 'green-veggies'),
-        ('Legumes', 'Different kids of legumes', 20, 2, 'legumes'),
-        ('Milk', 'Different kids of milks', 21, 2, 'milk'),
-        ('Eggs', 'Different kids of eggs', 21, 2, 'eggs'),
+        ('Green Veggies', 'Different kinds of green veggies', 20, 2, 'green-veggies'),
+        ('Legumes', 'Different kinds of legumes', 20, 2, 'legumes'),
+        ('Milk', 'Different kinds of milks', 21, 2, 'milk'),
+        ('Eggs', 'Different kinds of eggs', 21, 2, 'eggs'),
 
-        ('Pet Food', 'Different kids of pet food such as dry and wet food', 28, 2, 'pet-food'),
-        ('Pet Utilities', 'Different kids of pet utilities such as litter', 28, 2, 'pet-utilities');
+        ('Pet Food', 'Different kinds of pet food such as dry and wet food', 28, 2, 'pet-food'),
+        ('Pet Utilities', 'Different kinds of pet utilities such as litter', 28, 2, 'pet-utilities');
 
 
 -----------------------------------------------------------------------------------------------
@@ -70,9 +70,16 @@ VALUES  (18),
 
 ---------------------------------------------------------------------------------------------
 
-INSERT INTO ITEM (NAME, DESCRIPTION, SKU, CATEGORY_ID, INVENTORY_ID, PRICE, DISCOUNT_ID, IS_ON_SALE, IS_POPULAR)
-VALUES  ('Coca-Cola bottle (16 oz)', '16 ounces Coca Cola bottle', '074312028328', 33, 1, 2.50, NULL, TRUE, TRUE),
-        ('Red apple (Medium)', 'Medium-sized red apple', '028312928428', 19, 2, 0.50, NULL, TRUE, TRUE);
+INSERT INTO DISCOUNT_TYPE (NAME, DESCRIPTION, PUBLIC_DESCRIPTION_TEMPLATE)
+VALUES  ('BUY_AND_GET_FREE', 'Buy a specified amount of an specific item and get a given amount for free.', 'Buy <?1> <?2> and get <?3> <?2> for free'),
+        ('CONTRACTUAL', 'An specified amount or percentage of the sale price is taken off the sale price at the point of sale.', 'Get <?1> off at checkout'),
+        ('FREE_SHIPPING', 'Get free shipping on specified items.', 'Get free shipping when you buy <?1> <?2>');
+
+--------------------------------------------------------------------------------------------------------------
+
+INSERT INTO ITEM (NAME, DESCRIPTION, SKU, CATEGORY_ID, INVENTORY_ID, PRICE, IS_ON_SALE, IS_POPULAR)
+VALUES  ('Coca-Cola bottle (16 oz)', '16 ounces Coca Cola bottle', '074312028328', 33, 1, 2.50, TRUE, TRUE),
+        ('Red apple (Medium)', 'Medium-sized red apple', '028312928428', 19, 2, 0.50, TRUE, TRUE);
 
 --------------------------------------------------------------------------------------------------------------
 
@@ -86,7 +93,7 @@ VALUES (1, 'images/items/');
 
 -------------------------------------------------------------------------------------------------
 
-INSERT INTO ITEM_IMAGE (ITEM_ID, FILE_EXTENSION, SORT_NUMBER, RELATIVE_PATH_ID)
+INSERT INTO ITEM_IMAGE (ITEM_ID, FILE_EXTENSION, SORT_NUMBER, FILE_RELATIVE_PATH_ID)
 VALUES  (1, 'jpg', 1, 1),
         (2, 'jpg', 1, 1);
 

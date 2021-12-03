@@ -22,12 +22,10 @@ import java.io.IOException;
 @Controller
 @RequestMapping(value = "/signup")
 public class SignupController {
-    @Autowired
     private final CustomerRepository customerRepository;
-
-    @Autowired
     private final DeliveryAddressRepository deliveryAddressRepository;
 
+    @Autowired
     public SignupController(CustomerRepository customerRepository, DeliveryAddressRepository deliveryAddressRepository) {
         this.customerRepository = customerRepository;
         this.deliveryAddressRepository = deliveryAddressRepository;

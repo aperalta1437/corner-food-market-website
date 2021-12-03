@@ -1,12 +1,11 @@
 import React, { useState } from "react";
 import { Redirect, useHistory } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
-import { setAuthentication } from "../../Global/administratorAuthentication";
+import { setAuthentication } from "../../Global/adminAuthentication";
 import { resetFirstFactorAuthentication } from "../../Global/adminFirstFactorAuthentication";
 import axios from "axios";
 import { StatusCodes } from "http-status-codes";
 import { flipIsLoading } from "../../Global/adminHttpResponseLoaderGlobalState";
-import Cookies from "js-cookie";
 
 function AdminSecondFactorLoginFields({ fromRoute }) {
   const dispatch = useDispatch();
@@ -49,16 +48,13 @@ function AdminSecondFactorLoginFields({ fromRoute }) {
           console.log(response.data["Access-Token"]);
 
           axios
-            .post(
-              "http://localhost:8080/api/admin/login/tfa-post-authenticate/logout",
-              {
-                headers: {
-                  Authorization: firstFactorAuthentication.accessToken,
-                  "Content-Type": "application/json",
-                  "Access-Control-Allow-Origin": "http://localhost:3000",
-                },
-              }
-            )
+            .post("http://localhost:8080/api/admin/login/tfa-post-authenticate/logout", {
+              headers: {
+                Authorization: firstFactorAuthentication.accessToken,
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "http://localhost:3000",
+              },
+            })
             .then((response) => {
               if (response.status === StatusCodes.OK) {
                 console.log("First factor logged out successfully.");
@@ -91,10 +87,7 @@ function AdminSecondFactorLoginFields({ fromRoute }) {
     return <Redirect to="/admin/login" />;
   } else {
     return (
-      <form
-        onSubmit={submitSecondFactorLoginForm}
-        onReset={resetSecondFactorLoginForm}
-      >
+      <form onSubmit={submitSecondFactorLoginForm} onReset={resetSecondFactorLoginForm}>
         <div className="mb-3">
           <input
             className="form-control"

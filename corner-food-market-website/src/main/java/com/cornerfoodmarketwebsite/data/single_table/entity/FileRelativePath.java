@@ -14,12 +14,16 @@ public class FileRelativePath {
     @Column(name = "RELATIVE_PATH")
     private String relativePath;
 
-    public short getId() {
-        return id;
+    public FileRelativePath() {
     }
 
-    public void setId(short id) {
-        this.id = id;
+    public FileRelativePath(short fileTypeId, String relativePath) {
+        this.fileTypeId = fileTypeId;
+        this.relativePath = relativePath;
+    }
+
+    public short getId() {
+        return id;
     }
 
     public short getFileTypeId() {

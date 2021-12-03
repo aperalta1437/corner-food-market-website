@@ -14,7 +14,6 @@ export const adminHttpResponseLoaderGlobalStateSlice = createSlice({
   },
 });
 
-export const { flipIsLoading } =
-  adminHttpResponseLoaderGlobalStateSlice.actions;
+export const { flipIsLoading } = adminHttpResponseLoaderGlobalStateSlice.actions;
 
 export default adminHttpResponseLoaderGlobalStateSlice.reducer;

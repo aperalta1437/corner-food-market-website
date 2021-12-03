@@ -16,34 +16,33 @@ const adminStore = configureStore({
   reducer: {
     adminAuthentication: adminAuthenticationReducer,
     adminFirstFactorAuthentication: adminFirstFactorAuthenticationReducer,
-    adminHttpResponseLoaderGlobalState:
-      adminHttpResponseLoaderGlobalStateReducer,
+    adminHttpResponseLoaderGlobalState: adminHttpResponseLoaderGlobalStateReducer,
   },
   devTools: process.env.NODE_ENV !== "production", // Disable Redux toolkit Devtools in production application.
 });
 
 function AdminApp() {
   useBeforeunload((event) => {
-    const adminStoreState = (({ adminAuthentication }) => ({
+    const adminStoreStateToPersist = (({ adminAuthentication }) => ({
       adminAuthentication,
     }))(adminStore.getState());
     window.sessionStorage.setItem(
-      "adminStoreState",
-      JSON.stringify(adminStoreState)
+      "adminStorePersistedState",
+      JSON.stringify(adminStoreStateToPersist)
     );
   });
 
   useEffect(() => {
-    const adminStoreState = JSON.parse(
-      window.sessionStorage.getItem("adminStoreState")
+    const adminStorePersistedState = JSON.parse(
+      window.sessionStorage.getItem("adminStorePersistedState")
     );
-    window.sessionStorage.removeItem("adminStoreState");
-    if (adminStoreState) {
-      adminStore.dispatch(
-        setAuthentication(adminStoreState.adminAuthentication.value)
-      );
+    window.sessionStorage.removeItem("adminStorePersistedState");
+    if (adminStorePersistedState) {
+      adminStore.dispatch(setAuthentication(adminStorePersistedState.adminAuthentication.value));
     }
   }, []);
+
+  console.log("domain:  " + window.location.origin);
 
   // require("../Static/Administrator/css/bootstrap.css");
   if (window.location.pathname === "/admin") {
@@ -52,22 +51,12 @@ function AdminApp() {
     return (
       <Provider store={adminStore}>
         <Switch>
-          <AdminProtectedRoute
-            path="/admin/account"
-            component={AdminAccountAsideMenu}
-          />
+          <AdminProtectedRoute path="/admin/account" component={AdminAccountAsideMenu} />
         </Switch>
-        <main
-          className={
-            window.location.pathname.includes("/admin/login") ? "" : "main-wrap"
-          }
-        >
+        <main className={window.location.pathname.includes("/admin/login") ? "" : "main-wrap"}>
           <Switch>
             <Route path="/admin/login" component={AdminLoginPage} />
-            <AdminProtectedRoute
-              path="/admin/account"
-              component={AdminAccountPages}
-            />
+            <AdminProtectedRoute path="/admin/account" component={AdminAccountPages} />
           </Switch>
         </main>
       </Provider>

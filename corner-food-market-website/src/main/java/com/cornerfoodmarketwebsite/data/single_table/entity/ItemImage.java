@@ -11,21 +11,29 @@ public class ItemImage {
     private int id;
     @Column(name = "ITEM_ID")
     private short itemId;
+    @Column(name = "FILE_EXTENSION")
+    private String fileExtension;
     @Column(name = "FILE_NAME")
     private String fileName;
     @Column(name = "SORT_NUMBER")
     private short sortNumber;
 
     @ManyToOne(targetEntity = FileRelativePath.class)
-    @JoinColumn(name = "RELATIVE_PATH_ID")
+    @JoinColumn(name = "FILE_RELATIVE_PATH_ID")
     private FileRelativePath fileRelativePath;
+
+    public ItemImage() {
+    }
+
+    public ItemImage(short itemId, String fileExtension, short sortNumber, FileRelativePath fileRelativePath) {
+        this.itemId = itemId;
+        this.fileExtension = fileExtension;
+        this.sortNumber = sortNumber;
+        this.fileRelativePath = fileRelativePath;
+    }
 
     public int getId() {
         return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public short getItemId() {
@@ -34,6 +42,14 @@ public class ItemImage {
 
     public void setItemId(short itemId) {
         this.itemId = itemId;
+    }
+
+    public String getFileExtension() {
+        return fileExtension;
+    }
+
+    public void setFileExtension(String fileExtension) {
+        this.fileExtension = fileExtension;
     }
 
     public String getFileName() {

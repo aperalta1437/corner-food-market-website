@@ -17,7 +17,6 @@ import java.io.IOException;
 @RequestMapping(value = "/login")
 public class LoginController {
 
-    @Autowired
     private final CustomerRepository customerRepository;
 
     @Autowired

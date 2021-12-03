@@ -12,9 +12,7 @@ function AdminLoginPage() {
   //     ? location.state.fromRoute
   //     : null;
 
-  const authentication = useSelector(
-    (state) => state.adminAuthentication.value
-  );
+  const authentication = useSelector((state) => state.adminAuthentication.value);
 
   const httpResponseLoaderGlobalState = useSelector(
     (state) => state.adminHttpResponseLoaderGlobalState.value
@@ -25,16 +23,11 @@ function AdminLoginPage() {
   } else {
     return (
       <>
-        <HttpResponseLoader
-          isLoading={httpResponseLoaderGlobalState.isLoading}
-        />
+        <HttpResponseLoader isLoading={httpResponseLoaderGlobalState.isLoading} />
         <AdminHeader />
         <section className="content-main">
           <Switch>
-            <Route
-              path="/admin/login"
-              component={(props) => <AdminLoginForm />}
-            />
+            <Route path="/admin/login" component={(props) => <AdminLoginForm />} />
           </Switch>
         </section>
       </>

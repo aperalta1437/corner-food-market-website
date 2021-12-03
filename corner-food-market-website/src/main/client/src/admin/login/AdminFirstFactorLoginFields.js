@@ -18,13 +18,11 @@ function AdminFirstFactorLoginFields({ fromRoute }) {
     (state) => state.adminFirstFactorAuthentication.value
   );
 
-  const authentication = useSelector(
-    (state) => state.adminAuthentication.value
-  );
+  const authentication = useSelector((state) => state.adminAuthentication.value);
 
-  const httpResponseLoaderGlobalState = useSelector(
-    (state) => state.adminHttpResponseLoaderGlobalState.value
-  );
+  // const httpResponseLoaderGlobalState = useSelector(
+  //   (state) => state.adminHttpResponseLoaderGlobalState.value
+  // );
 
   const submitFirstFactorLoginForm = (event) => {
     event.preventDefault();
@@ -39,9 +37,7 @@ function AdminFirstFactorLoginFields({ fromRoute }) {
       .then((response) => {
         if (response.status === StatusCodes.OK) {
           if (response.data["Is-Tfa-Enabled"]) {
-            console.log(
-              "Base64 public key: " + response.data["Base64-Rsa-Public-Key"]
-            );
+            console.log("Base64 public key: " + response.data["Base64-Rsa-Public-Key"]);
             dispatch(
               setFirstFactorAuthentication({
                 isAuthenticated: true,

@@ -19,6 +19,8 @@ public class ItemCategory {
     private short categoryLevel;
     @Column(name = "URL_ROUTE_NAME")
     private String urlRouteName;
+    @Column(name = "IS_LEAF")
+    private boolean isLeaf;
 
     public short getId() {
         return id;
@@ -66,5 +68,9 @@ public class ItemCategory {
 
     public void setUrlRouteName(String urlRouteName) {
         this.urlRouteName = urlRouteName;
+    }
+
+    public boolean getIsLeaf() {
+        return isLeaf;
     }
 }

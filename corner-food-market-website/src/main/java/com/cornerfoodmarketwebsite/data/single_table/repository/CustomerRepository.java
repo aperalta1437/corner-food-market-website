@@ -1,12 +1,13 @@
 package com.cornerfoodmarketwebsite.data.single_table.repository;
 
 import com.cornerfoodmarketwebsite.data.single_table.entity.Customer;
+import com.cornerfoodmarketwebsite.data.utils.custom_jpa_repository.CustomJpaRepository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface CustomerRepository extends JpaRepository<Customer, Short> {
+public interface CustomerRepository extends CustomJpaRepository<Customer, Short> {
     boolean existsByEmail(String email);
 
     @Query("SELECT C1 FROM Customer C1 WHERE C1.email = ?1")

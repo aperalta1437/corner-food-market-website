@@ -12,9 +12,7 @@ function AdminAccountItemsList() {
   const routerHistory = useHistory();
   const dispatch = useDispatch();
 
-  const adminAuthentication = useSelector(
-    (state) => state.adminAuthentication.value
-  );
+  const adminAuthentication = useSelector((state) => state.adminAuthentication.value);
 
   console.log(adminAuthentication.accessToken);
   let [itemsList, setItemsList] = useState([]);
@@ -32,11 +30,10 @@ function AdminAccountItemsList() {
         console.log(response.data);
       })
       .catch((error) => {
-        if (error.response.status == 401) {
+        if (error.response.status == StatusCodes.UNAUTHORIZED) {
           dispatch(resetAuthentication());
           routerHistory.push(
-            "/admin/login?issue=" +
-              AdminLoginProcessIssueEnum.EXPIRED_SESSION.name
+            "/admin/login?issue=" + AdminLoginProcessIssueEnum.EXPIRED_SESSION.name
           );
         }
         console.log("Error: " + error);
@@ -109,11 +106,7 @@ function AdminAccountItemsList() {
         <header className="card-header">
           <div className="row gx-3">
             <div className="col-lg-4 col-md-6 me-auto">
-              <input
-                type="text"
-                placeholder="Search..."
-                className="form-control"
-              />
+              <input type="text" placeholder="Search..." className="form-control" />
             </div>
             <div className="col-lg-2 col-6 col-md-3">
               <select className="form-select">
@@ -135,11 +128,7 @@ function AdminAccountItemsList() {
         <div className="card-body">
           <div className="row gx-3 row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4 row-cols-xxl-5">
             {itemsList.map((item) => (
-              <AdminAccountItem
-                key={item.id}
-                item={item}
-                onRemoveItem={onRemoveItem}
-              />
+              <AdminAccountItem key={item.id} item={item} onRemoveItem={onRemoveItem} />
             ))}
           </div>
 

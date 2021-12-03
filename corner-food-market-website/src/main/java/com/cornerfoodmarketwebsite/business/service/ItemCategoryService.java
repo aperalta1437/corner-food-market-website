@@ -18,9 +18,9 @@ public class ItemCategoryService {
     }
 
     public List<NavigationBarCategory> getNavigationBarCategoryHierarchy() {
-        short highestCategoryLevel = this.itemCategoryRepository.getHighestCategoryLevel();
-        short totalCategoriesFromBiggestLevel = this.itemCategoryRepository.getTotalCategoriesFromBiggestLevel();
-
+//        short highestCategoryLevel = this.itemCategoryRepository.getHighestCategoryLevel();
+//        short totalCategoriesFromBiggestLevel = this.itemCategoryRepository.getTotalCategoriesFromBiggestLevel();
+//
         return null;
     }
 

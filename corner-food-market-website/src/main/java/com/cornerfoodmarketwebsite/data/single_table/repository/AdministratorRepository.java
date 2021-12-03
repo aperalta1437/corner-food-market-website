@@ -2,6 +2,7 @@ package com.cornerfoodmarketwebsite.data.single_table.repository;
 
 import com.cornerfoodmarketwebsite.data.single_table.entity.Administrator;
 import com.cornerfoodmarketwebsite.data.single_table.entity.utils.TfaTypeEnum;
+import com.cornerfoodmarketwebsite.data.utils.custom_jpa_repository.CustomJpaRepository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -11,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.sql.Timestamp;
 
 @Repository
-public interface AdministratorRepository extends JpaRepository<Administrator, Short> {
+public interface AdministratorRepository extends CustomJpaRepository<Administrator, Short> {
     boolean existsByEmail(String email);
 
     @Query("SELECT A1 FROM Administrator A1 WHERE A1.email = ?1")

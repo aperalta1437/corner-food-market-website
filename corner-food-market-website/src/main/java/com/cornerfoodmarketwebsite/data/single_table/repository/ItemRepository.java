@@ -3,6 +3,7 @@ package com.cornerfoodmarketwebsite.data.single_table.repository;
 
 import com.cornerfoodmarketwebsite.data.utils.ItemIdAndQuantity;
 import com.cornerfoodmarketwebsite.data.single_table.entity.Item;
+import com.cornerfoodmarketwebsite.data.utils.custom_jpa_repository.CustomJpaRepository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -12,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Repository
-public interface ItemRepository extends JpaRepository<Item, Short> {
+public interface ItemRepository extends CustomJpaRepository<Item, Short> {
     @Query(value = "SELECT I1 FROM Item I1 WHERE I1.isOnSale = true")
     Iterable<Item> findAllOnSale();
 

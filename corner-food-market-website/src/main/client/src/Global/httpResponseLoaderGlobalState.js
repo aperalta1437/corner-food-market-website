@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialStateValue = { isLoading: false };
+const initialStateValue = { isLoading: true };
 
 export const httpResponseLoaderGlobalStateSlice = createSlice({
   name: "httpResponseLoaderGlobalState",

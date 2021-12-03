@@ -47,16 +47,17 @@ public class ShoppingCartItemsList extends ArrayList<AccountItemInformation> {
     }
 
     public void setShoppingCartTotals() {
-        this.forEach(accountItemInformation -> {
-            totalPrice += accountItemInformation.getPrice() * accountItemInformation.getInCartQuantity();
-            if (accountItemInformation.getIsPercentageBasedDiscount() != null) {
-                if (accountItemInformation.getIsPercentageBasedDiscount()) {
-                    totalDiscountAmount += accountItemInformation.getPrice() * (accountItemInformation.getDiscountPercent() / 100);
-                } else {
-                    totalDiscountAmount += accountItemInformation.getDiscountAmount();
-                }
-            }
-        });
-        totalPostDiscountPrice = totalPrice - totalDiscountAmount;
+        // TODO Fix this method
+//        this.forEach(accountItemInformation -> {
+//            totalPrice += accountItemInformation.getPrice() * accountItemInformation.getInCartQuantity();
+//            if (accountItemInformation.getIsPercentageBasedDiscount() != null) {
+//                if (accountItemInformation.getIsPercentageBasedDiscount()) {
+//                    totalDiscountAmount += accountItemInformation.getPrice() * (accountItemInformation.getDiscountPercent() / 100);
+//                } else {
+//                    totalDiscountAmount += accountItemInformation.getDiscountAmount();
+//                }
+//            }
+//        });
+//        totalPostDiscountPrice = totalPrice - totalDiscountAmount;
     }
 }
