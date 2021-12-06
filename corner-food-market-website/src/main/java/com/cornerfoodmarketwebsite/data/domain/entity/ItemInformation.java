@@ -44,7 +44,7 @@ public class ItemInformation {
     private String categoryUrlRouteName;
 
     @Where(clause = "SORT_NUMBER = 1")
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "ITEM_ID", referencedColumnName = "ID")
     List<ItemImage> images = new ArrayList<>();
 

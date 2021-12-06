@@ -31,4 +31,13 @@ public class EmailService {
 
         return true;
     }
+
+    public void sendNewAdminSignupUrl(String receiverEmail, String uuid) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setFrom(senderEmail);
+        message.setTo(receiverEmail);
+        message.setSubject("New Administrator Signup");
+        message.setText("Sign up as a new administrator using the following link: https://localhost:3000/admin/new-admin-signup/" + uuid);
+        emailSender.send(message);
+    }
 }

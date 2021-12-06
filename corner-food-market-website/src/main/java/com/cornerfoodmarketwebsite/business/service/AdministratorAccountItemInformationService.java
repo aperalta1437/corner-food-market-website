@@ -87,6 +87,7 @@ public class AdministratorAccountItemInformationService {
 
     public void saveItemImageFileToDirectory(String clientItemsImagesDirectory, String fileName, MultipartFile multipartFile) throws URISyntaxException {
         makeDirectoryIfNotExist(clientItemsImagesDirectory);
+        System.out.println("Filename: " + fileName);
         Path fileNamePath = Paths.get(clientItemsImagesDirectory, fileName);
 
         try {

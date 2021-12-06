@@ -1,5 +1,4 @@
 import React from "react";
-import AdminHeader from "./AdminHeader";
 import AdminLoginForm from "./AdminLoginForm";
 import { Switch, Route, Redirect } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -24,7 +23,6 @@ function AdminLoginPage() {
     return (
       <>
         <HttpResponseLoader isLoading={httpResponseLoaderGlobalState.isLoading} />
-        <AdminHeader />
         <section className="content-main">
           <Switch>
             <Route path="/admin/login" component={(props) => <AdminLoginForm />} />

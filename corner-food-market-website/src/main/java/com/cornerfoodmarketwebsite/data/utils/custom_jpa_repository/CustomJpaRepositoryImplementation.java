@@ -5,11 +5,13 @@ import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.io.Serializable;
 
 public class CustomJpaRepositoryImplementation<T, ID extends Serializable> extends SimpleJpaRepository<T, ID>
         implements CustomJpaRepository<T, ID> {
 
+    @PersistenceContext
     private final EntityManager entityManager;
 
     public CustomJpaRepositoryImplementation(JpaEntityInformation entityInformation, EntityManager entityManager) {

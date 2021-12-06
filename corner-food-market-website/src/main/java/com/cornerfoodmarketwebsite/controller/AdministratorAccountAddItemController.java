@@ -37,7 +37,7 @@ public class AdministratorAccountAddItemController {
     }
 
     @PostMapping(value = "/upload-new-item")
-    public ResponseEntity<Object> uploadNewItem(AdministratorAddItemForm administratorAddItemForm, HttpServletRequest httpServletRequest) throws JSONException {
+    public ResponseEntity<String> uploadNewItem(AdministratorAddItemForm administratorAddItemForm, HttpServletRequest httpServletRequest) throws JSONException {
         JSONObject jsonResponse = new JSONObject();
 
         try {

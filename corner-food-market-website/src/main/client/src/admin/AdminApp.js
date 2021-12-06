@@ -7,8 +7,10 @@ import adminAuthenticationReducer from "./Global/adminAuthentication";
 import adminFirstFactorAuthenticationReducer from "./Global/adminFirstFactorAuthentication";
 import adminHttpResponseLoaderGlobalStateReducer from "./Global/adminHttpResponseLoaderGlobalState";
 import AdminLoginPage from "./login/AdminLoginPage";
+import AdminNewAdminSignupPage from "./new-admin-signup/AdminNewAdminSignupPage";
 import AdminAccountPages from "./account/AdminAccountPages";
 import AdminProtectedRoute from "./account/Utils/AdminProtectedRoute";
+import AdminHeader from "./login/AdminHeader";
 import { useBeforeunload } from "react-beforeunload";
 import { setAuthentication } from "./Global/adminAuthentication";
 
@@ -53,9 +55,12 @@ function AdminApp() {
         <Switch>
           <AdminProtectedRoute path="/admin/account" component={AdminAccountAsideMenu} />
         </Switch>
-        <main className={window.location.pathname.includes("/admin/login") ? "" : "main-wrap"}>
+        <main className={!window.location.pathname.includes("/admin/account") ? "" : "main-wrap"}>
+          {!window.location.pathname.includes("/admin/account") ? <AdminHeader /> : <></>}
           <Switch>
-            <Route path="/admin/login" component={AdminLoginPage} />
+            <Route path="/admin/login" component={AdminLoginPage} />{" "}
+            {/* Do NOT use "exact" so we can navigate to .../2fa-code */}
+            <Route path="/admin/new-admin-signup/:uuid" exact component={AdminNewAdminSignupPage} />
             <AdminProtectedRoute path="/admin/account" component={AdminAccountPages} />
           </Switch>
         </main>
