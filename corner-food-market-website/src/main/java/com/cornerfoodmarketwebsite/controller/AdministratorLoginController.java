@@ -32,7 +32,7 @@ import javax.servlet.http.HttpServletResponse;
 
 @RestController
 @RequestMapping(value = "/api/admin/login")
-@CrossOrigin(origins = "http://localhost:3000")
+//@CrossOrigin(origins = "http://localhost:3000")
 public class AdministratorLoginController {
 
     private static Logger log = LoggerFactory.getLogger(AdministratorLoginController.class);
@@ -90,6 +90,11 @@ public class AdministratorLoginController {
 //            return new ResponseEntity<String>(jsonResponse.toString(), HttpStatus.INTERNAL_SERVER_ERROR);
 //        }
 //        return new ResponseEntity<String>(jsonResponse.toString(), HttpStatus.OK);
+//    }
+
+//    @GetMapping
+//    public String getGreeting() {
+//        return "Hellow World";
 //    }
 
     @PostMapping(value = "/authenticate", produces = MediaType.APPLICATION_JSON_VALUE)

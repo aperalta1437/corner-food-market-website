@@ -16,4 +16,5 @@ public interface ItemImageRepository extends CustomJpaRepository<ItemImage, Inte
 
     @Query(value = "SELECT II1 FROM ItemImage II1 WHERE II1.id = ?1")
     ItemImage getItemImageById(int id);
+
 }

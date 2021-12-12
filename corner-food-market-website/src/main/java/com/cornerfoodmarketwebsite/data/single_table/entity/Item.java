@@ -17,7 +17,7 @@ public class Item {
     private String sku;
     @Column(name = "CATEGORY_ID")
     private short categoryId;
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "INVENTORY_ID", referencedColumnName = "ID")
     private ItemInventory itemInventory;
     @Column(name = "PRICE")

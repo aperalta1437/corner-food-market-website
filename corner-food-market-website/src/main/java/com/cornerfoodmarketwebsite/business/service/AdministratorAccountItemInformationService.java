@@ -58,7 +58,8 @@ public class AdministratorAccountItemInformationService {
 
     public void addNewItem(AdministratorAddItemForm administratorAddItemForm) throws URISyntaxException {
         ItemInventory newItemInventory = new ItemInventory(administratorAddItemForm.getItemQuantity());
-        newItemInventory = this.itemInventoryRepository.save(newItemInventory);
+//        newItemInventory = this.itemInventoryRepository.saveAndFlush(newItemInventory);
+//        this.itemInventoryRepository.refresh(newItemInventory);
         Item newItem = new Item(administratorAddItemForm.getItemTitle(), administratorAddItemForm.getItemDescription(), administratorAddItemForm.getItemSku(), administratorAddItemForm.getItemCategoryId(), newItemInventory, administratorAddItemForm.getItemPrice(), true, true);
         newItem = this.itemRepository.save(newItem);
 
@@ -77,11 +78,11 @@ public class AdministratorAccountItemInformationService {
         }
         MultipartFile newItemImageFile = administratorAddItemForm.getItemImageFile();
         ItemImage newItemImage = new ItemImage(newItem.getId(), FilenameUtils.getExtension(newItemImageFile.getOriginalFilename()), (short) 1, newFileRelativePath);
-        newItemImage = this.itemImageRepository.saveAndFlush(newItemImage);
-        this.itemImageRepository.refresh(newItemImage);
-        System.out.println(newItemImage.getFileName());
+        newItemImage = this.itemImageRepository.save(newItemImage);
+
+        System.out.println(newItemImage.generateNewFileName());
         System.out.println(clientItemsImagesDirectory);
-        this.saveItemImageFileToDirectory(clientItemsImagesDirectory, newItemImage.getFileName(), newItemImageFile);
+        this.saveItemImageFileToDirectory(clientItemsImagesDirectory, newItemImage.generateNewFileName(), newItemImageFile);
         System.out.println("New iteam Id: " + newItem.getId());
     }
 

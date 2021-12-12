@@ -83,4 +83,8 @@ public class ItemImage {
     public String getSourceRelativePathName() {
         return this.fileRelativePath.getRelativePath() + this.fileName;
     }
+
+    public String generateNewFileName() {
+        return this.id + "." + this.fileExtension;
+    }
 }
