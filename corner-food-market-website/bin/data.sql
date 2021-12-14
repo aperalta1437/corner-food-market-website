@@ -89,7 +89,7 @@ VALUES ('image', 'Images of different characteristics such as extension and size
 --------------------------------------------------------------------------------------------------
 
 INSERT INTO FILE_RELATIVE_PATH (FILE_TYPE_ID, RELATIVE_PATH)
-VALUES (1, 'images/items/');
+VALUES (1, 'api/client-specific/localhost/images/items/');
 
 -------------------------------------------------------------------------------------------------
 

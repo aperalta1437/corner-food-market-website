@@ -18,34 +18,36 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 
 @Service
 public class AdministratorAccountItemInformationService {
 
-    @Autowired
-    private HttpServletRequest httpServletRequest;
+
+    private final HttpServletRequest httpServletRequest;
 
     private final AdministratorAccountItemInformationRepository administratorAccountItemInformationRepository;
     private final ItemRepository itemRepository;
     private final ItemInventoryRepository itemInventoryRepository;
     private final FileRelativePathRepository fileRelativePathRepository;
     private final ItemImageRepository itemImageRepository;
-    private static final String clientsMediaDirectory = System.getProperty("user.dir") + "/src/main/resources/static/";
+
+    private final AwsS3BucketStorageService awsS3BucketStorageService;
+
+//    private static final String clientsMediaDirectory = System.getProperty("user.dir") + "/src/main/resources/static/";
+    private static final String awsS3BucketClientsMediaDirectory = "api/client-specific/";
 
     @Autowired
-    public AdministratorAccountItemInformationService(AdministratorAccountItemInformationRepository administratorAccountItemInformationRepository, ItemRepository itemRepository, ItemInventoryRepository itemInventoryRepository, FileRelativePathRepository fileRelativePathRepository, ItemImageRepository itemImageRepository) {
+    public AdministratorAccountItemInformationService(HttpServletRequest httpServletRequest, AdministratorAccountItemInformationRepository administratorAccountItemInformationRepository, ItemRepository itemRepository, ItemInventoryRepository itemInventoryRepository, FileRelativePathRepository fileRelativePathRepository, ItemImageRepository itemImageRepository, AwsS3BucketStorageService awsS3BucketStorageService) {
+        this.httpServletRequest = httpServletRequest;
         this.administratorAccountItemInformationRepository = administratorAccountItemInformationRepository;
         this.itemRepository = itemRepository;
         this.itemInventoryRepository = itemInventoryRepository;
         this.fileRelativePathRepository = fileRelativePathRepository;
         this.itemImageRepository = itemImageRepository;
+        this.awsS3BucketStorageService = awsS3BucketStorageService;
     }
 
     public Iterable<AdministratorAccountItemInformation> getItemsInformation() {
@@ -56,7 +58,7 @@ public class AdministratorAccountItemInformationService {
         return this.itemRepository.setIsOnSaleToFalseByItemId((short) itemId) > 0;
     }
 
-    public void addNewItem(AdministratorAddItemForm administratorAddItemForm) throws URISyntaxException {
+    public void addNewItem(AdministratorAddItemForm administratorAddItemForm) throws URISyntaxException, IOException {
         ItemInventory newItemInventory = new ItemInventory(administratorAddItemForm.getItemQuantity());
 //        newItemInventory = this.itemInventoryRepository.saveAndFlush(newItemInventory);
 //        this.itemInventoryRepository.refresh(newItemInventory);
@@ -67,8 +69,8 @@ public class AdministratorAccountItemInformationService {
         URI requestUri = new URI(requestUrl);
         String requestHost = requestUri.getHost();
         String requestDomain = requestHost.startsWith("www.") ? requestHost.substring(4) : requestHost;
-        String newItemImageFileRelativePath = "client-specific/" + requestDomain + "/images/items/";
-        String clientItemsImagesDirectory = clientsMediaDirectory + newItemImageFileRelativePath;
+        final String newItemImageFileRelativePath = awsS3BucketClientsMediaDirectory + requestDomain + "/images/items/";
+
         FileRelativePath newFileRelativePath;
         if (this.fileRelativePathRepository.existsByRelativePath(newItemImageFileRelativePath)) {
             newFileRelativePath = this.fileRelativePathRepository.getFileRelativePathByRelativePath(newItemImageFileRelativePath);
@@ -76,32 +78,12 @@ public class AdministratorAccountItemInformationService {
             newFileRelativePath = new FileRelativePath(FileTypeEnum.IMAGE.getFileTypeId(), newItemImageFileRelativePath);
             newFileRelativePath = this.fileRelativePathRepository.save(newFileRelativePath);
         }
-        MultipartFile newItemImageFile = administratorAddItemForm.getItemImageFile();
-        ItemImage newItemImage = new ItemImage(newItem.getId(), FilenameUtils.getExtension(newItemImageFile.getOriginalFilename()), (short) 1, newFileRelativePath);
+        MultipartFile newItemImageMultipartFile = administratorAddItemForm.getItemImageFile();
+        ItemImage newItemImage = new ItemImage(newItem.getId(), FilenameUtils.getExtension(newItemImageMultipartFile.getOriginalFilename()), (short) 1, newFileRelativePath);
         newItemImage = this.itemImageRepository.save(newItemImage);
 
         System.out.println(newItemImage.generateNewFileName());
-        System.out.println(clientItemsImagesDirectory);
-        this.saveItemImageFileToDirectory(clientItemsImagesDirectory, newItemImage.generateNewFileName(), newItemImageFile);
+        this.awsS3BucketStorageService.uploadFile(newItemImageFileRelativePath + newItemImage.generateNewFileName(), newItemImageMultipartFile);
         System.out.println("New iteam Id: " + newItem.getId());
-    }
-
-    public void saveItemImageFileToDirectory(String clientItemsImagesDirectory, String fileName, MultipartFile multipartFile) throws URISyntaxException {
-        makeDirectoryIfNotExist(clientItemsImagesDirectory);
-        System.out.println("Filename: " + fileName);
-        Path fileNamePath = Paths.get(clientItemsImagesDirectory, fileName);
-
-        try {
-            Files.write(fileNamePath, multipartFile.getBytes());
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-    }
-
-    private void makeDirectoryIfNotExist(String imageDirectory) {
-        File directory = new File(imageDirectory);
-        if (!directory.exists()) {
-            System.out.println("Was directory created? " + directory.mkdirs());
-        }
     }
 }
