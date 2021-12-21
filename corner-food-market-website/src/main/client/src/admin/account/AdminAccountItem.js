@@ -8,9 +8,7 @@ function AdminAccountItem({ item, onRemoveItem }) {
         <a href="#" className="img-wrap">
           {" "}
           <img
-            src={
-              "http://localhost:8080/" + item.mainImage.sourceRelativePathName
-            }
+            src={`${axios.defaults.baseURL}/` + item.mainImage.sourceRelativePathName}
             alt="Product"
           />{" "}
         </a>
@@ -20,17 +18,10 @@ function AdminAccountItem({ item, onRemoveItem }) {
           </a>
           <div className="price mb-2">${item.price}</div>
 
-          <a
-            href="#"
-            data-bs-toggle="dropdown"
-            className="btn btn-sm btn-light"
-          >
+          <a href="#" data-bs-toggle="dropdown" className="btn btn-sm btn-light">
             <i className="material-icons md-edit"></i> Edit
           </a>
-          <a
-            className="btn btn-sm btn-outline-danger"
-            onClick={() => onRemoveItem(item.id)}
-          >
+          <a className="btn btn-sm btn-outline-danger" onClick={() => onRemoveItem(item.id)}>
             <i className="material-icons md-delete_forever"></i> Remove
           </a>
         </div>

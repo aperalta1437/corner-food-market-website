@@ -25,7 +25,7 @@ function AdminAccountAddItemPage() {
 
   const fetchItemCategoriesList = useCallback(() => {
     axios
-      .get("http://localhost:8080/api/admin/account/add-item/item-categories", {
+      .get("api/admin/account/add-item/item-categories", {
         headers: {
           Authorization: adminAuthentication.accessToken,
         },
@@ -69,7 +69,7 @@ function AdminAccountAddItemPage() {
     formData.append("itemQuantity", itemQuantity);
     formData.append("itemImageFile", itemImageFile);
     axios
-      .post("http://localhost:8080/api/admin/account/add-item/upload-new-item", formData, {
+      .post("api/admin/account/add-item/upload-new-item", formData, {
         headers: {
           Authorization: adminAuthentication.accessToken,
           "Content-Type": "application/json",

@@ -15,7 +15,7 @@ function AdminNewAdminSignupPage() {
 
   const validateUuid = useCallback(() => {
     axios
-      .get(`http://localhost:8080/api/admin/new-admin-signup/${uuid}`, {
+      .get(`api/admin/new-admin-signup/${uuid}`, {
         headers: {
           "Access-Control-Allow-Origin": window.location.origin
             ? window.location.origin

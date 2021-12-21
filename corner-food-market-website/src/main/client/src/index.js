@@ -4,6 +4,9 @@ import App from "./App";
 import AdminApp from "./admin/AdminApp";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import axios from "axios";
+
+axios.defaults.baseURL = "http://3.133.131.219:8080";
 
 ReactDOM.render(
   <React.StrictMode>

@@ -23,7 +23,7 @@ function AdminSecondFactorLoginFields({ fromRoute }) {
 
     axios
       .post(
-        "http://localhost:8080/api/admin/login/tfa-post-authenticate",
+        "api/admin/login/tfa-post-authenticate",
         {
           password: firstFactorAuthentication.base64RsaEncryptedPassword,
           tfaCode: tfaCode,
@@ -48,11 +48,16 @@ function AdminSecondFactorLoginFields({ fromRoute }) {
           console.log(response.data["Access-Token"]);
 
           axios
-            .post("http://localhost:8080/api/admin/login/tfa-post-authenticate/logout", {
+            .post("api/admin/login/tfa-post-authenticate/logout", {
               headers: {
                 Authorization: firstFactorAuthentication.accessToken,
                 "Content-Type": "application/json",
-                "Access-Control-Allow-Origin": "http://localhost:3000",
+                "Access-Control-Allow-Origin": window.location.origin
+                  ? window.location.origin
+                  : window.location.protocol +
+                    "//" +
+                    window.location.hostname +
+                    (window.location.port ? ":" + window.location.port : ""), // This approach covers IE.
               },
             })
             .then((response) => {

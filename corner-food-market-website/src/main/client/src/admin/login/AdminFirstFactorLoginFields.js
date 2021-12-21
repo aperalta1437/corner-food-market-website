@@ -30,7 +30,7 @@ function AdminFirstFactorLoginFields({ fromRoute }) {
     dispatch(flipIsLoading());
 
     axios
-      .post("http://localhost:8080/api/admin/login/authenticate", {
+      .post("api/admin/login/authenticate", {
         email: email,
         password: password,
       })

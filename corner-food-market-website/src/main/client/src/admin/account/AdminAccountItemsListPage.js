@@ -19,7 +19,7 @@ function AdminAccountItemsList() {
 
   const fetchItemsList = useCallback(() => {
     axios
-      .get("http://localhost:8080/api/admin/account/", {
+      .get("api/admin/account/", {
         headers: {
           Authorization: adminAuthentication.accessToken,
         },
@@ -59,13 +59,18 @@ function AdminAccountItemsList() {
 
     axios
       .post(
-        "http://localhost:8080/api/admin/account/remove-item/" + itemId,
+        "api/admin/account/remove-item/" + itemId,
         {},
         {
           headers: {
             Authorization: adminAuthentication.accessToken,
             // 'Content-Type': 'application/json',
-            "Access-Control-Allow-Origin": "http://localhost:3000",
+            "Access-Control-Allow-Origin": window.location.origin
+              ? window.location.origin
+              : window.location.protocol +
+                "//" +
+                window.location.hostname +
+                (window.location.port ? ":" + window.location.port : ""), // This approach covers IE.
           },
         }
       )
