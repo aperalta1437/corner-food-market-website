@@ -1,7 +1,7 @@
 package com.cornerfoodmarketwebsite.business.service;
 
 import com.cornerfoodmarketwebsite.business.dto.request.form.SignupForm;
-import com.cornerfoodmarketwebsite.business.dto.response.SignupResponseEnum;
+import com.cornerfoodmarketwebsite.business.service.utils.SignupResponseEnum;
 import com.cornerfoodmarketwebsite.business.service.utils.CountryAlpha2CodeEnum;
 import com.cornerfoodmarketwebsite.data.single_table.entity.Customer;
 import com.cornerfoodmarketwebsite.data.single_table.repository.CustomerRepository;
@@ -15,48 +15,52 @@ import org.springframework.stereotype.Service;
 public class SignupFormService {
     private final CustomerRepository customerRepository;
     private final DeliveryAddressRepository deliveryAddressRepository;
+    private final ExceptionLogService exceptionLogService;
 
     @Autowired
-    public SignupFormService(CustomerRepository customerRepository, DeliveryAddressRepository deliveryAddressRepository) {
+    public SignupFormService(CustomerRepository customerRepository, DeliveryAddressRepository deliveryAddressRepository, ExceptionLogService exceptionLogService) {
         this.customerRepository = customerRepository;
         this.deliveryAddressRepository = deliveryAddressRepository;
+        this.exceptionLogService = exceptionLogService;
     }
 
     public SignupResponseEnum processNewSignup(SignupForm signupForm) {
         if (this.customerRepository.existsByEmail(signupForm.getEmail())) {
             return SignupResponseEnum.EXISTING_EMAIL;
         } else {
-            if (this.signupNewCustomer(signupForm)) {
-                return SignupResponseEnum.SUCCESS;
-            } else {
-                return SignupResponseEnum.SERVER_ERROR;
-            }
+            return this.saveSignupInformation(signupForm);
         }
     }
 
-    public boolean signupNewCustomer(SignupForm signupForm) {
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();        // TODO replaced this encoder with spring security bean for customer.
+    public void verifyEmailAddress() {
+
+    }
+
+    private SignupResponseEnum saveSignupInformation(SignupForm signupForm) {
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();        // TODO replace this encoder with spring security bean for customer.
         String encodedPassword = encoder.encode(signupForm.getPassword());
         Customer newCustomer = new Customer(signupForm.getEmail(), encodedPassword, signupForm.getFirstName(),
-                signupForm.getMiddleName(), signupForm.getLastName(), signupForm.getCellPhoneNumber(), false,
-                (short) 0);
+                signupForm.getMiddleName(), signupForm.getLastName(), signupForm.getCellPhoneNumber(), false, "", false, (short) 0);
 
-        boolean isNewCustomerSaved;
         try {
             this.customerRepository.save(newCustomer);
-            isNewCustomerSaved = true;
-        } catch (Exception ex) {
-            // TODO - Log the exception message.
-            isNewCustomerSaved = false;
+        } catch (Exception exception) {
+            this.exceptionLogService.logException(exception);
+            return SignupResponseEnum.SERVER_ERROR;
         }
 
         if (signupForm.getIsAddressProvided()) {
-            this.addDeliveryAddress(signupForm, this.customerRepository.getIdByEmail(newCustomer.getEmail()));
+            if (this.addDeliveryAddress(signupForm, this.customerRepository.getIdByEmail(newCustomer.getEmail()))) {
+                return SignupResponseEnum.EMAIL_VERIFICATION_NEEDED;
+            } else {
+                return SignupResponseEnum.UNPROCESSED_DELIVERY_ADDRESS;
+            }
+        } else {
+            return SignupResponseEnum.EMAIL_VERIFICATION_NEEDED;
         }
-        return isNewCustomerSaved;
     }
 
-    public void addDeliveryAddress(SignupForm signupForm, short newCustomerId) {
+    private boolean addDeliveryAddress(SignupForm signupForm, short newCustomerId) {
         DeliveryAddress newDeliveryAddress = new DeliveryAddress();
 
         newDeliveryAddress.setCustomerId(newCustomerId);
@@ -75,8 +79,10 @@ public class SignupFormService {
 
         try {
             this.deliveryAddressRepository.save(newDeliveryAddress);
-        } catch (Exception ex) {
-            // TODO - Log the exception message.
+            return true;
+        } catch (Exception exception) {
+            this.exceptionLogService.logException(exception);
+            return false;
         }
     }
 }

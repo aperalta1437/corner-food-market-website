@@ -24,7 +24,7 @@ public class ItemInformationService {
         this.itemDetailedInformationRepository = itemDetailedInformationRepository;
     }
 
-    public List<List<ItemInformation>> getItemsInformation() {
+    public List<List<ItemInformation>> getPopularItemsInformation() {
         Iterable<ItemInformation> itemInformationList = this.itemInformationRepository.findAllOnSale();
 
         List<List<ItemInformation>> itemInformationLists = new ArrayList<>();
@@ -42,6 +42,38 @@ public class ItemInformationService {
         });
 
         return itemInformationLists;
+    }
+
+    public List<List<ItemInformation>> getSearchResultsItemsInformation(String itemsSearchQuery) {
+        Iterable<ItemInformation> itemInformationList = this.itemInformationRepository.findAllOnSale();
+
+        List<List<ItemInformation>> itemInformationLists = new ArrayList<>();
+
+        AtomicInteger listNumber = new AtomicInteger(-1);
+        AtomicInteger itemNumber = new AtomicInteger();
+        itemInformationList.forEach(itemInformation -> {
+            if ((itemNumber.get() % 4) == 0) {
+                itemInformationLists.add(new ArrayList<>());
+                listNumber.getAndIncrement();
+            }
+
+            itemInformationLists.get(listNumber.get()).add(itemInformation);
+            itemNumber.getAndIncrement();
+        });
+
+        return itemInformationLists;
+    }
+
+    public ItemDetailedInformation getCategoryItemsInformation(String itemSku) {
+        ItemDetailedInformation itemDetailedInformation = this.itemDetailedInformationRepository.findBySku(itemSku);
+
+        return itemDetailedInformation;
+    }
+
+    public ItemDetailedInformation getCategorySearchResultsItemsInformation(String itemSku, String itemsSearchQuery) {
+        ItemDetailedInformation itemDetailedInformation = this.itemDetailedInformationRepository.findBySku(itemSku);
+
+        return itemDetailedInformation;
     }
 
     public ItemDetailedInformation getItemDetailedInformation(String itemSku) {

@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(value = "/api/admin/account")
-@CrossOrigin(origins = "http://localhost:3000")
 public class AdministratorAccountHomeController {
 
     private final AdministratorAccountItemInformationService administratorAccountItemInformationService;

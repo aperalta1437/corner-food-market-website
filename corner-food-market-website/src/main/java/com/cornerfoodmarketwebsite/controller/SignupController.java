@@ -1,57 +1,65 @@
 package com.cornerfoodmarketwebsite.controller;
 
 import com.cornerfoodmarketwebsite.business.dto.request.form.SignupForm;
-import com.cornerfoodmarketwebsite.business.dto.response.SignupResponseEnum;
+import com.cornerfoodmarketwebsite.business.service.ExceptionLogService;
+import com.cornerfoodmarketwebsite.business.service.utils.SignupResponseEnum;
 import com.cornerfoodmarketwebsite.business.service.SignupFormService;
-import com.cornerfoodmarketwebsite.data.single_table.repository.DeliveryAddressRepository;
-import com.cornerfoodmarketwebsite.data.single_table.repository.CustomerRepository;
+import org.codehaus.jettison.json.JSONException;
+import org.codehaus.jettison.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-
-@Controller
-@RequestMapping(value = "/signup")
+@RestController
+@RequestMapping(value = "/api/signup")
 public class SignupController {
-    private final CustomerRepository customerRepository;
-    private final DeliveryAddressRepository deliveryAddressRepository;
+    private final SignupFormService signupFormService;
+    private final ExceptionLogService exceptionLogService;
 
     @Autowired
-    public SignupController(CustomerRepository customerRepository, DeliveryAddressRepository deliveryAddressRepository) {
-        this.customerRepository = customerRepository;
-        this.deliveryAddressRepository = deliveryAddressRepository;
+    public SignupController(SignupFormService signupFormService, ExceptionLogService exceptionLogService) {
+        this.signupFormService = signupFormService;
+        this.exceptionLogService = exceptionLogService;
     }
 
-    @GetMapping
-    public String getSignupPage(Model model) {
-        model.addAttribute("signupForm", new SignupForm());
-
-        return "signup";
-    }
+//    @GetMapping
+//    public String getSignupPage() {
+//        model.addAttribute("signupForm", new SignupForm());
+//
+//        return "signup";
+//    }
 
     @PostMapping(value = "/process-signup")
-    public String processSignup(SignupForm signupForm, Model model) {
-        SignupFormService signupFormService = new SignupFormService(this.customerRepository,
-                this.deliveryAddressRepository);
-        SignupResponseEnum signupResponseEnum = signupFormService.processNewSignup(signupForm);
-        model.addAttribute("signupResponseEnum", signupResponseEnum);
-        return "signup-response";
+    public ResponseEntity<String> processSignup(SignupForm signupForm) {
+        JSONObject jsonResponse = new JSONObject();
+        try {
+            SignupResponseEnum signupResponseEnum = this.signupFormService.processNewSignup(signupForm);
+
+
+        } catch (Exception exception) {
+            this.exceptionLogService.logException(exception);
+            try {
+                jsonResponse.put("Message", SignupResponseEnum.SERVER_ERROR.getSignupMessage());
+            } catch (JSONException jsonException) {
+                this.exceptionLogService.logException(jsonException);
+                jsonException.printStackTrace();
+                return new ResponseEntity<>(jsonResponse.toString(), HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+            this.exceptionLogService.logException(exception);
+            exception.printStackTrace();
+            return new ResponseEntity<>(jsonResponse.toString(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+
+
     }
 
-    @ModelAttribute
-    public void checkAuth(HttpServletResponse response) throws IOException {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if ((auth != null) && auth.isAuthenticated() && !(auth instanceof AnonymousAuthenticationToken)) {
-            response.sendRedirect("/account");
-        }
-    }
+//    @ModelAttribute
+//    public void checkAuth(HttpServletResponse response) throws IOException {
+//        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+//        if ((auth != null) && auth.isAuthenticated() && !(auth instanceof AnonymousAuthenticationToken)) {
+//            response.sendRedirect("/account");
+//        }
+//    }
 }

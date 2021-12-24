@@ -26,7 +26,7 @@
 			</header><!-- sect-heading -->
 			<th:block th:switch="${signupResponseEnum}">
 				<h4
-					th:case="${T(com.cornerfoodmarketwebsite.business.dto.response.SignupResponseEnum.SUCCESS}">
+					th:case="${T(com.cornerfoodmarketwebsite.business.service.utils.SignupResponseEnum.SUCCESS}">
 					<a th:href="@{/login}">Click here to log in</a></h4>
 				<h4
 					th:case="${T(com.cornerfoodmarketwebsite.business.dto.response.SignupResponseEnum).EXISTING_EMAIL}">
