@@ -1,35 +1,63 @@
 package com.cornerfoodmarketwebsite.business.service;
 
 import com.cornerfoodmarketwebsite.business.dto.request.form.SignupForm;
+import com.cornerfoodmarketwebsite.business.service.utils.EmailTemplateCustomEnum;
 import com.cornerfoodmarketwebsite.business.service.utils.SignupResponseEnum;
 import com.cornerfoodmarketwebsite.business.service.utils.CountryAlpha2CodeEnum;
+import com.cornerfoodmarketwebsite.business.service.utils.UuidUtil;
 import com.cornerfoodmarketwebsite.data.single_table.entity.Customer;
 import com.cornerfoodmarketwebsite.data.single_table.repository.CustomerRepository;
 import com.cornerfoodmarketwebsite.data.single_table.repository.DeliveryAddressRepository;
 import com.cornerfoodmarketwebsite.data.single_table.entity.DeliveryAddress;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.mail.MessagingException;
+import javax.servlet.http.HttpServletRequest;
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
+
 @Service
-public class SignupFormService {
+public class SignupService {
+
+    private final HttpServletRequest httpServletRequest;
+
     private final CustomerRepository customerRepository;
     private final DeliveryAddressRepository deliveryAddressRepository;
+    private final EmailService emailService;
     private final ExceptionLogService exceptionLogService;
 
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+
     @Autowired
-    public SignupFormService(CustomerRepository customerRepository, DeliveryAddressRepository deliveryAddressRepository, ExceptionLogService exceptionLogService) {
+    public SignupService(HttpServletRequest httpServletRequest, CustomerRepository customerRepository, DeliveryAddressRepository deliveryAddressRepository, EmailService emailService, ExceptionLogService exceptionLogService, @Qualifier(value = "administratorPreTfaPasswordEncoder") BCryptPasswordEncoder bCryptPasswordEncoder) {
+        this.httpServletRequest = httpServletRequest;
         this.customerRepository = customerRepository;
         this.deliveryAddressRepository = deliveryAddressRepository;
+        this.emailService = emailService;
         this.exceptionLogService = exceptionLogService;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
-    public SignupResponseEnum processNewSignup(SignupForm signupForm) {
+    public SignupResponseEnum processNewSignup(SignupForm signupForm) throws MessagingException, UnsupportedEncodingException, NoSuchAlgorithmException {
         if (this.customerRepository.existsByEmail(signupForm.getEmail())) {
             return SignupResponseEnum.EXISTING_EMAIL;
         } else {
-            return this.saveSignupInformation(signupForm);
+            SignupResponseEnum signupResponseEnum = this.saveSignupInformation(signupForm);
+            if (signupResponseEnum == SignupResponseEnum.EMAIL_VERIFICATION_NEEDED) {
+                this.sendEmailAddressVerificationEmail(signupForm);
+            }
+            return signupResponseEnum;
         }
+    }
+
+    private void sendEmailAddressVerificationEmail(SignupForm signupForm) throws UnsupportedEncodingException, NoSuchAlgorithmException, MessagingException {
+        String requestUrl = this.httpServletRequest.getHeader("Access-Control-Allow-Origin");
+        String digest = UuidUtil.getUuidDigest();
+        this.customerRepository.setVerificationUuidByEmail(this.bCryptPasswordEncoder.encode(digest), signupForm.getEmail());
+        this.emailService.sendEmail(signupForm.getEmail(), "Signup Email Verification", EmailTemplateCustomEnum.NEW_CUSTOMER_EMAIL_VERIFICATION_URL.getEmailContent(requestUrl, digest));
     }
 
     public void verifyEmailAddress() {

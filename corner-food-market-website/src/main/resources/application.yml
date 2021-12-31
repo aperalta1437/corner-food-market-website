@@ -1,3 +1,4 @@
+# AWS S3 Configuration Properties
 cloud:
   aws:
     credentials:

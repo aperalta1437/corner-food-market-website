@@ -5,8 +5,13 @@ import com.cornerfoodmarketwebsite.data.utils.custom_jpa_repository.CustomJpaRep
 import org.springframework.data.jpa.repository.Query;
 
 public interface NewAdministratorRequestRepository extends CustomJpaRepository<NewAdministratorRequest, Short> {
-    boolean existsByUuid(String uuid);
 
-    @Query(value = "SELECT NAR1 FROM NewAdministratorRequest NAR1 WHERE NAR1.uuid = ?1")
-    NewAdministratorRequest getNewAdministratorRequestByUuid(String uuid);
+    /**
+     * Gets the latest new administrator request record based on specified email.
+     * NOTE: nativeQuery = true is needed to limit the results and avoid query creation programmatically.
+     * @param email The email of the new administrator.
+     * @return The new administrator request database record.
+     */
+    @Query(nativeQuery = true, value = "SELECT NAR1.* FROM NEW_ADMINISTRATOR_REQUEST NAR1 WHERE NAR1.EMAIL = ?1 ORDER BY NAR1.CREATED_AT DESC LIMIT 1")
+    NewAdministratorRequest getLatestNewAdministratorRequestByEmail(String email);
 }

@@ -93,14 +93,14 @@ VALUES (1, 'api/client-specific/localhost/images/items/');
 
 -------------------------------------------------------------------------------------------------
 
-INSERT INTO ITEM_IMAGE (ITEM_ID, FILE_EXTENSION, SORT_NUMBER, FILE_RELATIVE_PATH_ID)
-VALUES  (1, 'jpg', 1, 1),
-        (2, 'jpg', 1, 1);
+INSERT INTO ITEM_IMAGE (ITEM_ID, FILE_EXTENSION, SORT_NUMBER, FILE_RELATIVE_PATH_ID, IS_DELETED)
+VALUES  (1, 'jpg', 1, 1, FALSE),
+        (2, 'jpg', 1, 1, FALSE);
 
 ----------------------------------------------------------------------------------------
 
-INSERT INTO CUSTOMER (EMAIL, PASSWORD, FIRST_NAME, LAST_NAME, IS_DISABLED, TOTAL_CART_ITEMS)
-VALUES ('anonymoususer@cornerfoodmarket.com', '', 'Anonymous', 'User', TRUE, 0);
+INSERT INTO CUSTOMER (EMAIL, PASSWORD, FIRST_NAME, LAST_NAME, IS_VERIFIED, IS_DISABLED, TOTAL_CART_ITEMS)
+VALUES ('anonymoususer@cornerfoodmarket.com', '', 'Anonymous', 'User', TRUE, TRUE, 0);
 
 ---------------------------------------------------------------------------------------
 

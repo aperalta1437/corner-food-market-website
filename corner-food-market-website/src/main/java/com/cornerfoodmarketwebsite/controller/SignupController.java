@@ -3,7 +3,7 @@ package com.cornerfoodmarketwebsite.controller;
 import com.cornerfoodmarketwebsite.business.dto.request.form.SignupForm;
 import com.cornerfoodmarketwebsite.business.service.ExceptionLogService;
 import com.cornerfoodmarketwebsite.business.service.utils.SignupResponseEnum;
-import com.cornerfoodmarketwebsite.business.service.SignupFormService;
+import com.cornerfoodmarketwebsite.business.service.SignupService;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,11 +14,11 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping(value = "/api/signup")
 public class SignupController {
-    private final SignupFormService signupFormService;
+    private final SignupService signupFormService;
     private final ExceptionLogService exceptionLogService;
 
     @Autowired
-    public SignupController(SignupFormService signupFormService, ExceptionLogService exceptionLogService) {
+    public SignupController(SignupService signupFormService, ExceptionLogService exceptionLogService) {
         this.signupFormService = signupFormService;
         this.exceptionLogService = exceptionLogService;
     }
@@ -52,7 +52,7 @@ public class SignupController {
         }
 
 
-
+        return null;
     }
 
 //    @ModelAttribute

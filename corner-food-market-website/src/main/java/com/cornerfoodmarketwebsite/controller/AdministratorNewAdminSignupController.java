@@ -22,11 +22,11 @@ public class AdministratorNewAdminSignupController {
         this.administratorNewAdminSignupService = administratorNewAdminSignupService;
     }
 
-    @GetMapping(value = "/{uuid}")
-    public ResponseEntity<String> validateUuid(@PathVariable(value = "uuid") String uuid) {
+    @GetMapping(value = "/email/{new-admin-email}/uuid/{uuid}")
+    public ResponseEntity<String> validateUuid(@PathVariable(value = "new-admin-email") String newAdministratorEmail, @PathVariable(value = "uuid") String uuid) {
         JSONObject jsonResponse = new JSONObject();
         try {
-            UuidValidationResponseEnum uuidValidationResponseEnum = this.administratorNewAdminSignupService.validateUuid(uuid);
+            UuidValidationResponseEnum uuidValidationResponseEnum = this.administratorNewAdminSignupService.validateUuid(newAdministratorEmail, uuid);
             jsonResponse.put("Message", uuidValidationResponseEnum.getResponseMessage());
             if (uuidValidationResponseEnum == UuidValidationResponseEnum.NOT_FOUND) {
                 return new ResponseEntity<>(jsonResponse.toString(), HttpStatus.NOT_FOUND);

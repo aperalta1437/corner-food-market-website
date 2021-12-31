@@ -25,7 +25,6 @@ import java.net.URISyntaxException;
 @Service
 public class AdministratorAccountItemInformationService {
 
-
     private final HttpServletRequest httpServletRequest;
 
     private final AdministratorAccountItemInformationRepository administratorAccountItemInformationRepository;

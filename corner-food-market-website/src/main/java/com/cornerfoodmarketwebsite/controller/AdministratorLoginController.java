@@ -27,6 +27,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import javax.mail.MessagingException;
+
 @RestController
 @RequestMapping(value = "/api/admin/login")
 public class AdministratorLoginController {
@@ -104,7 +106,7 @@ public class AdministratorLoginController {
         }
     }
 
-    public ResponseEntity<String> tfaPreAuthenticate(AdministratorFirstFactorLoginFields administratorFirstFactorLoginFields) throws JSONException, NotProvidedTfaTypeException, NotSupportedTfaTypeException {
+    public ResponseEntity<String> tfaPreAuthenticate(AdministratorFirstFactorLoginFields administratorFirstFactorLoginFields) throws JSONException, NotProvidedTfaTypeException, NotSupportedTfaTypeException, MessagingException {
         JSONObject jsonResponse = new JSONObject();
 
         Authentication authentication = administratorPreTfaAuthenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
