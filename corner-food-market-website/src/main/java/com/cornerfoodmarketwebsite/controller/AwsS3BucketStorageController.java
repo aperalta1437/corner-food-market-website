@@ -1,9 +1,9 @@
 package com.cornerfoodmarketwebsite.controller;
 
+import com.amazonaws.services.s3.model.AmazonS3Exception;
 import com.cornerfoodmarketwebsite.business.service.AwsS3BucketStorageService;
-import javassist.bytecode.ByteArray;
+import com.cornerfoodmarketwebsite.business.service.ExceptionLogService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,18 +17,20 @@ import java.io.IOException;
 @RequestMapping(value = "/api/client-specific")
 public class AwsS3BucketStorageController {
     private final AwsS3BucketStorageService awsS3BucketStorageService;
+    private final ExceptionLogService exceptionLogService;
 
     @Autowired
-    public AwsS3BucketStorageController(AwsS3BucketStorageService awsS3BucketStorageService) {
+    public AwsS3BucketStorageController(AwsS3BucketStorageService awsS3BucketStorageService, ExceptionLogService exceptionLogService) {
         this.awsS3BucketStorageService = awsS3BucketStorageService;
+        this.exceptionLogService = exceptionLogService;
     }
 
-    @GetMapping(value = "/{request-domain}/images/items/{image-file-name}")
-    public ResponseEntity<byte[]> getItemImage(@PathVariable(value = "request-domain") String requestDomain,
+    @GetMapping(value = "/{request-domain}/images/{image-category}/{image-file-name}")
+    public ResponseEntity<byte[]> getPublicImage(@PathVariable(value = "request-domain") String requestDomain,
+                                               @PathVariable(value = "image-category") String imageCategory,
                                                           @PathVariable(value = "image-file-name") String imageFileName) {
         try {
-            System.out.println("Hello Worldddd");
-            String imageFilePathName = "api/client-specific/" + requestDomain + "/images/items/" + imageFileName;
+            String imageFilePathName = "api/client-specific/" + requestDomain + "/images/" + imageCategory + "/" + imageFileName;
             byte[] imageBytes = this.awsS3BucketStorageService.downloadFile(imageFilePathName);
 //            ByteArrayResource byteArrayResource = new ByteArrayResource(imageBytes);
 //            return ResponseEntity.ok().contentLength(imageBytes.length)
@@ -36,8 +38,13 @@ public class AwsS3BucketStorageController {
 //                    .header("Content-Disposition", "Attachment; Filename=\"" + imageFileName + "\"")
 //
             return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(imageBytes);
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (AmazonS3Exception amazonS3Exception) {
+            this.exceptionLogService.logException(amazonS3Exception);
+            amazonS3Exception.printStackTrace();
+            return ResponseEntity.notFound().build();
+        } catch (Exception exception) {
+            this.exceptionLogService.logException(exception);
+            exception.printStackTrace();
             return ResponseEntity.badRequest().body(null);
         }
     }

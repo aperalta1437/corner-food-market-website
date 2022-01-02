@@ -1,6 +1,7 @@
 package com.cornerfoodmarketwebsite.controller;
 
 import com.cornerfoodmarketwebsite.business.service.ItemInformationService;
+import com.cornerfoodmarketwebsite.business.service.utils.ItemsInformationEnum;
 import com.cornerfoodmarketwebsite.data.domain.entity.ItemDetailedInformation;
 import com.cornerfoodmarketwebsite.data.domain.entity.ItemInformation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +13,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping(value = "/api")
@@ -27,7 +30,7 @@ public class HomeController {
     }
 
     @GetMapping
-    public List<List<ItemInformation>> getPopularItemsInformation() {
+    public Map<ItemsInformationEnum, List<? extends Serializable>> getPopularItemsInformation() {
         return this.itemInformationService.getPopularItemsInformation();
     }
 

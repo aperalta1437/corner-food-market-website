@@ -89,7 +89,8 @@ VALUES ('image', 'Images of different characteristics such as extension and size
 --------------------------------------------------------------------------------------------------
 
 INSERT INTO FILE_RELATIVE_PATH (FILE_TYPE_ID, RELATIVE_PATH)
-VALUES (1, 'api/client-specific/localhost/images/items/');
+VALUES  (1, 'api/client-specific/localhost/images/items/'),
+        (1, 'api/client-specific/localhost/images/banners/');
 
 -------------------------------------------------------------------------------------------------
 
@@ -109,5 +110,10 @@ VALUES ('amiguelp007@gmail.com', '$2a$10$N.kPTlzpYt6EsPPrpLavo.zxXOdg2Cr.vDet4kf
 
 ---------------------------------------------------------------------------------------
 
+INSERT INTO BANNER_IMAGE (FILE_EXTENSION, SORT_NUMBER, FILE_RELATIVE_PATH_ID, HAS_TEXT_OVERLAY, IS_DISABLED, IS_DELETED)
+VALUES  ('jpg', 3, 2, FALSE, FALSE, FALSE),
+        ('jpg', 2, 2, FALSE, FALSE, FALSE),
+        ('jpg', 1, 2, FALSE, FALSE, FALSE);
 
+----------------------------------------------------------------------------------------------
 

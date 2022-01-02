@@ -1,21 +1,24 @@
 package com.cornerfoodmarketwebsite.data.domain.entity;
 
+import com.cornerfoodmarketwebsite.data.single_table.entity.Discount;
 import com.cornerfoodmarketwebsite.data.single_table.entity.ItemImage;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name = "ITEM")
 @SecondaryTables({
-//        @SecondaryTable(name = "DISCOUNT", foreignKey = @ForeignKey(name = "DISCOUNT_ID")),
         @SecondaryTable(name = "ITEM_INVENTORY", foreignKey = @ForeignKey(name = "INVENTORY_ID")),
         @SecondaryTable(name = "ITEM_CATEGORY", foreignKey = @ForeignKey(name = "CATEGORY_ID")),
         @SecondaryTable(name = "ITEM_IMAGE", pkJoinColumns = @PrimaryKeyJoinColumn(name = "ITEM_ID"))
 })
-public class ItemInformation {
+public class ItemInformation implements Serializable {
     @Id
     @Column(name = "ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,12 +33,6 @@ public class ItemInformation {
     private boolean isOnSale;
     @Column(name = "IS_POPULAR")
     private boolean isPopular;
-//    @Column(name = "IS_PERCENTAGE_BASED", table = "DISCOUNT")
-//    private Boolean isPercentageBasedDiscount;
-//    @Column(name = "DISCOUNT_PERCENT", table = "DISCOUNT")
-//    private Double discountPercent;
-//    @Column(name = "DISCOUNT_AMOUNT", table = "DISCOUNT")
-//    private Double discountAmount;
     @Column(name = "QUANTITY", table = "ITEM_INVENTORY")
     private short quantity;                                         // We need quantity to avoid toggling IS_ON_SALE if there is none.
     @Column(name = "NAME", table = "ITEM_CATEGORY")
@@ -46,7 +43,12 @@ public class ItemInformation {
     @Where(clause = "SORT_NUMBER = 1")
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "ITEM_ID", referencedColumnName = "ID")
-    List<ItemImage> images = new ArrayList<>();
+    private List<ItemImage> images = new ArrayList<>();
+
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "ITEM_ID", referencedColumnName = "ID")
+    @Fetch(value = FetchMode.SUBSELECT)
+    private List<Discount> discounts = new ArrayList<>();
 
     public short getId() {
         return id;
@@ -150,5 +152,13 @@ public class ItemInformation {
 
     public void setImages(List<ItemImage> images) {
         this.images = images;
+    }
+
+    public List<Discount> getDiscounts() {
+        return discounts;
+    }
+
+    public void setDiscounts(List<Discount> discounts) {
+        this.discounts = discounts;
     }
 }

@@ -1,16 +1,17 @@
 package com.cornerfoodmarketwebsite.data.single_table.entity;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "BANNER_IMAGE")
-public class BannerImage {
+public class BannerImage implements Serializable {
     @Id
     @Column(name = "ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    @Column(name = "ITEM_ID")
-    private short discountId;
+    @Column(name = "DISCOUNT_ID")
+    private Integer discountId;
     @Column(name = "FILE_EXTENSION")
     private String fileExtension;
     @Column(name = "FILE_NAME")
@@ -43,7 +44,7 @@ public class BannerImage {
     public BannerImage() {
     }
 
-    public BannerImage(short discountId, String fileExtension, short sortNumber, boolean hasTextOverlay, String textOverlay1, String textOverlay1CssLeftValue, String textOverlay1CssTopValue, String textOverlay2, String textOverlay2CssLeftValue, String textOverlay2CssTopValue, boolean isDisabled, boolean isDeleted, FileRelativePath fileRelativePath) {
+    public BannerImage(Integer discountId, String fileExtension, short sortNumber, boolean hasTextOverlay, String textOverlay1, String textOverlay1CssLeftValue, String textOverlay1CssTopValue, String textOverlay2, String textOverlay2CssLeftValue, String textOverlay2CssTopValue, boolean isDisabled, boolean isDeleted, FileRelativePath fileRelativePath) {
         this.discountId = discountId;
         this.fileExtension = fileExtension;
         this.sortNumber = sortNumber;
@@ -63,11 +64,11 @@ public class BannerImage {
         return id;
     }
 
-    public short getDiscountId() {
+    public Integer getDiscountId() {
         return discountId;
     }
 
-    public void setDiscountId(short discountId) {
+    public void setDiscountId(Integer discountId) {
         this.discountId = discountId;
     }
 
@@ -173,5 +174,13 @@ public class BannerImage {
 
     public void setFileRelativePath(FileRelativePath fileRelativePath) {
         this.fileRelativePath = fileRelativePath;
+    }
+
+    public String getSourceRelativePathName() {
+        return this.fileRelativePath.getRelativePath() + this.fileName;
+    }
+
+    public String generateNewFileName() {
+        return this.id + "." + this.fileExtension;
     }
 }

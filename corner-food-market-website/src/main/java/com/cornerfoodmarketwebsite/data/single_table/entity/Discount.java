@@ -9,7 +9,7 @@ public class Discount {
     @Id
     @Column(name = "ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private short id;
+    private int id;
     @Column(name = "ITEM_ID")
     private short itemId;
 
@@ -56,7 +56,7 @@ public class Discount {
     @Column(name = "MODIFIED_AT")
     private Date modifiedAt;
 
-    public short getId() {
+    public int getId() {
         return id;
     }
 
