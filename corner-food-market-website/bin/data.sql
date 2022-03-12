@@ -75,11 +75,16 @@ VALUES  ('BUY_AND_GET_FREE', 'Buy a specified amount of an specific item and get
         ('CONTRACTUAL', 'An specified amount or percentage of the sale price is taken off the sale price at the point of sale.', 'Get <?1> off at checkout'),
         ('FREE_SHIPPING', 'Get free shipping on specified items.', 'Get free shipping when you buy <?1> <?2>');
 
+---------------------------------------------------------------------------------------
+
+INSERT INTO ADMINISTRATOR (EMAIL, PASSWORD, FIRST_NAME, LAST_NAME, IS_DISABLED, IS_TFA_ENABLED, TFA_CHOSEN_TYPE)
+VALUES ('amiguelp007@gmail.com', '$2a$10$N.kPTlzpYt6EsPPrpLavo.zxXOdg2Cr.vDet4kff5g53Q/.G6hry6', 'Angel', 'Peralta', FALSE, TRUE, 'EMAIL');
+
 --------------------------------------------------------------------------------------------------------------
 
-INSERT INTO ITEM (NAME, DESCRIPTION, SKU, CATEGORY_ID, INVENTORY_ID, PRICE, IS_ON_SALE, IS_POPULAR)
-VALUES  ('Coca-Cola bottle (16 oz)', '16 ounces Coca Cola bottle', '074312028328', 33, 1, 2.50, TRUE, TRUE),
-        ('Red apple (Medium)', 'Medium-sized red apple', '028312928428', 19, 2, 0.50, TRUE, TRUE);
+INSERT INTO ITEM (NAME, DESCRIPTION, UPC, CATEGORY_ID, INVENTORY_ID, RETAIL_PRICE, IS_ON_SALE, IS_POPULAR, POPULARITY_SORT_NUMBER, HAS_FIXED_POPULARITY, CREATED_BY_ADMINISTRATOR_ID)
+VALUES  ('Coca-Cola bottle (16 oz)', '16 ounces Coca Cola bottle', '074312028328', 33, 1, 2.50, TRUE, TRUE, 0, FALSE, 1),
+        ('Red apple (Medium)', 'Medium-sized red apple', '028312928428', 19, 2, 0.50, TRUE, TRUE, 0, FALSE, 1);
 
 --------------------------------------------------------------------------------------------------------------
 
@@ -105,15 +110,10 @@ VALUES ('anonymoususer@cornerfoodmarket.com', '', 'Anonymous', 'User', TRUE, TRU
 
 ---------------------------------------------------------------------------------------
 
-INSERT INTO ADMINISTRATOR (EMAIL, PASSWORD, FIRST_NAME, LAST_NAME, IS_DISABLED, IS_TFA_ENABLED, TFA_CHOSEN_TYPE)
-VALUES ('amiguelp007@gmail.com', '$2a$10$N.kPTlzpYt6EsPPrpLavo.zxXOdg2Cr.vDet4kff5g53Q/.G6hry6', 'Angel', 'Peralta', FALSE, TRUE, 'EMAIL');
-
----------------------------------------------------------------------------------------
-
-INSERT INTO BANNER_IMAGE (FILE_EXTENSION, SORT_NUMBER, FILE_RELATIVE_PATH_ID, HAS_TEXT_OVERLAY, IS_DISABLED, IS_DELETED)
-VALUES  ('jpg', 3, 2, FALSE, FALSE, FALSE),
-        ('jpg', 2, 2, FALSE, FALSE, FALSE),
-        ('jpg', 1, 2, FALSE, FALSE, FALSE);
+INSERT INTO BANNER_IMAGE (FILE_EXTENSION, SORT_NUMBER, FILE_RELATIVE_PATH_ID, HAS_TEXT_OVERLAY, IS_DISABLED, IS_DELETED, CREATED_BY_ADMINISTRATOR_ID)
+VALUES  ('jpg', 3, 2, FALSE, FALSE, FALSE, 1),
+        ('jpg', 2, 2, FALSE, FALSE, FALSE, 1),
+        ('jpg', 1, 2, FALSE, FALSE, FALSE, 1);
 
 ----------------------------------------------------------------------------------------------
 

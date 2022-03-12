@@ -1,10 +1,15 @@
 package com.cornerfoodmarketwebsite.data.single_table.entity;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 import java.sql.Date;
 
 @Entity
 @Table(name = "DISCOUNT")
+@Getter
+@Setter
 public class Discount {
     @Id
     @Column(name = "ID")
@@ -55,168 +60,4 @@ public class Discount {
     private Date createdAt;
     @Column(name = "MODIFIED_AT")
     private Date modifiedAt;
-
-    public int getId() {
-        return id;
-    }
-
-    public short getItemId() {
-        return itemId;
-    }
-
-    public void setItemId(short itemId) {
-        this.itemId = itemId;
-    }
-
-    public DiscountType getDiscountType() {
-        return discountType;
-    }
-
-    public void setDiscountType(DiscountType discountType) {
-        this.discountType = discountType;
-    }
-
-    public boolean isQuantityBased() {
-        return isQuantityBased;
-    }
-
-    public void setQuantityBased(boolean quantityBased) {
-        isQuantityBased = quantityBased;
-    }
-
-    public boolean isPercentageBased() {
-        return isPercentageBased;
-    }
-
-    public void setPercentageBased(boolean percentageBased) {
-        isPercentageBased = percentageBased;
-    }
-
-    public boolean isAmountBased() {
-        return isAmountBased;
-    }
-
-    public void setAmountBased(boolean amountBased) {
-        isAmountBased = amountBased;
-    }
-
-    public Double getDiscountPercent() {
-        return discountPercent;
-    }
-
-    public void setDiscountPercent(Double discountPercent) {
-        this.discountPercent = discountPercent;
-    }
-
-    public Double getDiscountAmount() {
-        return discountAmount;
-    }
-
-    public void setDiscountAmount(Double discountAmount) {
-        this.discountAmount = discountAmount;
-    }
-
-    public boolean isActive() {
-        return isActive;
-    }
-
-    public void setActive(boolean active) {
-        isActive = active;
-    }
-
-    public Double getMinimumCustomerExpenditure() {
-        return minimumCustomerExpenditure;
-    }
-
-    public void setMinimumCustomerExpenditure(Double minimumCustomerExpenditure) {
-        this.minimumCustomerExpenditure = minimumCustomerExpenditure;
-    }
-
-    public Long getMaximumExpenditureTimeframe() {
-        return maximumExpenditureTimeframe;
-    }
-
-    public void setMaximumExpenditureTimeframe(Long maximumExpenditureTimeframe) {
-        this.maximumExpenditureTimeframe = maximumExpenditureTimeframe;
-    }
-
-    public Date getEffectiveDatetime() {
-        return effectiveDatetime;
-    }
-
-    public void setEffectiveDatetime(Date effectiveDatetime) {
-        this.effectiveDatetime = effectiveDatetime;
-    }
-
-    public Date getExpirationDatetime() {
-        return expirationDatetime;
-    }
-
-    public void setExpirationDatetime(Date expirationDatetime) {
-        this.expirationDatetime = expirationDatetime;
-    }
-
-    public boolean isRepeated() {
-        return isRepeated;
-    }
-
-    public void setRepeated(boolean repeated) {
-        isRepeated = repeated;
-    }
-
-    public Long getRepeatedAfterTimeframe() {
-        return repeatedAfterTimeframe;
-    }
-
-    public void setRepeatedAfterTimeframe(Long repeatedAfterTimeframe) {
-        this.repeatedAfterTimeframe = repeatedAfterTimeframe;
-    }
-
-    public Short getTotalRepetitions() {
-        return totalRepetitions;
-    }
-
-    public void setTotalRepetitions(Short totalRepetitions) {
-        this.totalRepetitions = totalRepetitions;
-    }
-
-    public boolean isModified() {
-        return isModified;
-    }
-
-    public void setModified(boolean modified) {
-        isModified = modified;
-    }
-
-    public long getDiscountHistoryId() {
-        return discountHistoryId;
-    }
-
-    public void setDiscountHistoryId(long discountHistoryId) {
-        this.discountHistoryId = discountHistoryId;
-    }
-
-    public short getCreatedByAdministratorId() {
-        return createdByAdministratorId;
-    }
-
-    public void setCreatedByAdministratorId(short createdByAdministratorId) {
-        this.createdByAdministratorId = createdByAdministratorId;
-    }
-
-    public Short getModifiedByAdministratorId() {
-        return modifiedByAdministratorId;
-    }
-
-    public void setModifiedByAdministratorId(Short modifiedByAdministratorId) {
-        this.modifiedByAdministratorId = modifiedByAdministratorId;
-    }
-
-    public Date getCreatedAt() {
-        return createdAt;
-    }
-
-    public Date getModifiedAt() {
-        return modifiedAt;
-    }
 }

@@ -19,7 +19,7 @@ import java.util.List;
 
 @Controller
 @RequestMapping(value = "/account")
-public class AccountHomeController {
+public class  AccountHomeController {
 
     private final AccountItemInformationService accountItemInformationService;
 

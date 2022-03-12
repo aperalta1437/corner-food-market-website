@@ -26,7 +26,7 @@ public class CustomerRepositoryTests {
     @Test
     public void testCreateCustomer() {
         Customer customer = new Customer();
-        customer.setEmail("aAmiguelp007@gmail.com");
+        customer.setEmail("amiguelp007@gmail.com");
         customer.setPassword("P@ssword1");
         customer.setFirstName("Angel");
         customer.setLastName("Peralta");

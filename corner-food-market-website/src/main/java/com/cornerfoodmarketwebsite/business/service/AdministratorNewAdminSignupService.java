@@ -48,9 +48,9 @@ public class AdministratorNewAdminSignupService {
             if (!newAdministratorRequest.getExpirationDatetime().before(new Timestamp(
                     System.currentTimeMillis()))) {
                 return UuidValidationResponseEnum.EXPIRED;
-            } else if (newAdministratorRequest.getIsUsed()) {
+            } else if (newAdministratorRequest.isUsed()) {
                 return UuidValidationResponseEnum.IS_USED;
-            } else if (newAdministratorRequest.getIsCancelled()) {
+            } else if (newAdministratorRequest.isCancelled()) {
                 return UuidValidationResponseEnum.IS_CANCELLED;
             } else {
                 return UuidValidationResponseEnum.FOUND;

@@ -1,26 +1,12 @@
 package com.cornerfoodmarketwebsite.business.dto.response.domain;
 
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
+@Getter
+@RequiredArgsConstructor
 public class AdministratorAddItemFormItemCategoryInformation {
-    private short id;
-    private String name;
-    private String description;
-
-    public AdministratorAddItemFormItemCategoryInformation(short id, String name, String description) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-    }
-
-    public short getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
+    private final short id;
+    private final String name;
+    private final String description;
 }

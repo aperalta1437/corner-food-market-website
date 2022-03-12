@@ -1,18 +1,18 @@
 package com.cornerfoodmarketwebsite.business.dto.request.domain;
 
 import com.cornerfoodmarketwebsite.data.single_table.entity.Customer;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 
+@Getter
+@RequiredArgsConstructor
 public class CustomerUserDetails implements UserDetails {
 
-    private Customer customer;
-
-    public CustomerUserDetails(Customer customer) {
-        this.customer = customer;
-    }
+    private final Customer customer;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -36,7 +36,7 @@ public class CustomerUserDetails implements UserDetails {
 
     @Override
     public boolean isAccountNonLocked() {
-        return !this.customer.getIsDisabled();
+        return !this.customer.isDisabled();
     }
 
     @Override
@@ -62,9 +62,5 @@ public class CustomerUserDetails implements UserDetails {
 
     public short getTotalCartItems() {
         return this.customer.getTotalCartItems();
-    }
-
-    public Customer getCustomer() {
-        return this.customer;
     }
 }

@@ -6,12 +6,13 @@ import com.cornerfoodmarketwebsite.data.domain.entity.ItemInformation;
 import com.cornerfoodmarketwebsite.data.domain.repository.ItemDetailedInformationRepository;
 import com.cornerfoodmarketwebsite.data.domain.repository.ItemInformationRepository;
 import com.cornerfoodmarketwebsite.data.single_table.repository.BannerImageRepository;
+import com.cornerfoodmarketwebsite.data.single_table.repository.implementation.BannerImageRepositoryImplementation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.Serializable;
 import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
+
 import static java.util.Map.entry;
 
 @Service
@@ -20,13 +21,15 @@ public class ItemInformationService {
     private final ItemInformationRepository itemInformationRepository;
     private final ItemDetailedInformationRepository itemDetailedInformationRepository;
     private final BannerImageRepository bannerImageRepository;
+    private final BannerImageRepositoryImplementation bannerImageRepositoryImplementation;
 
     @Autowired
     public ItemInformationService(ItemInformationRepository itemInformationRepository,
-                                  ItemDetailedInformationRepository itemDetailedInformationRepository, BannerImageRepository bannerImageRepository) {
+                                  ItemDetailedInformationRepository itemDetailedInformationRepository, BannerImageRepository bannerImageRepository, BannerImageRepositoryImplementation bannerImageRepositoryImplementation) {
         this.itemInformationRepository = itemInformationRepository;
         this.itemDetailedInformationRepository = itemDetailedInformationRepository;
         this.bannerImageRepository = bannerImageRepository;
+        this.bannerImageRepositoryImplementation = bannerImageRepositoryImplementation;
     }
 
     public Map<ItemsInformationEnum, List<? extends Serializable>> getPopularItemsInformation() {
@@ -37,47 +40,34 @@ public class ItemInformationService {
                 discountsIds.add(discount.getId());
             });
         });
-//        EnumMap<ItemsInformationEnum>
+        return Map.ofEntries(entry(ItemsInformationEnum.ITEMS, itemInformationList),
+                entry(ItemsInformationEnum.BANNERS, this.bannerImageRepositoryImplementation.getPageBannerImages(discountsIds)));
+    }
+
+    public Map<ItemsInformationEnum, List<? extends Serializable>> getSearchResultsItemsInformation(String itemsSearchQuery) {
+        List<ItemInformation> itemInformationList = this.itemInformationRepository.findAllOnSale();
+        List<Integer> discountsIds = new ArrayList<>();
+        itemInformationList.forEach(itemInformation -> {
+            itemInformation.getDiscounts().forEach(discount -> {
+                discountsIds.add(discount.getId());
+            });
+        });
         return Map.ofEntries(entry(ItemsInformationEnum.ITEMS, itemInformationList),
                 entry(ItemsInformationEnum.BANNERS, this.bannerImageRepository.getPageBannerImages(discountsIds)));
-//        return new ArrayList<List<Serializable>>(Arrays.<List<Serializable>>asList(new List[]{itemInformationList, this.bannerImageRepository.getPageBannerImages(discountsIds)}));
     }
 
-    public List<List<ItemInformation>> getSearchResultsItemsInformation(String itemsSearchQuery) {
-        Iterable<ItemInformation> itemInformationList = this.itemInformationRepository.findAllOnSale();
+    public ItemDetailedInformation getCategoryItemsInformation(String itemUpc) {
 
-        List<List<ItemInformation>> itemInformationLists = new ArrayList<>();
-
-        AtomicInteger listNumber = new AtomicInteger(-1);
-        AtomicInteger itemNumber = new AtomicInteger();
-        itemInformationList.forEach(itemInformation -> {
-            if ((itemNumber.get() % 4) == 0) {
-                itemInformationLists.add(new ArrayList<>());
-                listNumber.getAndIncrement();
-            }
-
-            itemInformationLists.get(listNumber.get()).add(itemInformation);
-            itemNumber.getAndIncrement();
-        });
-
-        return itemInformationLists;
+        return this.itemDetailedInformationRepository.findByUpc(itemUpc);
     }
 
-    public ItemDetailedInformation getCategoryItemsInformation(String itemSku) {
-        ItemDetailedInformation itemDetailedInformation = this.itemDetailedInformationRepository.findBySku(itemSku);
+    public ItemDetailedInformation getCategorySearchResultsItemsInformation(String itemUpc, String itemsSearchQuery) {
 
-        return itemDetailedInformation;
+        return this.itemDetailedInformationRepository.findByUpc(itemUpc);
     }
 
-    public ItemDetailedInformation getCategorySearchResultsItemsInformation(String itemSku, String itemsSearchQuery) {
-        ItemDetailedInformation itemDetailedInformation = this.itemDetailedInformationRepository.findBySku(itemSku);
+    public ItemDetailedInformation getItemDetailedInformation(String itemUpc) {
 
-        return itemDetailedInformation;
-    }
-
-    public ItemDetailedInformation getItemDetailedInformation(String itemSku) {
-        ItemDetailedInformation itemDetailedInformation = this.itemDetailedInformationRepository.findBySku(itemSku);
-
-        return itemDetailedInformation;
+        return this.itemDetailedInformationRepository.findByUpc(itemUpc);
     }
 }

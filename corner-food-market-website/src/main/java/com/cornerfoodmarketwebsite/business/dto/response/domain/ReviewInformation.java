@@ -1,61 +1,23 @@
 package com.cornerfoodmarketwebsite.business.dto.response.domain;
 
-import javax.persistence.Column;
+import lombok.Getter;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import java.sql.Date;
 
+@Getter
+@Setter
+@RequiredArgsConstructor
 public class ReviewInformation {
-
+    @NonNull
     private String customerFullName;
+    @NonNull
     private String subjectLine;
+    @NonNull
     private String reviewText;
+    @NonNull
     private float starRating;
+    @NonNull
     private Date createdAt;
-
-    public ReviewInformation(String customerFullName, String subjectLine, String reviewText, float starRating, Date createdAt) {
-        this.customerFullName = customerFullName;
-        this.subjectLine = subjectLine;
-        this.reviewText = reviewText;
-        this.starRating = starRating;
-        this.createdAt = createdAt;
-    }
-
-    public String getCustomerFullName() {
-        return customerFullName;
-    }
-
-    public void setCustomerFullName(String customerFullName) {
-        this.customerFullName = customerFullName;
-    }
-
-    public String getSubjectLine() {
-        return subjectLine;
-    }
-
-    public void setSubjectLine(String subjectLine) {
-        this.subjectLine = subjectLine;
-    }
-
-    public String getReviewText() {
-        return reviewText;
-    }
-
-    public void setReviewText(String reviewText) {
-        this.reviewText = reviewText;
-    }
-
-    public float getStarRating() {
-        return starRating;
-    }
-
-    public void setStarRating(float starRating) {
-        this.starRating = starRating;
-    }
-
-    public Date getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
-    }
 }

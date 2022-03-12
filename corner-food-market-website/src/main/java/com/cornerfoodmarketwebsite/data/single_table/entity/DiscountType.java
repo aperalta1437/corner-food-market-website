@@ -1,13 +1,16 @@
 package com.cornerfoodmarketwebsite.data.single_table.entity;
 
 import com.cornerfoodmarketwebsite.data.single_table.entity.utils.DiscountTypeNameEnum;
-import org.hibernate.annotations.Fetch;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
 @Table(name = "DISCOUNT_TYPE")
+@Getter
+@Setter
 public class DiscountType {
     @Id
     @Column(name = "ID")
@@ -22,24 +25,4 @@ public class DiscountType {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "discountType")
     private List<Discount> discounts;
-
-    public short getId() {
-        return id;
-    }
-
-    public DiscountTypeNameEnum getName() {
-        return name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public String getPublicDescriptionTemplate() {
-        return publicDescriptionTemplate;
-    }
-
-    public List<Discount> getDiscounts() {
-        return discounts;
-    }
 }

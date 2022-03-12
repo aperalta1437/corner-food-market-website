@@ -61,7 +61,7 @@ public class AdministratorAccountItemInformationService {
         ItemInventory newItemInventory = new ItemInventory(administratorAddItemForm.getItemQuantity());
 //        newItemInventory = this.itemInventoryRepository.saveAndFlush(newItemInventory);
 //        this.itemInventoryRepository.refresh(newItemInventory);
-        Item newItem = new Item(administratorAddItemForm.getItemTitle(), administratorAddItemForm.getItemDescription(), administratorAddItemForm.getItemSku(), administratorAddItemForm.getItemCategoryId(), newItemInventory, administratorAddItemForm.getItemPrice(), true, true);
+        Item newItem = new Item(administratorAddItemForm.getItemTitle(), administratorAddItemForm.getItemDescription(), administratorAddItemForm.getItemUpc(), administratorAddItemForm.getItemCategoryId(), newItemInventory, administratorAddItemForm.getItemPrice(), true, true);
         newItem = this.itemRepository.save(newItem);
 
         String requestUrl = this.httpServletRequest.getHeader("Access-Control-Allow-Origin");

@@ -1,10 +1,16 @@
 package com.cornerfoodmarketwebsite.data.single_table.entity;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.*;
 import java.sql.Date;
 
 @Entity
 @Table(name = "ORDER_DETAILS")
+@Getter
+@Setter
 public class OrderDetails {
     @Id
     @Column(name = "ID")
@@ -28,76 +34,4 @@ public class OrderDetails {
     private Integer taxes;
     @Column(name = "CREATED_AT")
     private Date createdAt;
-
-    public int getId() {
-        return id;
-    }
-
-    public int getOrderNumber() {
-        return orderNumber;
-    }
-
-    public void setOrderNumber(int orderNumber) {
-        this.orderNumber = orderNumber;
-    }
-
-    public short getCustomerId() {
-        return customerId;
-    }
-
-    public void setCustomerId(short customerId) {
-        this.customerId = customerId;
-    }
-
-    public Integer getFirstPaymentId() {
-        return firstPaymentId;
-    }
-
-    public void setFirstPaymentId(Integer firstPaymentId) {
-        this.firstPaymentId = firstPaymentId;
-    }
-
-    public Integer getSecondPaymentId() {
-        return secondPaymentId;
-    }
-
-    public void setSecondPaymentId(Integer secondPaymentId) {
-        this.secondPaymentId = secondPaymentId;
-    }
-
-    public Integer getThirdPaymentId() {
-        return thirdPaymentId;
-    }
-
-    public void setThirdPaymentId(Integer thirdPaymentId) {
-        this.thirdPaymentId = thirdPaymentId;
-    }
-
-    public Integer getSubtotal() {
-        return subtotal;
-    }
-
-    public void setSubtotal(Integer subtotal) {
-        this.subtotal = subtotal;
-    }
-
-    public Integer getTotal() {
-        return total;
-    }
-
-    public void setTotal(Integer total) {
-        this.total = total;
-    }
-
-    public Integer getTaxes() {
-        return taxes;
-    }
-
-    public void setTaxes(Integer taxes) {
-        this.taxes = taxes;
-    }
-
-    public Date getCreatedAt() {
-        return createdAt;
-    }
 }

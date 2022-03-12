@@ -53,8 +53,7 @@ public class AdministratorLoginService {
 
     private String generateTfaCodeByAdministratorId(short administratorId) {
         Random rand = new Random();
-        String tfaCode = Integer.toString(rand.nextInt(999999));
-        tfaCode = ((tfaCode.length() == 5) ? "0" + tfaCode : tfaCode);
+        String tfaCode = String.format("%06d", rand.nextInt(999999));
         String encryptedTfaCode = this.bCryptPasswordEncoder.encode(tfaCode);
 
         this.administratorRepository.setTfaCodeDetailsById(encryptedTfaCode, new Timestamp(

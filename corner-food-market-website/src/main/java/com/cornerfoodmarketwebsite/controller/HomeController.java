@@ -34,19 +34,19 @@ public class HomeController {
         return this.itemInformationService.getPopularItemsInformation();
     }
 
-    @GetMapping(value = "/results")
-    public List<List<ItemInformation>> getSearchResultsItemsInformation(@RequestParam("items_search_query") String itemsSearchQuery) {
+    @GetMapping(value = "/results", params = {"items_search_query", "page"})
+    public Map<ItemsInformationEnum, List<? extends Serializable>> getSearchResultsItemsInformation(@RequestParam(value = "items_search_query") String itemsSearchQuery, @RequestParam(value = "page") byte page) {
         return this.itemInformationService.getSearchResultsItemsInformation(itemsSearchQuery);
     }
 
-    @GetMapping(value = "/categories/{item-category}")
-    public ItemDetailedInformation getCategoryItemsInformation(@PathVariable(value = "item-category") String itemCategory) {
+    @GetMapping(value = "/categories/{item-category}", params = {"page"})
+    public ItemDetailedInformation getCategoryItemsInformation(@PathVariable(value = "item-category") String itemCategory, @RequestParam("page") byte page) {
         return this.itemInformationService.getCategoryItemsInformation(itemCategory);
     }
 
-    @GetMapping(value = "/categories/{item-category}/results")
+    @GetMapping(value = "/categories/{item-category}/results", params = {"items_search_query", "page"})
     public ItemDetailedInformation getCategorySearchResultsItemsInformation(@PathVariable(value = "item-category") String itemCategory,
-                                                              @RequestParam("items_search_query") String itemsSearchQuery) {
+                                                              @RequestParam("items_search_query") String itemsSearchQuery, @RequestParam("page") byte page) {
         return this.itemInformationService.getCategorySearchResultsItemsInformation(itemCategory, itemsSearchQuery);
     }
 

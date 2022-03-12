@@ -1,9 +1,14 @@
 package com.cornerfoodmarketwebsite.data.single_table.entity;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 
 @Entity
 @Table(name = "ITEM_CATEGORY")
+@Getter
+@Setter
 public class ItemCategory {
     @Id
     @Column(name = "ID")
@@ -21,56 +26,4 @@ public class ItemCategory {
     private String urlRouteName;
     @Column(name = "IS_LEAF")
     private boolean isLeaf;
-
-    public short getId() {
-        return id;
-    }
-
-    public void setId(short id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public short getParentCategoryId() {
-        return parentCategoryId;
-    }
-
-    public void setParentCategoryId(short parentCategoryId) {
-        this.parentCategoryId = parentCategoryId;
-    }
-
-    public short getCategoryLevel() {
-        return categoryLevel;
-    }
-
-    public void setCategoryLevel(short categoryLevel) {
-        this.categoryLevel = categoryLevel;
-    }
-
-    public String getUrlRouteName() {
-        return urlRouteName;
-    }
-
-    public void setUrlRouteName(String urlRouteName) {
-        this.urlRouteName = urlRouteName;
-    }
-
-    public boolean getIsLeaf() {
-        return isLeaf;
-    }
 }

@@ -2,6 +2,9 @@ package com.cornerfoodmarketwebsite.data.domain.entity;
 
 import com.cornerfoodmarketwebsite.data.single_table.entity.Discount;
 import com.cornerfoodmarketwebsite.data.single_table.entity.ItemImage;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.Where;
@@ -18,6 +21,9 @@ import java.util.List;
         @SecondaryTable(name = "ITEM_CATEGORY", foreignKey = @ForeignKey(name = "CATEGORY_ID")),
         @SecondaryTable(name = "ITEM_IMAGE", pkJoinColumns = @PrimaryKeyJoinColumn(name = "ITEM_ID"))
 })
+@Getter
+@Setter
+@NoArgsConstructor
 public class ItemInformation implements Serializable {
     @Id
     @Column(name = "ID")
@@ -50,115 +56,7 @@ public class ItemInformation implements Serializable {
     @Fetch(value = FetchMode.SUBSELECT)
     private List<Discount> discounts = new ArrayList<>();
 
-    public short getId() {
-        return id;
-    }
-
-    public void setId(short id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getSku() {
-        return sku;
-    }
-
-    public void setSku(String sku) {
-        this.sku = sku;
-    }
-
-    public String getPrice() {
+    public String getFormattedRetailPrice() {
         return java.text.NumberFormat.getCurrencyInstance().format(price);
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
-    }
-
-    public boolean isOnSale() {
-        return isOnSale;
-    }
-
-    public void setOnSale(boolean onSale) {
-        isOnSale = onSale;
-    }
-
-    public boolean isPopular() {
-        return isPopular;
-    }
-
-    public void setPopular(boolean popular) {
-        isPopular = popular;
-    }
-
-//    public Boolean getPercentageBasedDiscount() {
-//        return isPercentageBasedDiscount;
-//    }
-//
-//    public void setPercentageBasedDiscount(Boolean percentageBasedDiscount) {
-//        isPercentageBasedDiscount = percentageBasedDiscount;
-//    }
-//
-//    public Double getDiscountPercent() {
-//        return discountPercent;
-//    }
-//
-//    public void setDiscountPercent(Double discountPercent) {
-//        this.discountPercent = discountPercent;
-//    }
-//
-//    public Double getDiscountAmount() {
-//        return discountAmount;
-//    }
-//
-//    public void setDiscountAmount(Double discountAmount) {
-//        this.discountAmount = discountAmount;
-//    }
-
-    public short getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(short quantity) {
-        this.quantity = quantity;
-    }
-
-    public String getCategoryName() {
-        return categoryName;
-    }
-
-    public void setCategoryName(String categoryName) {
-        this.categoryName = categoryName;
-    }
-
-    public String getCategoryUrlRouteName() {
-        return categoryUrlRouteName;
-    }
-
-    public void setCategoryUrlRouteName(String categoryUrlRouteName) {
-        this.categoryUrlRouteName = categoryUrlRouteName;
-    }
-
-    public List<ItemImage> getImages() {
-        return images;
-    }
-
-    public void setImages(List<ItemImage> images) {
-        this.images = images;
-    }
-
-    public List<Discount> getDiscounts() {
-        return discounts;
-    }
-
-    public void setDiscounts(List<Discount> discounts) {
-        this.discounts = discounts;
     }
 }

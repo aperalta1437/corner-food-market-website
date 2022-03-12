@@ -1,9 +1,14 @@
 package com.cornerfoodmarketwebsite.data.single_table.entity;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 
 @Entity
 @Table(name = "DELIVERY_ADDRESS")
+@Getter
+@Setter
 public class DeliveryAddress {
     @Id
     @Column(name = "ID")
@@ -25,76 +30,4 @@ public class DeliveryAddress {
     private String countryAlpha2Code;
     @Column(name = "TELEPHONE_NUMBER")
     private String telephoneNumber;
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public short getCustomerId() {
-        return customerId;
-    }
-
-    public void setCustomerId(short customerId) {
-        this.customerId = customerId;
-    }
-
-    public String getAddressLine1() {
-        return addressLine1;
-    }
-
-    public void setAddressLine1(String addressLine1) {
-        this.addressLine1 = addressLine1;
-    }
-
-    public String getAddressLine2() {
-        return addressLine2;
-    }
-
-    public void setAddressLine2(String addressLine2) {
-        this.addressLine2 = addressLine2;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public String getStateCode() {
-        return stateCode;
-    }
-
-    public void setStateCode(String stateCode) {
-        this.stateCode = stateCode;
-    }
-
-    public String getPostalCode() {
-        return postalCode;
-    }
-
-    public void setPostalCode(String postalCode) {
-        this.postalCode = postalCode;
-    }
-
-    public String getCountryAlpha2Code() {
-        return countryAlpha2Code;
-    }
-
-    public void setCountryAlpha2Code(String countryAlpha2Code) {
-        this.countryAlpha2Code = countryAlpha2Code;
-    }
-
-    public String getTelephoneNumber() {
-        return telephoneNumber;
-    }
-
-    public void setTelephoneNumber(String telephoneNumber) {
-        this.telephoneNumber = telephoneNumber;
-    }
 }

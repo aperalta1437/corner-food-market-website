@@ -17,14 +17,14 @@ public interface ItemRepository extends CustomJpaRepository<Item, Short> {
     @Query(value = "SELECT I1 FROM Item I1 WHERE I1.isOnSale = true")
     Iterable<Item> findAllOnSale();
 
-    @Query(value = "SELECT I1 FROM Item I1 WHERE I1.sku = ?1")
-    Item findBySku(String itemSku);
+    @Query(value = "SELECT I1 FROM Item I1 WHERE I1.upc = ?1")
+    Item findBySku(String itemUpc);
 
-    @Query(value = "SELECT I1.id FROM Item I1 WHERE I1.sku = ?1")
-    int getIdBySku(String itemSku);
+    @Query(value = "SELECT I1.id FROM Item I1 WHERE I1.upc = ?1")
+    int getIdBySku(String itemUpc);
 
-    @Query(value = "SELECT new com.cornerfoodmarketwebsite.data.utils.ItemIdAndQuantity(I1.id, I1.itemInventory.quantity) FROM Item I1 WHERE I1.sku = ?1")
-    List<ItemIdAndQuantity> getIdAndQuantityBySku(String itemSku);
+    @Query(value = "SELECT new com.cornerfoodmarketwebsite.data.utils.ItemIdAndQuantity(I1.id, I1.itemInventory.quantity) FROM Item I1 WHERE I1.upc = ?1")
+    List<ItemIdAndQuantity> getIdAndQuantityBySku(String itemUpc);
 
     @Transactional
     @Modifying

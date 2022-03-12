@@ -77,7 +77,7 @@ public class SignupService {
             return SignupResponseEnum.SERVER_ERROR;
         }
 
-        if (signupForm.getIsAddressProvided()) {
+        if (signupForm.isAddressProvided()) {
             if (this.addDeliveryAddress(signupForm, this.customerRepository.getIdByEmail(newCustomer.getEmail()))) {
                 return SignupResponseEnum.EMAIL_VERIFICATION_NEEDED;
             } else {

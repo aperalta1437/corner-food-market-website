@@ -1,5 +1,8 @@
 package com.cornerfoodmarketwebsite.data.single_table.entity;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
@@ -8,6 +11,8 @@ import java.sql.Date;
 @Entity
 @Table(name = "ORDER_REVIEW")
 @Where(clause = "IS_DELETED = false")
+@Getter
+@Setter
 public class OrderReview {
     @Id
     @Column(name = "ID")
@@ -34,80 +39,4 @@ public class OrderReview {
     private boolean isDeleted;
     @Column(name = "CREATED_AT")
     private Date createdAt;
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public Customer getCustomer() {
-        return customer;
-    }
-
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
-    }
-
-    public Short getItemId() {
-        return orderId;
-    }
-
-    public void setItemId(Short orderId) {
-        this.orderId = orderId;
-    }
-
-    public boolean getIsAnonymousToCustomers() {
-        return isAnonymousToCustomers;
-    }
-
-    public void setIsAnonymousToCustomers(boolean isAnonymousToCustomers) {
-        this.isAnonymousToCustomers = isAnonymousToCustomers;
-    }
-
-    public boolean getIsAnonymousToEveryone() {
-        return isAnonymousToEveryone;
-    }
-
-    public void setIsAnonymousToEveryone(boolean isAnonymousToEveryone) {
-        this.isAnonymousToEveryone = isAnonymousToEveryone;
-    }
-
-    public String getSubjectLine() {
-        return subjectLine;
-    }
-
-    public void setSubjectLine(String subjectLine) {
-        this.subjectLine = subjectLine;
-    }
-
-    public String getComment() {
-        return comment;
-    }
-
-    public void setComment(String comment) {
-        this.comment = comment;
-    }
-
-    public float getStarRating() {
-        return starRating;
-    }
-
-    public void setStarRating(float startRating) {
-        this.starRating = startRating;
-    }
-
-    public boolean getIsDeleted() {
-        return isDeleted;
-    }
-
-    public void setIsDeleted(boolean isDeleted) {
-        this.isDeleted = isDeleted;
-    }
-
-    public Date getCreatedAt() {
-        return createdAt;
-    }
 }

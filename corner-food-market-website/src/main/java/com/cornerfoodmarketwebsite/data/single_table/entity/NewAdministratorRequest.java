@@ -1,85 +1,41 @@
 package com.cornerfoodmarketwebsite.data.single_table.entity;
 
+import lombok.*;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 
 @Entity
 @Table(name = "NEW_ADMINISTRATOR_REQUEST")
+@Getter
+@Setter
+@NoArgsConstructor
+@RequiredArgsConstructor
 public class NewAdministratorRequest {
     @Id
     @Column(name = "ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private short id;
+    @NonNull
     @Column(name = "EMAIL")
     private String email;
+    @NonNull
     @Column(name = "CELL_PHONE_NUMBER")
     private String cellPhoneNumber;
+    @NonNull
     @Column(name = "UUID")
     private String uuid;
+    @NonNull
     @Column(name = "EXPIRATION_DATETIME")
     private Timestamp expirationDatetime;
+    @NonNull
     @Column(name = "IS_CANCELLED")
     private boolean isCancelled;
+    @NonNull
     @Column(name = "IS_USED")
     private boolean isUsed;
     @Column(name = "CREATED_AT")
     private Timestamp createdAt;
     @Column(name = "CANCELLED_AT")
     private Timestamp cancelledAt;
-
-    public NewAdministratorRequest() {
-    }
-
-    public NewAdministratorRequest(String email, String cellPhoneNumber, String uuid, Timestamp expirationDatetime, boolean isCancelled, boolean isUsed) {
-        this.email = email;
-        this.cellPhoneNumber = cellPhoneNumber;
-        this.uuid = uuid;
-        this.expirationDatetime = expirationDatetime;
-        this.isCancelled = isCancelled;
-        this.isUsed = isUsed;
-    }
-
-    public short getId() {
-        return id;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public String getCellPhoneNumber() {
-        return cellPhoneNumber;
-    }
-
-    public String getUuid() {
-        return uuid;
-    }
-
-    public Timestamp getExpirationDatetime() {
-        return expirationDatetime;
-    }
-
-    public boolean getIsCancelled() {
-        return isCancelled;
-    }
-
-    public void setIsCancelled(boolean cancelled) {
-        isCancelled = cancelled;
-    }
-
-    public boolean getIsUsed() {
-        return isUsed;
-    }
-
-    public void setIsUsed(boolean used) {
-        isUsed = used;
-    }
-
-    public Timestamp getCreatedAt() {
-        return createdAt;
-    }
-
-    public Timestamp getCancelledAt() {
-        return cancelledAt;
-    }
 }

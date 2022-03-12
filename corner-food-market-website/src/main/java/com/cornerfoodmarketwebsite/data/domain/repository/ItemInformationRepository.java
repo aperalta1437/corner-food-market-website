@@ -12,4 +12,12 @@ import java.util.List;
 public interface ItemInformationRepository extends CustomJpaRepository<ItemInformation, Short> {
     @Query(value = "SELECT I1 FROM ItemInformation I1 WHERE I1.isOnSale = true and I1.quantity > 0")
     List<ItemInformation> findAllOnSale();
+
+    @Query(value = "SELECT I1 FROM ItemInformation I1 WHERE I1.isOnSale = true and I1.quantity > 0")
+    List<ItemInformation> findSearchQueryOnSale();
+
+    // TODO Think about the types of searches.
+    // One item search
+    // Wild search
+    // Category search
 }

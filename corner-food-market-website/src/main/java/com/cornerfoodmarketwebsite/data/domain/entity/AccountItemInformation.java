@@ -2,6 +2,9 @@ package com.cornerfoodmarketwebsite.data.domain.entity;
 
 import com.cornerfoodmarketwebsite.data.single_table.entity.Discount;
 import com.cornerfoodmarketwebsite.data.single_table.entity.ItemImage;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
@@ -16,6 +19,9 @@ import java.util.List;
         @SecondaryTable(name = "ITEM_CATEGORY", foreignKey = @ForeignKey(name = "CATEGORY_ID")),
         @SecondaryTable(name = "CART_ITEM", pkJoinColumns = @PrimaryKeyJoinColumn(name = "ITEM_ID"))
 })
+@Getter
+@Setter
+@NoArgsConstructor
 public class AccountItemInformation {
     @Id
     @Column(name = "ID")
@@ -23,10 +29,12 @@ public class AccountItemInformation {
     private int id;             // MUST be integer to avoid type mismatch when we perform one-to-one join to get image.
     @Column(name = "NAME")
     private String name;
-    @Column(name = "SKU")
-    private String sku;
-    @Column(name = "PRICE")
-    private double price;
+    @Column(name = "UPC")
+    private String upc;
+    @Column(name = "RETAIL_PRICE")
+    private double retailPrice;
+    @Column(name = "WHOLESALE_PRICE")
+    private Double wholesalePrice;
     @Column(name = "IS_ON_SALE")
     private boolean isOnSale;
     @Column(name = "IS_POPULAR")
@@ -57,140 +65,16 @@ public class AccountItemInformation {
     @JoinColumn(name = "ITEM_ID", referencedColumnName = "ID")
     private List<Discount> discounts = new ArrayList<>();
 
-    public short getId() {
-        return (short) id;
+    public String getFormattedUnitRetailPrice() {
+        return java.text.NumberFormat.getCurrencyInstance().format(retailPrice);
     }
 
-    public String getName() {
-        return name;
+    public String getFormattedUnitsTotalRetailPrice() {
+        return java.text.NumberFormat.getCurrencyInstance().format(this.getUnitsTotalRetailPrice());
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getSku() {
-        return sku;
-    }
-
-    public void setSku(String sku) {
-        this.sku = sku;
-    }
-
-    public String getFormattedUnitPrice() {
-        return java.text.NumberFormat.getCurrencyInstance().format(price);
-    }
-
-    public String getFormattedUnitsTotalPrice() {
-        return java.text.NumberFormat.getCurrencyInstance().format(price * inCartQuantity);
-    }
-
-    public double getUnitsTotalPrice() {
-        return price * inCartQuantity;
-    }
-
-    public double getPrice() {
-        return price;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
-    }
-
-    public boolean isOnSale() {
-        return isOnSale;
-    }
-
-    public void setOnSale(boolean onSale) {
-        isOnSale = onSale;
-    }
-
-    public boolean getIsPopular() {
-        return isPopular;
-    }
-
-    public void setIsPopular(boolean popular) {
-        isPopular = popular;
-    }
-
-//    public Boolean getIsPercentageBasedDiscount() {
-//        return isPercentageBasedDiscount;
-//    }
-//
-//    public void setIsPercentageBasedDiscount(Boolean percentageBasedDiscount) {
-//        isPercentageBasedDiscount = percentageBasedDiscount;
-//    }
-//
-//    public Double getDiscountPercent() {
-//        return discountPercent;
-//    }
-//
-//    public void setDiscountPercent(Double discountPercent) {
-//        this.discountPercent = discountPercent;
-//    }
-
-    public Double getDiscountAmount() {
-        return discountAmount;
-    }
-
-    public void setDiscountAmount(Double discountAmount) {
-        this.discountAmount = discountAmount;
-    }
-
-    public short getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(short quantity) {
-        this.quantity = quantity;
-    }
-
-    public String getCategoryName() {
-        return categoryName;
-    }
-
-    public void setCategoryName(String categoryName) {
-        this.categoryName = categoryName;
-    }
-
-    public String getCategoryUrlRouteName() {
-        return categoryUrlRouteName;
-    }
-
-    public void setCategoryUrlRouteName(String categoryUrlRouteName) {
-        this.categoryUrlRouteName = categoryUrlRouteName;
-    }
-
-    public Short getCustomerId() {
-        return customerId;
-    }
-
-    public void setCustomerId(Short customerId) {
-        this.customerId = customerId;
-    }
-
-    public Short getInCartQuantity() {
-        return inCartQuantity;
-    }
-
-    public void setInCartQuantity(Short inCartQuantity) {
-        this.inCartQuantity = inCartQuantity;
-    }
-
-    public ItemImage getMainImage() {
-        return mainImage;
-    }
-
-    public void setMainImage(ItemImage mainImage) {
-        this.mainImage = mainImage;
-    }
-
-    public List<Discount> getDiscounts() {
-        return discounts;
-    }
-
-    public void setDiscounts(List<Discount> discounts) {
-        this.discounts = discounts;
+    public double getUnitsTotalRetailPrice() {
+        return retailPrice * inCartQuantity;
     }
 }
 

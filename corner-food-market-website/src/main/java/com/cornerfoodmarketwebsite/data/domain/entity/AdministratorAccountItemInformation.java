@@ -1,6 +1,9 @@
 package com.cornerfoodmarketwebsite.data.domain.entity;
 
 import com.cornerfoodmarketwebsite.data.single_table.entity.ItemImage;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
@@ -12,6 +15,9 @@ import javax.persistence.*;
         @SecondaryTable(name = "ITEM_INVENTORY", foreignKey = @ForeignKey(name = "INVENTORY_ID")),
         @SecondaryTable(name = "ITEM_CATEGORY", foreignKey = @ForeignKey(name = "CATEGORY_ID"))
 })
+@Getter
+@Setter
+@NoArgsConstructor
 public class AdministratorAccountItemInformation {
     @Id
     @Column(name = "ID")
@@ -19,10 +25,12 @@ public class AdministratorAccountItemInformation {
     private int id;             // MUST be integer to avoid type mismatch when we perform one-to-one join to get image.
     @Column(name = "NAME")
     private String name;
-    @Column(name = "SKU")
-    private String sku;
-    @Column(name = "PRICE")
-    private double price;
+    @Column(name = "UPC")
+    private String upc;
+    @Column(name = "RETAIL_PRICE")
+    private double retailPrice;
+    @Column(name = "WHOLESALE_PRICE")
+    private Double wholesalePrice;
     @Column(name = "IS_ON_SALE")
     private boolean isOnSale;
     @Column(name = "IS_POPULAR")
@@ -44,106 +52,5 @@ public class AdministratorAccountItemInformation {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "ID", referencedColumnName = "ITEM_ID")
     private ItemImage mainImage;
-
-
-    public short getId() {
-        return (short) id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getSku() {
-        return sku;
-    }
-
-    public void setSku(String sku) {
-        this.sku = sku;
-    }
-
-    public double getPrice() {
-        return price;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
-    }
-
-    public boolean isOnSale() {
-        return isOnSale;
-    }
-
-    public void setOnSale(boolean onSale) {
-        isOnSale = onSale;
-    }
-
-    public boolean getIsPopular() {
-        return isPopular;
-    }
-
-    public void setIsPopular(boolean popular) {
-        isPopular = popular;
-    }
-
-//    public Boolean getIsPercentageBasedDiscount() {
-//        return isPercentageBasedDiscount;
-//    }
-//
-//    public void setIsPercentageBasedDiscount(Boolean percentageBasedDiscount) {
-//        isPercentageBasedDiscount = percentageBasedDiscount;
-//    }
-//
-//    public Double getDiscountPercent() {
-//        return discountPercent;
-//    }
-//
-//    public void setDiscountPercent(Double discountPercent) {
-//        this.discountPercent = discountPercent;
-//    }
-//
-//    public Double getDiscountAmount() {
-//        return discountAmount;
-//    }
-//
-//    public void setDiscountAmount(Double discountAmount) {
-//        this.discountAmount = discountAmount;
-//    }
-
-    public short getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(short quantity) {
-        this.quantity = quantity;
-    }
-
-    public String getCategoryName() {
-        return categoryName;
-    }
-
-    public void setCategoryName(String categoryName) {
-        this.categoryName = categoryName;
-    }
-
-    public String getCategoryUrlRouteName() {
-        return categoryUrlRouteName;
-    }
-
-    public void setCategoryUrlRouteName(String categoryUrlRouteName) {
-        this.categoryUrlRouteName = categoryUrlRouteName;
-    }
-
-    public ItemImage getMainImage() {
-        return mainImage;
-    }
-
-    public void setMainImage(ItemImage mainImage) {
-        this.mainImage = mainImage;
-    }
 }
 

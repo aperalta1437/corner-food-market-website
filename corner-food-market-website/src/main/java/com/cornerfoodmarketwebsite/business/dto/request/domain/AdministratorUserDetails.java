@@ -1,18 +1,18 @@
 package com.cornerfoodmarketwebsite.business.dto.request.domain;
 
 import com.cornerfoodmarketwebsite.data.single_table.entity.Administrator;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 
+@Getter
+@RequiredArgsConstructor
 public class AdministratorUserDetails implements UserDetails {
 
-    private Administrator administrator;
-
-    public AdministratorUserDetails(Administrator administrator) {
-        this.administrator = administrator;
-    }
+    private final Administrator administrator;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -36,7 +36,7 @@ public class AdministratorUserDetails implements UserDetails {
 
     @Override
     public boolean isAccountNonLocked() {
-        return !this.administrator.getIsDisabled();
+        return !this.administrator.isDisabled();
     }
 
     @Override
@@ -58,9 +58,5 @@ public class AdministratorUserDetails implements UserDetails {
             fullName = this.administrator.getFirstName() + " " + this.administrator.getLastName();
         }
         return fullName;
-    }
-
-    public Administrator getAdministrator() {
-        return this.administrator;
     }
 }
