@@ -2,7 +2,6 @@ package com.cornerfoodmarketwebsite.data.single_table.repository.implementation;
 
 
 import com.cornerfoodmarketwebsite.data.single_table.entity.BannerImage;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;

@@ -31,10 +31,12 @@ public class ItemInformation implements Serializable {
     private short id;
     @Column(name = "NAME")
     private String name;
-    @Column(name = "SKU")
-    private String sku;
-    @Column(name = "PRICE")
-    private double price;
+    @Column(name = "UPC")
+    private String upc;
+    @Column(name = "WHOLESALE_PRICE")
+    private Double wholesalePrice;
+    @Column(name = "RETAIL_PRICE")
+    private double retailPrice;
     @Column(name = "IS_ON_SALE")
     private boolean isOnSale;
     @Column(name = "IS_POPULAR")
@@ -57,6 +59,6 @@ public class ItemInformation implements Serializable {
     private List<Discount> discounts = new ArrayList<>();
 
     public String getFormattedRetailPrice() {
-        return java.text.NumberFormat.getCurrencyInstance().format(price);
+        return java.text.NumberFormat.getCurrencyInstance().format(retailPrice);
     }
 }

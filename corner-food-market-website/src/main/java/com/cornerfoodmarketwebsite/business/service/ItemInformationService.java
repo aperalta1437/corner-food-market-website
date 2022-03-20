@@ -53,7 +53,7 @@ public class ItemInformationService {
             });
         });
         return Map.ofEntries(entry(ItemsInformationEnum.ITEMS, itemInformationList),
-                entry(ItemsInformationEnum.BANNERS, this.bannerImageRepository.getPageBannerImages(discountsIds)));
+                entry(ItemsInformationEnum.BANNERS, this.bannerImageRepositoryImplementation.getPageBannerImages(discountsIds)));
     }
 
     public ItemDetailedInformation getCategoryItemsInformation(String itemUpc) {
