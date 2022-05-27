@@ -50,8 +50,6 @@ public class Administrator {
     @NonNull
     @Column(name = "TFA_CHOSEN_TYPE")
     private TfaTypeEnum tfaChosenType;
-    @Column(name = "RSA_PRIVATE_KEY")
-    private String rsaPrivateKey;
     @Column(name = "CREATED_AT")
     private Timestamp createdAt;
     @Column(name = "MODIFIED_AT")

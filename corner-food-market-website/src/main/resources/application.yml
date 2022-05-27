@@ -1,3 +1,90 @@
+hibernate:
+  show_sql: true
+
+logging:
+  level:
+    org:
+      springframework:
+        jdbc:
+          datasource:
+            init:
+              # Turn on debug mode for embedded database. This will print SQL statement action logs. Currently not in used as we chose an external database.
+              ScriptUtils: debug
+      hibernate:
+        engine:
+          jdbc:
+            env:
+              internal:
+                # To see the error messages only for the external DB.
+                LobCreatorBuilderImpl: error
+
+spring:
+  jpa:
+    hibernate:
+      # Prevent hibernate from modifying the database.
+      ddl-auto: none
+    # Jpa database for abstraction
+    database: postgresql
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgresPlusDialect
+        format_sql: FALSE
+  servlet:
+    multipart:
+      # Max-file and request size.######
+      max-file-size: 10MB
+      max-request-size: 10MB
+      ##################################
+  web:
+    resources:
+      # Disable static content serving
+      add-mappings: false
+  # Email service details
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: cornerfoodmarket.pss@gmail.com
+    password: bnqibniyketwltev
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+        debug: true
+  datasource:
+    # Specify the external database URL. Note the database name "dev" attached at the end of the URL. Note the "jdbc" format for data transfer.
+    platform: postgres
+    url: jdbc:postgresql://localhost:5432/dev
+    username: postgres
+    password: postgres
+    ##############################################################################################
+#    # External AWS RDS database configuration.####################################################
+#    platform: postgres
+#    url: jdbc:postgresql://pss-papi-store-online-pg-dbs.ctvrxz6lnldv.us-east-2.rds.amazonaws.com/CORNER_FOOD_MARKET
+#    username: postgres
+#    password: 4tl9lR73teHaph+H
+#    ##############################################################################################
+
+client-origin-properties-map: '{1 : "origin->http://admin.localhost.com:3002|storeName->Local Host|isAllowed->false|role->ADMINISTRATOR",
+                                2 : "origin->http://localhost.com:3001|storeName->Local Host|isAllowed->true|role->CUSTOMER"}'
+
+
+customer:
+  login-rsa-key-size: 1024
+
+administrator:
+  login-rsa-key-size: 2048
+
+server:
+  servlet:
+    context-path: /api
+  port: 8080
+  error:
+    whitelabel:
+      enabled: false
+    path: /error
+
 # AWS S3 Configuration Properties
 cloud:
   aws:
@@ -12,6 +99,16 @@ cloud:
 application:
   bucket:
     name: pss-papi-store-online-storage
+
+    # JWT Secret
+jwt:
+  admin-secret-key: secret
+  admin-tfa-secret-key: tfa-secret
+
+
+# Email Service - Sender details
+#email-service.sender-email=cornerfoodmarket.pss@gmail.com
+#email-service.sender-password=tiN-bi1hotakIbR5H3ph_pH0dr543tHI
 
 
 #spring:

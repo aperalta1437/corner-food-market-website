@@ -3,6 +3,8 @@ package com.cornerfoodmarketwebsite.configuration;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
@@ -14,6 +16,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
 @Component
+@Order(Ordered.HIGHEST_PRECEDENCE)
 public class RequestThrottleFilter implements Filter {
 
     private static final int MAX_REQUESTS_PER_SECOND = 5; //or whatever you want it to be

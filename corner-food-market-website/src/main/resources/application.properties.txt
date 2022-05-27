@@ -64,3 +64,11 @@ spring.servlet.multipart.max-request-size=10MB
 
 # Disable static content serving
 spring.web.resources.add-mappings=false
+
+#pss.clients-domain-names=localhost,127.0.0.1
+pss.clients-domain-names-to-has-access-map={'localhost': true}
+
+customer.login-rsa-key-size=1024
+administrator.login-rsa-key-size=2048
+
+server.servlet.context-path=/api

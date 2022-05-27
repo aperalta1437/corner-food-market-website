@@ -10,13 +10,13 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
+import java.util.Optional;
 
 @Repository
 public interface AdministratorRepository extends CustomJpaRepository<Administrator, Short> {
     boolean existsByEmail(String email);
 
-    @Query("SELECT A1 FROM Administrator A1 WHERE A1.email = ?1")
-    Administrator findByEmail(String email);
+    Optional<Administrator> findByEmail(String email);
 
     @Query("SELECT A1 FROM Administrator A1 WHERE A1.id = ?1")
     Administrator findById(short id);
@@ -35,20 +35,6 @@ public interface AdministratorRepository extends CustomJpaRepository<Administrat
     @Query(value = "UPDATE Administrator SET tfaCode = ?1, tfaExpirationTime = ?2 WHERE id = ?3")
     int setTfaCodeDetailsById(String tfaCode, Timestamp tfaExpirationTime, short id);
 
-    @Transactional
-    @Modifying
-    @Query(value = "UPDATE Administrator SET rsaPrivateKey = ?1 WHERE id = ?2")
-    int setBase64RsaPrivateKeyById(String rsaPrivateKey, short id);
-
-    @Query(value = "SELECT A1.rsaPrivateKey FROM Administrator A1 WHERE A1.id = ?1")
-    String getBase64RsaPrivateKeyById(short id);
-
     @Query(value = "SELECT A1.tfaCode FROM Administrator A1 WHERE A1.id = ?1")
     String getTfaCodeById(short id);
-
-    @Query(value = "SELECT A1.password FROM Administrator A1 WHERE A1.email = ?1")
-    String getPasswordByEmail(String email);
-
-    @Query(value = "SELECT A1.isTfaEnabled FROM Administrator A1 WHERE A1.email = ?1")
-    boolean getIsTfaEnabledByEmail(String email);
 }

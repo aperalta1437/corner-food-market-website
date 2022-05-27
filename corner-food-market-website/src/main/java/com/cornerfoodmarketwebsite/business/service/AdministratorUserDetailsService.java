@@ -9,6 +9,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
+
 @Component("AdministratorUserDetailsService")
 public class AdministratorUserDetailsService implements UserDetailsService {
 
@@ -17,10 +19,10 @@ public class AdministratorUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        Administrator administrator = administratorRepository.findByEmail(email);
-        if (administrator == null) {
+        Optional<Administrator> optionalAdministrator = administratorRepository.findByEmail(email);
+        if (optionalAdministrator.isEmpty()) {
             throw new UsernameNotFoundException("User not found");
         }
-        return new AdministratorUserDetails(administrator);
+        return new AdministratorUserDetails(optionalAdministrator.get());
     }
 }

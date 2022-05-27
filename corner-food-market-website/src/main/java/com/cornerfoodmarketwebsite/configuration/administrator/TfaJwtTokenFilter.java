@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Date;
 
+// This is a spring security authentication filter. Only operates while authenticating.
 public class TfaJwtTokenFilter extends OncePerRequestFilter {
     private static Logger log = LoggerFactory.getLogger(JwtTokenFilter.class);
 

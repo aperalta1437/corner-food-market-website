@@ -7,5 +7,6 @@ import lombok.Setter;
 @Setter
 public class AdministratorFirstFactorLoginFields {
     private String email;
-    private String password;
+    private String encryptedPassword;
+    private long loginAccessCode;
 }

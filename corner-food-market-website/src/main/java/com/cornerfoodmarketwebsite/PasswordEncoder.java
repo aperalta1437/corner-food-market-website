@@ -23,16 +23,16 @@ public class PasswordEncoder {
 
         System.out.println(n);
 
-        RsaUtil rsaUtil = new RsaUtil();
+        RsaUtil rsaUtil = new RsaUtil(1024);
         Base64RsaKeyPair base64RsaKeyPair = rsaUtil.generateBase64RsaKeyPair();
 
         String text = "Hello World!";
         System.out.println("Text: " + text);
 
-        String encryptedBase64Text = rsaUtil.encrypt(text, base64RsaKeyPair.getBase64PublicKey());
+        String encryptedBase64Text = RsaUtil.encrypt(text, base64RsaKeyPair.getBase64PublicKey());
         System.out.println("Encrypted Base64 Text: " + encryptedBase64Text);
 
-        String decryptedText = rsaUtil.decrypt(encryptedBase64Text, base64RsaKeyPair.getBase64PrivateKey());
+        String decryptedText = RsaUtil.decrypt(encryptedBase64Text, base64RsaKeyPair.getBase64PrivateKey());
         System.out.println("Decrypted Text: " + decryptedText);
 
         MessageDigest salt = MessageDigest.getInstance("SHA-256");

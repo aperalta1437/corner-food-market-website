@@ -13,9 +13,11 @@ import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import javax.mail.MessagingException;
+import javax.swing.text.html.Option;
 import java.security.*;
 import java.security.spec.InvalidKeySpecException;
 import java.sql.Timestamp;
+import java.util.Optional;
 import java.util.Random;
 
 @Service
@@ -24,14 +26,12 @@ public class AdministratorLoginService {
     private final AdministratorRepository administratorRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final EmailService emailService;
-    private final RsaUtil rsaUtil;
 
     @Autowired
-    public AdministratorLoginService(AdministratorRepository administratorRepository, @Qualifier(value = "administratorPreTfaPasswordEncoder") BCryptPasswordEncoder bCryptPasswordEncoder, EmailService emailService, RsaUtil rsaUtil) {
+    public AdministratorLoginService(AdministratorRepository administratorRepository, @Qualifier(value = "administratorPreTfaPasswordEncoder") BCryptPasswordEncoder bCryptPasswordEncoder, EmailService emailService) {
         this.administratorRepository = administratorRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.emailService = emailService;
-        this.rsaUtil = rsaUtil;
     }
 
     public int sendTfaCodeAndGetExpirationTime(Administrator administrator) throws NotProvidedTfaTypeException, NotSupportedTfaTypeException, MessagingException {
@@ -62,22 +62,22 @@ public class AdministratorLoginService {
         return tfaCode;
     }
 
-    public String getBase64RsaPublicKeyByAdministratorId(short administratorId) {
-        Base64RsaKeyPair base64RsaKeyPair = this.rsaUtil.generateBase64RsaKeyPair();
-        this.administratorRepository.setBase64RsaPrivateKeyById(base64RsaKeyPair.getBase64PrivateKey(), administratorId);
-        String base64PublicKey = base64RsaKeyPair.getBase64PublicKey();
-        return base64PublicKey;
-    }
-
-    public String decryptTextByAdministrator(String base64EncryptedText, short administratorId) throws NoSuchPaddingException, IllegalBlockSizeException, NoSuchAlgorithmException, InvalidKeySpecException, BadPaddingException, InvalidKeyException {
-        return this.rsaUtil.decrypt(base64EncryptedText, this.administratorRepository.getBase64RsaPrivateKeyById(administratorId));
-    }
-
     public boolean isCorrectTfaCodeByAdministrator(String tfaCode, short administratorId) {
         return this.bCryptPasswordEncoder.matches(tfaCode, this.administratorRepository.getTfaCodeById(administratorId));
     }
 
-    public boolean isCorrectCredentials(String email, String password) {
-        return this.bCryptPasswordEncoder.matches(password, this.administratorRepository.getPasswordByEmail(email));
+    public Optional<FirstFactorAuthenticationInformation> verifyCredentialsAndGetFirstFactorAuthenticationInformation(String email, String password) {
+        Optional<Administrator> optionalAdministrator = this.administratorRepository.findByEmail(email);
+
+        if (optionalAdministrator.isEmpty()) {
+            return Optional.empty();
+        } else {
+            Administrator administrator = optionalAdministrator.get();
+            if (this.bCryptPasswordEncoder.matches(password, administrator.getPassword())) {
+                return Optional.empty();
+            } else {
+                return Optional.of(new FirstFactorAuthenticationInformation(administrator.getId(), administrator.isTfaEnabled()));
+            }
+        }
     }
 }
