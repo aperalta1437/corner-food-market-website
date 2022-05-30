@@ -30,7 +30,7 @@ public class JwtTokenProvider implements Serializable {
         secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes());
     }
 
-    // TODO change to proper JWT reset time.
+    // TODO: change to proper JWT reset time.
     private long validityInMilliseconds = 10 * 60 * 60 * 100;
 
     public String createToken(String email) {

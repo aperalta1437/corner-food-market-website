@@ -4,6 +4,7 @@ import com.cornerfoodmarketwebsite.business.service.utils.*;
 import com.cornerfoodmarketwebsite.data.single_table.entity.Administrator;
 import com.cornerfoodmarketwebsite.data.single_table.entity.utils.TfaTypeEnum;
 import com.cornerfoodmarketwebsite.data.single_table.repository.AdministratorRepository;
+import com.cornerfoodmarketwebsite.data.single_table.repository.utils.projection.TfaDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -34,9 +35,15 @@ public class AdministratorLoginService {
         this.emailService = emailService;
     }
 
-    public int sendTfaCodeAndGetExpirationTime(Administrator administrator) throws NotProvidedTfaTypeException, NotSupportedTfaTypeException, MessagingException {
+    public TfaCodeDetailsForUser sendTfaCodeAndGetDetailsForUser(Administrator administrator) throws NotProvidedTfaTypeException, NotSupportedTfaTypeException, MessagingException {
         TfaTypeEnum tfaTypeEnum = administrator.getTfaChosenType();
-        String tfaCode = this.generateTfaCodeByAdministratorId(administrator.getId());
+
+        Random rand = new Random();
+        String tfaCode = String.format("%06d", rand.nextInt(999999));
+        String encryptedTfaCode = this.bCryptPasswordEncoder.encode(tfaCode);
+
+        TfaCodeDetailsForUser tfaCodeDetailsForUser = new TfaCodeDetailsForUser(System.currentTimeMillis(), RoleInformationEnum.ADMINISTRATOR.getTfaCodeValidTimeframe());
+        this.administratorRepository.setTfaCodeDetailsById(encryptedTfaCode, tfaCodeDetailsForUser.getCreatedAt() + tfaCodeDetailsForUser.getValidTimeframe(), administrator.getId());
 
         if (tfaTypeEnum == TfaTypeEnum.EMAIL) {
             this.emailService.sendEmail(administrator.getEmail(), "Two Factor Authentication code from our Service", EmailTemplateCustomEnum.TFA_CODE.getEmailContent(tfaCode));
@@ -48,22 +55,17 @@ public class AdministratorLoginService {
             }
         }
 
-        return RoleInformationEnum.ADMINISTRATOR.getTfaExpirationTimeInMilliseconds();
+        return tfaCodeDetailsForUser;
     }
 
-    private String generateTfaCodeByAdministratorId(short administratorId) {
-        Random rand = new Random();
-        String tfaCode = String.format("%06d", rand.nextInt(999999));
-        String encryptedTfaCode = this.bCryptPasswordEncoder.encode(tfaCode);
+    public boolean isCorrectTfaCodeByAdministrator(String tfaCode, short administratorId) throws ExpiredTfaCodeException {
+        TfaDetails tfaDetails = this.administratorRepository.getTfaDetailsById(administratorId);
 
-        this.administratorRepository.setTfaCodeDetailsById(encryptedTfaCode, new Timestamp(
-                System.currentTimeMillis() + RoleInformationEnum.ADMINISTRATOR.getTfaExpirationTimeInMilliseconds()), administratorId);
+        if (System.currentTimeMillis() > tfaDetails.getTfaExpirationTime()) {
+            throw new ExpiredTfaCodeException();
+        }
 
-        return tfaCode;
-    }
-
-    public boolean isCorrectTfaCodeByAdministrator(String tfaCode, short administratorId) {
-        return this.bCryptPasswordEncoder.matches(tfaCode, this.administratorRepository.getTfaCodeById(administratorId));
+        return this.bCryptPasswordEncoder.matches(tfaCode, tfaDetails.getTfaCode());
     }
 
     public Optional<FirstFactorAuthenticationInformation> verifyCredentialsAndGetFirstFactorAuthenticationInformation(String email, String password) {
@@ -74,9 +76,9 @@ public class AdministratorLoginService {
         } else {
             Administrator administrator = optionalAdministrator.get();
             if (this.bCryptPasswordEncoder.matches(password, administrator.getPassword())) {
-                return Optional.empty();
-            } else {
                 return Optional.of(new FirstFactorAuthenticationInformation(administrator.getId(), administrator.isTfaEnabled()));
+            } else {
+                return Optional.empty();
             }
         }
     }

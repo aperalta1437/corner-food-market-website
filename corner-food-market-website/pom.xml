@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.psu.ist311.team.team5</groupId>
 	<artifactId>corner-food-market-website</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0.0</version>
 	<name>corner-food-market-website</name>
 	<description>Demo project for Spring Boot</description>
 	<properties>

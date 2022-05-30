@@ -41,12 +41,10 @@ public class Administrator {
     @NonNull
     @Column(name = "IS_TFA_ENABLED")
     private boolean isTfaEnabled;
-    @NonNull
     @Column(name = "TFA_CODE")
     private String tfaCode;
-    @NonNull
     @Column(name = "TFA_EXPIRATION_TIME")
-    private Timestamp tfaExpirationTime;
+    private Long tfaExpirationTime;
     @NonNull
     @Column(name = "TFA_CHOSEN_TYPE")
     private TfaTypeEnum tfaChosenType;

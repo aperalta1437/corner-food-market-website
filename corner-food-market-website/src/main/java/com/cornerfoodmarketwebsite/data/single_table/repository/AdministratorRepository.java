@@ -2,6 +2,7 @@ package com.cornerfoodmarketwebsite.data.single_table.repository;
 
 import com.cornerfoodmarketwebsite.data.single_table.entity.Administrator;
 import com.cornerfoodmarketwebsite.data.single_table.entity.utils.TfaTypeEnum;
+import com.cornerfoodmarketwebsite.data.single_table.repository.utils.projection.TfaDetails;
 import com.cornerfoodmarketwebsite.data.utils.custom_jpa_repository.CustomJpaRepository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -33,8 +34,8 @@ public interface AdministratorRepository extends CustomJpaRepository<Administrat
     @Transactional
     @Modifying
     @Query(value = "UPDATE Administrator SET tfaCode = ?1, tfaExpirationTime = ?2 WHERE id = ?3")
-    int setTfaCodeDetailsById(String tfaCode, Timestamp tfaExpirationTime, short id);
+    int setTfaCodeDetailsById(String tfaCode, long tfaExpirationTime, short id);
 
-    @Query(value = "SELECT A1.tfaCode FROM Administrator A1 WHERE A1.id = ?1")
-    String getTfaCodeById(short id);
+    @Query(value = "SELECT A1.tfaCode, A1.tfaExpirationTime FROM Administrator A1 WHERE A1.id = ?1")
+    TfaDetails getTfaDetailsById(short id);
 }

@@ -2,6 +2,7 @@ package com.cornerfoodmarketwebsite.configuration.administrator;
 
 import com.cornerfoodmarketwebsite.business.dto.request.domain.AdministratorUserDetails;
 import com.cornerfoodmarketwebsite.business.service.AdministratorUserDetailsService;
+import com.cornerfoodmarketwebsite.business.service.utils.RoleInformationEnum;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -29,7 +30,7 @@ public class TfaJwtTokenProvider implements Serializable {
         secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes());
     }
 
-    private long validityInMilliseconds = 2 * 60 * 1000;    // 2 minutes
+    private final int validTimeframe = RoleInformationEnum.ADMINISTRATOR.getTfaCodeValidTimeframe();
 
     public String createToken(String email) {
         Claims claims = Jwts.claims().setSubject(email);
@@ -37,7 +38,7 @@ public class TfaJwtTokenProvider implements Serializable {
 
         Date now = new Date();
         return Jwts.builder().setClaims(claims).setIssuedAt(now)
-                .setExpiration(new Date(now.getTime() + validityInMilliseconds))
+                .setExpiration(new Date(now.getTime() + validTimeframe))
                 .signWith(SignatureAlgorithm.HS256, secretKey).compact();
     }
 

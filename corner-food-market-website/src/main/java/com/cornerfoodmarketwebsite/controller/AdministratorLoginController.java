@@ -87,9 +87,10 @@ public class AdministratorLoginController {
     @PostMapping(value = "/authenticate", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> authenticate(@RequestBody AdministratorFirstFactorLoginFields administratorFirstFactorLoginFields, @RequestHeader("Origin-Number") int originNumber) {
         JSONObject jsonResponse = new JSONObject();
-
         try {
             String password = RsaUtil.decrypt(administratorFirstFactorLoginFields.getEncryptedPassword(), this.loginRsaKeysStore.getPrivateKey(administratorFirstFactorLoginFields.getLoginAccessCode(), originNumber));
+            System.out.println("Decrypted password wbcjwnco");
+            System.out.println(password);
             Optional<FirstFactorAuthenticationInformation> optionalFirstFactorAuthenticationInformation = this.administratorLoginService.verifyCredentialsAndGetFirstFactorAuthenticationInformation(administratorFirstFactorLoginFields.getEmail(), password);
             if (optionalFirstFactorAuthenticationInformation.isPresent()) {
                 FirstFactorAuthenticationInformation firstFactorAuthenticationInformation = optionalFirstFactorAuthenticationInformation.get();
@@ -101,8 +102,12 @@ public class AdministratorLoginController {
                             administratorFirstFactorLoginFields.getEmail(), password));
 
                     if (authentication.isAuthenticated()) {
+                        Administrator administrator = ((AdministratorUserDetails) authentication.getPrincipal()).getAdministrator();
                         jsonResponse.put("isTfaEnabled", false);
                         jsonResponse.put("accessToken", jwtTokenProvider.createToken(administratorFirstFactorLoginFields.getEmail()));    // TODO implement roles
+                        jsonResponse.put("userId", administrator.getId());
+                        jsonResponse.put("name", String.format("%s %s", administrator.getFirstName(), administrator.getLastName()));
+                        jsonResponse.put("email", administrator.getEmail());
                         return new ResponseEntity<>(jsonResponse.toString(), HttpStatus.OK);
                     } else {
                         jsonResponse.put("message", "We were unable to authenticate your account. Please try again later. If the issue persist, please contact your system administrator.");
@@ -146,10 +151,16 @@ public class AdministratorLoginController {
         if (authentication.isAuthenticated()) {
             Administrator administrator = ((AdministratorUserDetails) authentication.getPrincipal()).getAdministrator();
 
+            TfaCodeDetailsForUser tfaCodeDetailsForUser = this.administratorLoginService.sendTfaCodeAndGetDetailsForUser(administrator);
+
             jsonResponse.put("isTfaEnabled", true);
             jsonResponse.put("accessToken", tfaJwtTokenProvider.createToken(administrator.getEmail()));    // TODO implement roles
-            jsonResponse.put("tfaExpirationTimeInMilliseconds", this.administratorLoginService.sendTfaCodeAndGetExpirationTime(administrator));
+            jsonResponse.put("tfaCodeValidTimeframe", tfaCodeDetailsForUser.getValidTimeframe());
+            jsonResponse.put("tfaCodeCreatedAt", tfaCodeDetailsForUser.getCreatedAt());
             jsonResponse.put("loginAccessCode", loginAccessCode);
+            jsonResponse.put("userId", administrator.getId());
+            jsonResponse.put("name", String.format("%s %s", administrator.getFirstName(), administrator.getLastName()));
+            jsonResponse.put("email", administrator.getEmail());
         } else {
             jsonResponse.put("message", "We were unable to authenticate your account. Please try again later. If the issue persist, please contact your system administrator.");
             return new ResponseEntity<>(jsonResponse.toString(), HttpStatus.SERVICE_UNAVAILABLE);
@@ -159,8 +170,6 @@ public class AdministratorLoginController {
 
     @PostMapping(value = "/tfa-post-authenticate", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> tfaPostAuthenticate(@RequestHeader("Authorization") String tfaJwtToken, @RequestBody AdministratorSecondFactorLoginFields administratorSecondFactorLoginFields, @RequestHeader("Origin-Number") int originNumber) {
-        System.out.println("Inside tfaPostAuthenticate HEREEEEEEEE!");
-
         JSONObject jsonResponse = new JSONObject();
 
         Claims claims = tfaJwtTokenProvider.getClaimsFromToken(tfaJwtToken);
@@ -168,19 +177,19 @@ public class AdministratorLoginController {
         String administratorEmail = claims.getSubject();
 
         try {
-            if (this.administratorLoginService.isCorrectTfaCodeByAdministrator(administratorSecondFactorLoginFields.getTfaCode(), administratorSecondFactorLoginFields.getId())) {
+            String tfaCode = RsaUtil.decrypt(administratorSecondFactorLoginFields.getEncryptedTfaCode(), this.loginRsaKeysStore.getPrivateKey(administratorSecondFactorLoginFields.getLoginAccessCode(), originNumber));
+
+            if (this.administratorLoginService.isCorrectTfaCodeByAdministrator(tfaCode, administratorSecondFactorLoginFields.getId())) {
                 String password = RsaUtil.decrypt(this.temporalEncryptedPasswordStore.getEncryptedPassword(originNumber, administratorSecondFactorLoginFields.getId()), this.loginRsaKeysStore.getPrivateKey(administratorSecondFactorLoginFields.getLoginAccessCode(), originNumber));
 //                SecurityContextHolder.clearContext();
                 Authentication authentication = administratorPostTfaAuthenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                         administratorEmail, password));
-                System.out.println("Inside tfaPostAuthenticate HEREEEEEEEE 222222222222222222222222!");
-                System.out.println(password);
                 if (authentication.isAuthenticated()) {
-                    System.out.println("Inside tfaPostAuthenticate HEREEEEEEEE 333333333333333333333333!");
-
+                    Administrator administrator = ((AdministratorUserDetails) authentication.getPrincipal()).getAdministrator();
                     jsonResponse.put("accessToken", jwtTokenProvider.createToken(administratorEmail));    // TODO implement roles
-
-                    System.out.println("Inside tfaPostAuthenticate HEREEEEEEEE 444444444444444444444444!");
+                    jsonResponse.put("userId", administrator.getId());
+                    jsonResponse.put("name", String.format("%s %s", administrator.getFirstName(), administrator.getLastName()));
+                    jsonResponse.put("email", administrator.getEmail());
                 } else {
                     jsonResponse.put("message", "We were unable to authenticate your account. Please try again later. If the issue persist, please contact your system administrator.");
                     return new ResponseEntity<>(jsonResponse.toString(), HttpStatus.SERVICE_UNAVAILABLE);
@@ -200,6 +209,16 @@ public class AdministratorLoginController {
             this.exceptionLogService.logException(badCredentialsException);
             badCredentialsException.printStackTrace();
             return new ResponseEntity<>(jsonResponse.toString(), HttpStatus.UNAUTHORIZED);
+        } catch (ExpiredTfaCodeException expiredTfaCodeException) {
+            try {
+                jsonResponse.put("message", expiredTfaCodeException.getMessage());
+            } catch (JSONException jsonException) {
+                this.exceptionLogService.logException(jsonException);
+                jsonException.printStackTrace();
+            }
+            this.exceptionLogService.logException(expiredTfaCodeException);
+            expiredTfaCodeException.printStackTrace();
+            return new ResponseEntity<>(jsonResponse.toString(), HttpStatus.GONE);
         } catch (Exception exception) {
             try {
                 jsonResponse.put("message", "An issue happened at the server. Please try again later. If the issue persist, please contact your system administrator");
