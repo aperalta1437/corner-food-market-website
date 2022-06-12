@@ -77,8 +77,8 @@ VALUES  ('BUY_AND_GET_FREE', 'Buy a specified amount of an specific item and get
 
 ---------------------------------------------------------------------------------------
 
-INSERT INTO ADMINISTRATOR (EMAIL, PASSWORD, FIRST_NAME, LAST_NAME, IS_DISABLED, IS_TFA_ENABLED, TFA_CHOSEN_TYPE)
-VALUES ('amiguelp007@gmail.com', '$2a$10$N.kPTlzpYt6EsPPrpLavo.zxXOdg2Cr.vDet4kff5g53Q/.G6hry6', 'Angel', 'Peralta', FALSE, TRUE, 'EMAIL');
+INSERT INTO ADMINISTRATOR (EMAIL, PASSWORD, FIRST_NAME, LAST_NAME, IS_DISABLED, IS_TFA_ENABLED, TFA_CHOSEN_TYPE, PERMISSIONS, IS_SUPER)
+VALUES ('amiguelp007@gmail.com', '$2a$10$N.kPTlzpYt6EsPPrpLavo.zxXOdg2Cr.vDet4kff5g53Q/.G6hry6', 'Angel', 'Peralta', FALSE, TRUE, 'EMAIL', '{"CREATE_ITEM", "READ_ITEM", "UPDATE_ITEM", "DELETE_ITEM", "CREATE_ADMINISTRATOR", "READ_ADMINISTRATOR", "DELETE_ADMINISTRATOR", "READ_PERMISSION", "UPDATE_PERMISSION"}', TRUE);
 
 --------------------------------------------------------------------------------------------------------------
 

@@ -30,7 +30,7 @@ public class TfaJwtTokenProvider implements Serializable {
         secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes());
     }
 
-    private final int validTimeframe = RoleInformationEnum.ADMINISTRATOR.getTfaCodeValidTimeframe();
+    private final int validTimeframe = RoleInformationEnum.ADMINISTRATOR.getTfaCodeValidTimeframe() + RoleInformationEnum.ADMINISTRATOR.getTfaCodeValidationOverheadTimeframe();
 
     public String createToken(String email) {
         Claims claims = Jwts.claims().setSubject(email);

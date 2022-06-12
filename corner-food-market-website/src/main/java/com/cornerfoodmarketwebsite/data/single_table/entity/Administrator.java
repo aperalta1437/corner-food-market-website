@@ -1,10 +1,13 @@
 package com.cornerfoodmarketwebsite.data.single_table.entity;
 
+import com.cornerfoodmarketwebsite.data.single_table.entity.utils.AdministratorPermissionEnum;
+import com.cornerfoodmarketwebsite.data.single_table.entity.utils.AdministratorPermissionListConverter;
 import com.cornerfoodmarketwebsite.data.single_table.entity.utils.TfaTypeEnum;
 import lombok.*;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.HashSet;
 
 @Entity
 @Table(name = "ADMINISTRATOR")
@@ -46,8 +49,14 @@ public class Administrator {
     @Column(name = "TFA_EXPIRATION_TIME")
     private Long tfaExpirationTime;
     @NonNull
-    @Column(name = "TFA_CHOSEN_TYPE")
+    @Column(name = "TFA_CHOSEN_TYPE", columnDefinition = "TFA_TYPE")
     private TfaTypeEnum tfaChosenType;
+    @Convert(converter = AdministratorPermissionListConverter.class)
+    @Column(name = "PERMISSIONS", columnDefinition = "ADMINISTRATOR_PERMISSION[]")
+    private HashSet<AdministratorPermissionEnum> permissions;
+    @NonNull
+    @Column(name = "IS_SUPER")
+    private boolean isSuper;
     @Column(name = "CREATED_AT")
     private Timestamp createdAt;
     @Column(name = "MODIFIED_AT")

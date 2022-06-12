@@ -23,7 +23,6 @@ import java.util.Random;
 
 @Service
 public class AdministratorLoginService {
-
     private final AdministratorRepository administratorRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final EmailService emailService;
@@ -43,7 +42,7 @@ public class AdministratorLoginService {
         String encryptedTfaCode = this.bCryptPasswordEncoder.encode(tfaCode);
 
         TfaCodeDetailsForUser tfaCodeDetailsForUser = new TfaCodeDetailsForUser(System.currentTimeMillis(), RoleInformationEnum.ADMINISTRATOR.getTfaCodeValidTimeframe());
-        this.administratorRepository.setTfaCodeDetailsById(encryptedTfaCode, tfaCodeDetailsForUser.getCreatedAt() + tfaCodeDetailsForUser.getValidTimeframe(), administrator.getId());
+        this.administratorRepository.setTfaCodeDetailsById(encryptedTfaCode, tfaCodeDetailsForUser.getCreatedAt() + tfaCodeDetailsForUser.getValidTimeframe() + RoleInformationEnum.ADMINISTRATOR.getTfaCodeValidationOverheadTimeframe(), administrator.getId());
 
         if (tfaTypeEnum == TfaTypeEnum.EMAIL) {
             this.emailService.sendEmail(administrator.getEmail(), "Two Factor Authentication code from our Service", EmailTemplateCustomEnum.TFA_CODE.getEmailContent(tfaCode));

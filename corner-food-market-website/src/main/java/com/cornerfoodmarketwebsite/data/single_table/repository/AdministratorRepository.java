@@ -36,6 +36,6 @@ public interface AdministratorRepository extends CustomJpaRepository<Administrat
     @Query(value = "UPDATE Administrator SET tfaCode = ?1, tfaExpirationTime = ?2 WHERE id = ?3")
     int setTfaCodeDetailsById(String tfaCode, long tfaExpirationTime, short id);
 
-    @Query(value = "SELECT A1.tfaCode, A1.tfaExpirationTime FROM Administrator A1 WHERE A1.id = ?1")
+    @Query(value = "SELECT A1 FROM Administrator A1 WHERE A1.id = ?1")
     TfaDetails getTfaDetailsById(short id);
 }

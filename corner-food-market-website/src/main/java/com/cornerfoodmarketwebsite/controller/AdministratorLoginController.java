@@ -11,6 +11,7 @@ import com.cornerfoodmarketwebsite.configuration.administrator.TfaJwtTokenProvid
 import com.cornerfoodmarketwebsite.data.single_table.entity.Administrator;
 import com.cornerfoodmarketwebsite.data.single_table.repository.AdministratorRepository;
 import io.jsonwebtoken.Claims;
+import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 import org.slf4j.Logger;
@@ -89,21 +90,19 @@ public class AdministratorLoginController {
         JSONObject jsonResponse = new JSONObject();
         try {
             String password = RsaUtil.decrypt(administratorFirstFactorLoginFields.getEncryptedPassword(), this.loginRsaKeysStore.getPrivateKey(administratorFirstFactorLoginFields.getLoginAccessCode(), originNumber));
-            System.out.println("Decrypted password wbcjwnco");
-            System.out.println(password);
             Optional<FirstFactorAuthenticationInformation> optionalFirstFactorAuthenticationInformation = this.administratorLoginService.verifyCredentialsAndGetFirstFactorAuthenticationInformation(administratorFirstFactorLoginFields.getEmail(), password);
             if (optionalFirstFactorAuthenticationInformation.isPresent()) {
                 FirstFactorAuthenticationInformation firstFactorAuthenticationInformation = optionalFirstFactorAuthenticationInformation.get();
                 if (firstFactorAuthenticationInformation.isTfaEnabled()) {
                     this.temporalEncryptedPasswordStore.putEncryptedPassword(originNumber, firstFactorAuthenticationInformation.getUserId(), administratorFirstFactorLoginFields.getEncryptedPassword());
-                    return tfaPreAuthenticate(administratorFirstFactorLoginFields.getEmail(), password, administratorFirstFactorLoginFields.getLoginAccessCode());
+                    return tfaPreAuthenticate(administratorFirstFactorLoginFields.getEmail(), password);
                 } else {
                     Authentication authentication = administratorPostTfaAuthenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                             administratorFirstFactorLoginFields.getEmail(), password));
 
                     if (authentication.isAuthenticated()) {
                         Administrator administrator = ((AdministratorUserDetails) authentication.getPrincipal()).getAdministrator();
-                        jsonResponse.put("isTfaEnabled", false);
+                        jsonResponse.put("permissions", new JSONArray(administrator.getPermissions()));
                         jsonResponse.put("accessToken", jwtTokenProvider.createToken(administratorFirstFactorLoginFields.getEmail()));    // TODO implement roles
                         jsonResponse.put("userId", administrator.getId());
                         jsonResponse.put("name", String.format("%s %s", administrator.getFirstName(), administrator.getLastName()));
@@ -142,7 +141,7 @@ public class AdministratorLoginController {
         }
     }
 
-    public ResponseEntity<String> tfaPreAuthenticate(String email, String password, long loginAccessCode) throws JSONException, NotProvidedTfaTypeException, NotSupportedTfaTypeException, MessagingException {
+    public ResponseEntity<String> tfaPreAuthenticate(String email, String password) throws JSONException, NotProvidedTfaTypeException, NotSupportedTfaTypeException, MessagingException {
         JSONObject jsonResponse = new JSONObject();
 
         Authentication authentication = administratorPreTfaAuthenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
@@ -153,11 +152,9 @@ public class AdministratorLoginController {
 
             TfaCodeDetailsForUser tfaCodeDetailsForUser = this.administratorLoginService.sendTfaCodeAndGetDetailsForUser(administrator);
 
-            jsonResponse.put("isTfaEnabled", true);
             jsonResponse.put("accessToken", tfaJwtTokenProvider.createToken(administrator.getEmail()));    // TODO implement roles
             jsonResponse.put("tfaCodeValidTimeframe", tfaCodeDetailsForUser.getValidTimeframe());
             jsonResponse.put("tfaCodeCreatedAt", tfaCodeDetailsForUser.getCreatedAt());
-            jsonResponse.put("loginAccessCode", loginAccessCode);
             jsonResponse.put("userId", administrator.getId());
             jsonResponse.put("name", String.format("%s %s", administrator.getFirstName(), administrator.getLastName()));
             jsonResponse.put("email", administrator.getEmail());
@@ -186,6 +183,7 @@ public class AdministratorLoginController {
                         administratorEmail, password));
                 if (authentication.isAuthenticated()) {
                     Administrator administrator = ((AdministratorUserDetails) authentication.getPrincipal()).getAdministrator();
+                    jsonResponse.put("permissions", new JSONArray(administrator.getPermissions()));
                     jsonResponse.put("accessToken", jwtTokenProvider.createToken(administratorEmail));    // TODO implement roles
                     jsonResponse.put("userId", administrator.getId());
                     jsonResponse.put("name", String.format("%s %s", administrator.getFirstName(), administrator.getLastName()));

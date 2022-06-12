@@ -2,7 +2,6 @@ package com.cornerfoodmarketwebsite.data.single_table.entity.utils;
 
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
-import java.util.stream.Stream;
 
 @Converter(autoApply = true)
 public class TfaTypeConverter implements AttributeConverter<TfaTypeEnum, String> {
@@ -19,9 +18,6 @@ public class TfaTypeConverter implements AttributeConverter<TfaTypeEnum, String>
         if (strTfaType == null) {
             return null;
         }
-        return Stream.of(TfaTypeEnum.values())
-                .filter(currTfaTypeEnum -> currTfaTypeEnum.name().equals(strTfaType))
-                .findFirst()
-                .orElseThrow(IllegalArgumentException::new);
+        return TfaTypeEnum.valueOf(strTfaType);
     }
 }

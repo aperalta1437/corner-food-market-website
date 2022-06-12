@@ -2,7 +2,7 @@ package com.cornerfoodmarketwebsite.configuration;
 
 import com.cornerfoodmarketwebsite.business.service.utils.LoginRsaKeysStore;
 import com.cornerfoodmarketwebsite.business.service.utils.RoleEnum;
-import com.cornerfoodmarketwebsite.configuration.utils.InvalidPssClientPropertyException;
+import com.cornerfoodmarketwebsite.configuration.utils.InvalidOriginPropertyException;
 import com.cornerfoodmarketwebsite.configuration.utils.InvalidRoleException;
 import com.cornerfoodmarketwebsite.configuration.utils.OriginProperties;
 import com.cornerfoodmarketwebsite.configuration.utils.OriginPropertyEnum;
@@ -25,7 +25,7 @@ public class GeneralConfiguration {
     @Value("${administrator.login-rsa-key-size}")
     private int administratorLoginRsaKeySize;
 
-    public GeneralConfiguration(@Value("#{${client-origin-properties-map}}") HashMap<Integer, String> originPropertiesStringMap) throws InvalidPssClientPropertyException, InvalidRoleException {
+    public GeneralConfiguration(@Value("#{${client-origin-properties-map}}") HashMap<Integer, String> originPropertiesStringMap) throws InvalidOriginPropertyException, InvalidRoleException {
         System.out.println("Constructor of GeneralConfiguration jbkedjkehd:");
         HashMap<Integer, OriginProperties> originPropertiesMap = new HashMap<>();
         for (Map.Entry<Integer, String> entry : originPropertiesStringMap.entrySet()) {
@@ -51,7 +51,7 @@ public class GeneralConfiguration {
                         throw new InvalidRoleException(propertyNameAndValue[1]);
                     }
                 } else {
-                    throw new InvalidPssClientPropertyException(propertyNameAndValue[0]);
+                    throw new InvalidOriginPropertyException(propertyNameAndValue[0]);
                 }
             }
             assert origin != null;
