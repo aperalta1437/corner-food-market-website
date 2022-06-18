@@ -5,19 +5,14 @@ import com.cornerfoodmarketwebsite.data.single_table.entity.Administrator;
 import com.cornerfoodmarketwebsite.data.single_table.entity.utils.TfaTypeEnum;
 import com.cornerfoodmarketwebsite.data.single_table.repository.AdministratorRepository;
 import com.cornerfoodmarketwebsite.data.single_table.repository.utils.projection.TfaDetails;
+import com.cornerfoodmarketwebsite.exception.ExpiredTfaCodeRuntimeException;
+import com.cornerfoodmarketwebsite.exception.FailedFirstFactorAuthenticationRuntimeException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.crypto.BadPaddingException;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
 import javax.mail.MessagingException;
-import javax.swing.text.html.Option;
-import java.security.*;
-import java.security.spec.InvalidKeySpecException;
-import java.sql.Timestamp;
 import java.util.Optional;
 import java.util.Random;
 
@@ -57,28 +52,22 @@ public class AdministratorLoginService {
         return tfaCodeDetailsForUser;
     }
 
-    public boolean isCorrectTfaCodeByAdministrator(String tfaCode, short administratorId) throws ExpiredTfaCodeException {
+    public boolean isCorrectTfaCodeByAdministrator(String tfaCode, short administratorId) {
         TfaDetails tfaDetails = this.administratorRepository.getTfaDetailsById(administratorId);
 
         if (System.currentTimeMillis() > tfaDetails.getTfaExpirationTime()) {
-            throw new ExpiredTfaCodeException();
+            throw new ExpiredTfaCodeRuntimeException();
         }
 
         return this.bCryptPasswordEncoder.matches(tfaCode, tfaDetails.getTfaCode());
     }
 
-    public Optional<FirstFactorAuthenticationInformation> verifyCredentialsAndGetFirstFactorAuthenticationInformation(String email, String password) {
+    public FirstFactorAuthenticationInformation verifyCredentialsAndGetFirstFactorAuthenticationInformation(String email, String password) {
         Optional<Administrator> optionalAdministrator = this.administratorRepository.findByEmail(email);
 
-        if (optionalAdministrator.isEmpty()) {
-            return Optional.empty();
-        } else {
-            Administrator administrator = optionalAdministrator.get();
-            if (this.bCryptPasswordEncoder.matches(password, administrator.getPassword())) {
-                return Optional.of(new FirstFactorAuthenticationInformation(administrator.getId(), administrator.isTfaEnabled()));
-            } else {
-                return Optional.empty();
-            }
+        if (optionalAdministrator.isEmpty() || !this.bCryptPasswordEncoder.matches(password, optionalAdministrator.get().getPassword())) {
+            throw new FailedFirstFactorAuthenticationRuntimeException();
         }
+        return new FirstFactorAuthenticationInformation(optionalAdministrator.get().getId(), optionalAdministrator.get().isTfaEnabled());
     }
 }
