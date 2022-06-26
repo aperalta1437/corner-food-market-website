@@ -9,8 +9,13 @@ import com.cornerfoodmarketwebsite.configuration.utils.OriginPropertyEnum;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.servlet.HandlerExceptionResolver;
 
 import java.security.NoSuchAlgorithmException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -26,7 +31,6 @@ public class GeneralConfiguration {
     private int administratorLoginRsaKeySize;
 
     public GeneralConfiguration(@Value("#{${client-origin-properties-map}}") HashMap<Integer, String> originPropertiesStringMap) throws InvalidOriginPropertyException, InvalidRoleException {
-        System.out.println("Constructor of GeneralConfiguration jbkedjkehd:");
         HashMap<Integer, OriginProperties> originPropertiesMap = new HashMap<>();
         for (Map.Entry<Integer, String> entry : originPropertiesStringMap.entrySet()) {
             String[] properties = entry.getValue().split("\\|");    // Split by "|".
@@ -59,7 +63,6 @@ public class GeneralConfiguration {
             assert roleEnum != null;
             originPropertiesMap.put(entry.getKey(), new OriginProperties(origin, storeName, isAllowed, roleEnum));
         }
-        System.out.println(originPropertiesMap.get(1));
         this.originPropertiesMap = originPropertiesMap;
     }
 
@@ -72,4 +75,16 @@ public class GeneralConfiguration {
     public CustomCorsFilter customCorsFilter() throws NoSuchAlgorithmException {
         return new CustomCorsFilter(originPropertiesMap);
     }
+
+//    @Bean
+//    CorsConfigurationSource corsConfigurationSource() {
+//        CorsConfiguration configuration = new CorsConfiguration();
+//        configuration.setAllowedOrigins(Arrays.asList("*"));
+//        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "OPTIONS", "DELETE", "PUT", "PATCH"));
+//        configuration.setAllowedHeaders(Arrays.asList("X-Requested-With", "Origin", "Content-Type", "Accept", "Authorization"));
+//        configuration.setAllowCredentials(true);
+//        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+//        source.registerCorsConfiguration("/**", configuration);
+//        return source;
+//    }
 }

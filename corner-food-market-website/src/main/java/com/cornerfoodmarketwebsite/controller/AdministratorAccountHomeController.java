@@ -2,24 +2,23 @@ package com.cornerfoodmarketwebsite.controller;
 
 import com.cornerfoodmarketwebsite.business.service.AdministratorAccountItemInformationService;
 import com.cornerfoodmarketwebsite.data.domain.entity.AdministratorAccountItemInformation;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
-@RequestMapping(value = "/api/admin/account")
+@RequestMapping(value = "/admin/account")
+@RequiredArgsConstructor
 public class AdministratorAccountHomeController {
 
     private final AdministratorAccountItemInformationService administratorAccountItemInformationService;
 
-    @Autowired
-    public AdministratorAccountHomeController(AdministratorAccountItemInformationService administratorAccountItemInformationService) {
-        this.administratorAccountItemInformationService = administratorAccountItemInformationService;
-    }
-
     @GetMapping
-    public Iterable<AdministratorAccountItemInformation> getOnSaleItemsList() {
+    public List<AdministratorAccountItemInformation> getOnSaleItemsList() {
         return this.administratorAccountItemInformationService.getItemsInformation();
     }
 

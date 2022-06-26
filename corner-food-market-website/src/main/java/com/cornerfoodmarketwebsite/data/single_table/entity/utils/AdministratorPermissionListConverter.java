@@ -5,23 +5,24 @@ import org.apache.commons.lang3.StringUtils;
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
 import java.util.Arrays;
+import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.stream.Collectors;
 
 @Converter
-public class AdministratorPermissionListConverter implements AttributeConverter<HashSet<AdministratorPermissionEnum>, String> {
+public class AdministratorPermissionListConverter implements AttributeConverter<EnumSet<AdministratorPermissionEnum>, String> {
     @Override
-    public String convertToDatabaseColumn(HashSet<AdministratorPermissionEnum> administratorPermissionEnumHashSet) {
-        if (administratorPermissionEnumHashSet == null) {
+    public String convertToDatabaseColumn(EnumSet<AdministratorPermissionEnum> administratorPermissionEnumSet) {
+        if (administratorPermissionEnumSet == null) {
             return null;
         }
 
         // Build the postgres ADMINISTRATOR_PERMISSION ARRAY value.
-        return String.format("{%s}", administratorPermissionEnumHashSet.stream().map(AdministratorPermissionEnum::toString).collect(Collectors.joining(",")));
+        return String.format("{%s}", administratorPermissionEnumSet.stream().map(AdministratorPermissionEnum::toString).collect(Collectors.joining(",")));
     }
 
     @Override
-    public HashSet<AdministratorPermissionEnum> convertToEntityAttribute(String pgAdministratorPermissionsStr) {
+    public EnumSet<AdministratorPermissionEnum> convertToEntityAttribute(String pgAdministratorPermissionsStr) {
         if (pgAdministratorPermissionsStr == null) {
             return null;
         }
@@ -29,6 +30,8 @@ public class AdministratorPermissionListConverter implements AttributeConverter<
         pgAdministratorPermissionsStr = StringUtils.stripStart(pgAdministratorPermissionsStr, "{");
         pgAdministratorPermissionsStr = StringUtils.stripEnd(pgAdministratorPermissionsStr, "}");
 
-        return Arrays.stream(pgAdministratorPermissionsStr.split(",")).map(AdministratorPermissionEnum::valueOf).collect(Collectors.toCollection(HashSet::new));
+        return EnumSet.copyOf(Arrays.stream(pgAdministratorPermissionsStr.split(",")).map(AdministratorPermissionEnum::valueOf).collect(Collectors.toList()));
+
+//        return Arrays.stream(pgAdministratorPermissionsStr.split(",")).map(AdministratorPermissionEnum::valueOf).collect(Collectors.toCollection(EnumSet.));
     }
 }

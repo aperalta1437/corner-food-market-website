@@ -22,8 +22,12 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.logout.HttpStatusReturningLogoutSuccessHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import javax.sql.DataSource;
+import java.util.Arrays;
 
 @EnableWebSecurity
 @Configuration
@@ -49,7 +53,6 @@ public class AdministratorWebSecurityConfigurerAdapter {
             return super.authenticationManagerBean();
         }
 
-
         @Bean
         public BCryptPasswordEncoder administratorPostTfaPasswordEncoder() {
             return new BCryptPasswordEncoder();
@@ -68,6 +71,18 @@ public class AdministratorWebSecurityConfigurerAdapter {
         protected void configure(AuthenticationManagerBuilder auth) throws Exception {
             auth.authenticationProvider(this.administratorPostTfaAuthenticationProvider());
         }
+
+//        @Bean
+//        CorsConfigurationSource corsConfigurationSource() {
+//            CorsConfiguration configuration = new CorsConfiguration();
+//            configuration.setAllowedOrigins(Arrays.asList("*"));
+//            configuration.setAllowedMethods(Arrays.asList("GET", "POST", "OPTIONS", "DELETE", "PUT", "PATCH"));
+//            configuration.setAllowedHeaders(Arrays.asList("X-Requested-With", "Origin", "Content-Type", "Accept", "Authorization"));
+//            configuration.setAllowCredentials(true);
+//            UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+//            source.registerCorsConfiguration("/**", configuration);
+//            return source;
+//        }
 
         @Override
         protected void configure(HttpSecurity http) throws Exception {
@@ -96,18 +111,19 @@ public class AdministratorWebSecurityConfigurerAdapter {
 //        http.csrf().disable().sessionManagement().disable();
 ////        sessionCreationPolicy(SessionCreationPolicy.NEVER);
 ////        http.requestMatcher(new AntPathRequestMatcher("/admin/account/**")).authorizeRequests().anyRequest().authenticated();
-
-            http.cors().and().csrf().disable()
+            // REMINDER: DO NOT include context path
+//            http.cors().disable().csrf().disable()
+            http.cors().disable().csrf().disable()
                     .exceptionHandling().authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)).and()
                     .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
 //                    .authorizeRequests().antMatchers("/**").permitAll()
-                    .requestMatcher(new AntPathRequestMatcher("/api/admin/account/**")).authorizeRequests().anyRequest().authenticated()
+                    .requestMatcher(new AntPathRequestMatcher("/admin/account/**")).authorizeRequests().anyRequest().authenticated()
 //                    .antMatcher("/api/admin/account/**").authorizeRequests().anyRequest().authenticated()
 //                    .authorizeRequests().antMatchers("/api/admin/account/**").authenticated()
                     .and()
                     .logout().permitAll()
                     .logoutSuccessHandler(new HttpStatusReturningLogoutSuccessHandler(HttpStatus.OK))
-                    .logoutUrl("/api/admin/account/logout")
+                    .logoutUrl("/admin/account/logout")
                     .deleteCookies("JSESSIONID");
 
             http.apply(new JwtTokenConfigurer(this.jwtTokenProvider));
@@ -201,16 +217,18 @@ public class AdministratorWebSecurityConfigurerAdapter {
 ////        sessionCreationPolicy(SessionCreationPolicy.NEVER);
 ////        http.requestMatcher(new AntPathRequestMatcher("/admin/account/**")).authorizeRequests().anyRequest().authenticated();
 
-            http.cors().and().csrf().disable()
+            // REMINDER: DO NOT include context path
+//            http.cors().disable().csrf().disable()
+            http.cors().disable().csrf().disable()
                     .exceptionHandling().authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)).and()
                     .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
 //                    .authorizeRequests().antMatchers("/**").permitAll()
-                    .antMatcher("/api/admin/login/tfa-post-authenticate/**").authorizeRequests().anyRequest().authenticated()
+                    .antMatcher("/admin/login/tfa-post-authenticate/**").authorizeRequests().anyRequest().authenticated()
 //                    .authorizeRequests().antMatchers("/api/admin/login/tfa-post-authenticate/**").authenticated()
                     .and()
                     .logout().permitAll()
                     .logoutSuccessHandler(new HttpStatusReturningLogoutSuccessHandler(HttpStatus.OK))
-                    .logoutUrl("/api/admin/login/tfa-post-authenticate/logout");
+                    .logoutUrl("/admin/login/tfa-post-authenticate/logout");
 //                    .deleteCookies("JSESSIONID");
 
             http.apply(new TfaJwtTokenConfigurer(this.tfaJwtTokenProvider));

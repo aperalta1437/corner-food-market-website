@@ -3,9 +3,10 @@ package com.cornerfoodmarketwebsite.data.domain.repository;
 import com.cornerfoodmarketwebsite.data.domain.entity.AdministratorAccountItemInformation;
 import com.cornerfoodmarketwebsite.data.domain.utils.ShoppingCartItemsList;
 import com.cornerfoodmarketwebsite.data.utils.custom_jpa_repository.CustomJpaRepository;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Repository
 public interface AdministratorAccountItemInformationRepository extends CustomJpaRepository<AdministratorAccountItemInformation, Short> {
@@ -13,7 +14,7 @@ public interface AdministratorAccountItemInformationRepository extends CustomJpa
 //    Iterable<AccountItemInformation> findAllOnSale(@Param("customerId") short customerId);
 
     @Query(value = "SELECT AAII1 FROM AdministratorAccountItemInformation AAII1 WHERE AAII1.isOnSale = true AND AAII1.quantity > 0")
-    Iterable<AdministratorAccountItemInformation> findAllOnSale();
+    List<AdministratorAccountItemInformation> findAllOnSale();
 
     @Query(value = "SELECT I1 FROM AccountItemInformation I1 WHERE I1.customerId = ?1")
     ShoppingCartItemsList findAllInCart(short customerId);

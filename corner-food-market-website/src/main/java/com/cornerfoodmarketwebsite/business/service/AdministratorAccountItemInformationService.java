@@ -21,6 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.List;
 
 @Service
 public class AdministratorAccountItemInformationService {
@@ -49,7 +50,7 @@ public class AdministratorAccountItemInformationService {
         this.awsS3BucketStorageService = awsS3BucketStorageService;
     }
 
-    public Iterable<AdministratorAccountItemInformation> getItemsInformation() {
+    public List<AdministratorAccountItemInformation> getItemsInformation() {
         return this.administratorAccountItemInformationRepository.findAllOnSale();
     }
 

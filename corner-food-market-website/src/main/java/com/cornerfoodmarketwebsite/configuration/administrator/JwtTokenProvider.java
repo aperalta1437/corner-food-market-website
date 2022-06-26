@@ -5,6 +5,7 @@ import com.cornerfoodmarketwebsite.business.service.AdministratorUserDetailsServ
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -18,11 +19,13 @@ import java.util.Base64;
 import java.util.Date;
 
 @Component
+@RequiredArgsConstructor
 public class JwtTokenProvider implements Serializable {
     private static final long serialVersionUID = 2569800841756370596L;
 
     @Value(value = "${jwt.admin-secret-key}")
     private String secretKey;
+    private final AdministratorUserDetailsService administratorUserDetailsService;
 
     @PostConstruct      // So it executes after dependency injection takes place.
     protected void init() {
@@ -31,7 +34,7 @@ public class JwtTokenProvider implements Serializable {
     }
 
     // TODO: change to proper JWT reset time.
-    private long validityInMilliseconds = 10 * 60 * 60 * 100;
+    private final long validityInMilliseconds = 10 * 60 * 60 * 100;
 
     public String createToken(String email) {
         Claims claims = Jwts.claims().setSubject(email);
@@ -42,9 +45,6 @@ public class JwtTokenProvider implements Serializable {
                 .setExpiration(new Date(now.getTime() + validityInMilliseconds))
                 .signWith(SignatureAlgorithm.HS256, secretKey).compact();
     }
-
-    @Autowired
-    private AdministratorUserDetailsService administratorUserDetailsService;
 
     public Authentication getAuthentication(String email) {
         AdministratorUserDetails administratorUserDetails = (AdministratorUserDetails) this.administratorUserDetailsService.loadUserByUsername(email);

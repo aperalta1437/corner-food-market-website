@@ -6,6 +6,7 @@ import com.cornerfoodmarketwebsite.business.service.utils.RoleInformationEnum;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -18,13 +19,15 @@ import java.util.Base64;
 import java.util.Date;
 
 @Component
+@RequiredArgsConstructor
 public class TfaJwtTokenProvider implements Serializable {
     private static final long serialVersionUID = 2569800841756370596L;
 
     @Value(value = "${jwt.admin-tfa-secret-key}")
     private String secretKey;
+    private final AdministratorUserDetailsService administratorUserDetailsService;
 
-    @PostConstruct      // So it executes after dependency injection takes place.
+    @PostConstruct      // So it executes after the secretKey has been provided.
     protected void init() {
         // Convert secret key to byte array
         secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes());
@@ -41,9 +44,6 @@ public class TfaJwtTokenProvider implements Serializable {
                 .setExpiration(new Date(now.getTime() + validTimeframe))
                 .signWith(SignatureAlgorithm.HS256, secretKey).compact();
     }
-
-    @Autowired
-    private AdministratorUserDetailsService administratorUserDetailsService;
 
     public Authentication getAuthentication(String email) {
         AdministratorUserDetails administratorUserDetails = (AdministratorUserDetails) this.administratorUserDetailsService.loadUserByUsername(email);

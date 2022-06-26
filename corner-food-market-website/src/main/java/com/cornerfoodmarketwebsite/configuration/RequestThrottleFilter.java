@@ -3,9 +3,12 @@ package com.cornerfoodmarketwebsite.configuration;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
+import org.codehaus.jettison.json.JSONException;
+import org.codehaus.jettison.json.JSONObject;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.*;
@@ -16,7 +19,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
 @Component
-@Order(Ordered.HIGHEST_PRECEDENCE)
+@Order(Ordered.HIGHEST_PRECEDENCE + 1)
 public class RequestThrottleFilter implements Filter {
 
     private static final int MAX_REQUESTS_PER_SECOND = 5; //or whatever you want it to be
@@ -41,12 +44,16 @@ public class RequestThrottleFilter implements Filter {
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
             throws IOException, ServletException {
-        HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
         HttpServletResponse httpServletResponse = (HttpServletResponse) servletResponse;
         String clientIpAddress = getClientIP((HttpServletRequest) servletRequest);
         if(isMaximumRequestsPerSecondExceeded(clientIpAddress)){
+            try {
+                httpServletResponse.getWriter().println(new JSONObject().put("message", "User has been blocked for exceeding the maximum number of requests per second."));
+                httpServletResponse.setContentType(MediaType.APPLICATION_JSON_VALUE);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
             httpServletResponse.setStatus(HttpStatus.TOO_MANY_REQUESTS.value());
-            httpServletResponse.getWriter().write("Too many requests");
             return;
         }
 

@@ -7,6 +7,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.EnumSet;
 import java.util.HashSet;
 
 @Entity
@@ -53,7 +54,7 @@ public class Administrator {
     private TfaTypeEnum tfaChosenType;
     @Convert(converter = AdministratorPermissionListConverter.class)
     @Column(name = "PERMISSIONS", columnDefinition = "ADMINISTRATOR_PERMISSION[]")
-    private HashSet<AdministratorPermissionEnum> permissions;
+    private EnumSet<AdministratorPermissionEnum> permissions;
     @NonNull
     @Column(name = "IS_SUPER")
     private boolean isSuper;
