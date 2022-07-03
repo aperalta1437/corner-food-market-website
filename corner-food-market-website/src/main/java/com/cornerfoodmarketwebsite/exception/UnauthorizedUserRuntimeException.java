@@ -3,12 +3,12 @@ package com.cornerfoodmarketwebsite.exception;
 import com.cornerfoodmarketwebsite.business.dto.response.ErrorResponse;
 import org.springframework.http.HttpStatus;
 
-public class FailedFirstFactorAuthenticationRuntimeException extends PssRuntimeException {
+public class UnauthorizedUserRuntimeException extends PssRuntimeException {
     private static final HttpStatus httpStatus = HttpStatus.UNAUTHORIZED;
-    private static final String message = "Invalid email and/or password";
-    private static final String error = "FAILED_FIRST_FACTOR_AUTHENTICATION";
+    private static final String message = "User is not authorized";
+    private static final String error = "UNAUTHORIZED_USER";
 
-    public FailedFirstFactorAuthenticationRuntimeException() {
+    public UnauthorizedUserRuntimeException() {
         super(new ErrorResponse(httpStatus.value(), message, error), httpStatus);
     }
 }

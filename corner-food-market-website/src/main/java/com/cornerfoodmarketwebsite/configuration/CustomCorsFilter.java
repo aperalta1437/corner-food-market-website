@@ -1,11 +1,13 @@
 package com.cornerfoodmarketwebsite.configuration;
 
+import com.cornerfoodmarketwebsite.configuration.utils.ClientOriginProperties;
 import com.cornerfoodmarketwebsite.configuration.utils.OriginProperties;
-import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpMethod;
@@ -18,11 +20,12 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.HashMap;
 
+import static com.cornerfoodmarketwebsite.helper.Constants.ORIGIN_NUMBER_HEADER_NAME;
+
 @Order(Ordered.HIGHEST_PRECEDENCE + 2)
 @RequiredArgsConstructor
 public class CustomCorsFilter extends OncePerRequestFilter {
-    @NonNull
-    private final HashMap<Integer, OriginProperties> originPropertiesMap;
+    private final HashMap<Integer, ClientOriginProperties> clientOriginProperties;
 
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, @NotNull HttpServletResponse httpServletResponse, @NotNull FilterChain filterChain) throws ServletException, IOException {
@@ -34,9 +37,9 @@ public class CustomCorsFilter extends OncePerRequestFilter {
             httpServletResponse.setStatus(HttpServletResponse.SC_OK);
             return;
         } else {
-            String originNumber = httpServletRequest.getHeader("Origin-Number");
-            if (originNumber != null && originPropertiesMap.get(Integer.parseInt(originNumber)).isAllowed()) {
-                httpServletResponse.setHeader("Access-Control-Allow-Origin", originPropertiesMap.get(Integer.parseInt(originNumber)).getOrigin());
+            String originNumber = httpServletRequest.getHeader(ORIGIN_NUMBER_HEADER_NAME);
+            if (!StringUtils.isEmpty(originNumber) && clientOriginProperties.get(Integer.parseInt(originNumber)).isAllowed()) {
+                httpServletResponse.setHeader("Access-Control-Allow-Origin", clientOriginProperties.get(Integer.parseInt(originNumber)).getOrigin());
                 httpServletResponse.setHeader("Access-Control-Allow-Methods", "*");
                 httpServletResponse.setHeader("Access-Control-Max-Age", "3600");
                 httpServletResponse.setHeader("Access-Control-Allow-Headers", "*");

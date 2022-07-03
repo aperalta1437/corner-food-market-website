@@ -8,6 +8,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @RequiredArgsConstructor
 public class TfaJwtTokenConfigurer extends SecurityConfigurerAdapter<DefaultSecurityFilterChain, HttpSecurity> {
+
     private final TfaJwtTokenProvider tfaJwtTokenProvider;
 
     public void configure(HttpSecurity http) throws Exception {

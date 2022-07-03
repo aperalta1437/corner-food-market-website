@@ -1,0 +1,101 @@
+spring:
+  jpa:
+    hibernate:
+      # Prevent hibernate from modifying the database.
+      ddl-auto: none
+    # Jpa database for abstraction
+    database: postgresql
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgresPlusDialect
+        format_sql: FALSE
+  servlet:
+    multipart:
+      # Max-file and request size.######
+      max-file-size: 10MB
+      max-request-size: 10MB
+      ##################################
+  web:
+    resources:
+      # Disable static content serving
+      add-mappings: false
+  # Email service details
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: cornerfoodmarket.pss@gmail.com
+    password: bnqibniyketwltev
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+        debug: true
+  datasource:
+    # External AWS RDS database configuration.####################################################
+    platform: postgres
+    url: jdbc:postgresql://pss-papi-store-online-pg-dbs.ctvrxz6lnldv.us-east-2.rds.amazonaws.com/CORNER_FOOD_MARKET
+    username: postgres
+    password: 4tl9lR73teHaph+H
+
+server:
+  servlet:
+    context-path: /api
+  port: 8080
+  error:
+    whitelabel:
+      enabled: false
+    path: /error
+
+# AWS S3 Configuration Properties
+cloud:
+  aws:
+    credentials:
+      access-key: AKIATGAUJMJBHVBJLWPD
+      secret-key: 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
+    region:
+      static: us-east-2
+    stack:
+      auto: false
+
+application:
+  bucket:
+    name: pss-papi-store-online-storage
+
+customer:
+  tfa-code:
+    valid-timeframe: 120000
+    validation-overhead-timeframe: 5
+  login-rsa-key-size: 1024
+  jwt:
+    access-token:
+      secret-key: SpAfRAzaco68ijlpo7AWR+SujuFrLNoPhlkuTUD5avUCheSwo0@*FeQLSLtlx4pr
+    refresh-token:
+      secret-key: 88S_lspup*utRob$ofrlwuzuw6swomlr+broCob_ust6NugaswiswinoyosAda5=
+    tfa-access-token:
+      secret-key: BEROp*ISti#A#OX=&lbEtr+c+E8rUquvOcRidEfA+athe!Rotr#d+ut+Ub&OheRo
+
+administrator:
+  tfa-code:
+    valid-timeframe: 120000
+    validation-overhead-timeframe: 5
+  login-rsa-key-size: 2048
+  jwt:
+    access-token:
+      secret-key: s??eBL3iT6??C4T#o8uP31R6bRux17_tr7p0$?6L1#BA@2Switlj+G+1r+#rlke5
+      valid-timeframe: 7200000    # 2 hours
+    refresh-token:
+      secret-key: p&2Fi80-Ar7sLzIxL0UCACLP--5-dRavl5ezEt=lT3tic-6T7C+H4clZOp?7AB+a
+      valid-timeframe: 2419000000   # 4 weeks
+    tfa-access-token:
+      secret-key: wrI_We9W#DeWRiW61xetLzAvLXAs8EJ@ki7aB2_6f38UvIdlSwoYOv8VopemLfRe
+      valid-timeframe: ${administrator.tfa-code.valid-timeframe} + ${administrator.tfa-code.validation-overhead-timeframe}
+
+#spring:
+#  servlet:
+#    multipart:
+#      enabled: true
+#      file-size-threshold: 2MB
+#      max-file-size: 5MB
+#      max-request-size: 10MB

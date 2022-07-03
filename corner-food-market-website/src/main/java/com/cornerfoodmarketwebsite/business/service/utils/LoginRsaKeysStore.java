@@ -1,5 +1,6 @@
 package com.cornerfoodmarketwebsite.business.service.utils;
 
+import com.cornerfoodmarketwebsite.configuration.utils.ClientOriginProperties;
 import com.cornerfoodmarketwebsite.configuration.utils.OriginProperties;
 
 import java.security.NoSuchAlgorithmException;
@@ -12,21 +13,21 @@ public class LoginRsaKeysStore {
     private long latestMapAccessNumber;
     private String previousMapAccessNumber;
 
-    public LoginRsaKeysStore(HashMap<Integer, OriginProperties> pssClientPropertiesMap, int customerRsaKeySize, int administratorRsaKeySize) throws NoSuchAlgorithmException {
+    public LoginRsaKeysStore(HashMap<Integer, ClientOriginProperties> clientOriginProperties, int customerRsaKeySize, int administratorRsaKeySize) throws NoSuchAlgorithmException {
         latestMapAccessNumber = System.currentTimeMillis();
         RsaUtil customerRsaUtil = new RsaUtil(customerRsaKeySize);
         RsaUtil administratorRsaUtil = new RsaUtil(administratorRsaKeySize);
 
         Map<Integer, Map<RsaKeyTypeEnum, String>> latestKeysMap = new HashMap<>();
 
-        pssClientPropertiesMap.forEach((pssClientNumber, originProperties) -> {
+        clientOriginProperties.forEach((originNumber, originProperties) -> {
             Base64RsaKeyPair customerBase64RsaKeyPair = customerRsaUtil.generateBase64RsaKeyPair();
             Base64RsaKeyPair administratorBase64RsaKeyPair = administratorRsaUtil.generateBase64RsaKeyPair();
 
             if (originProperties.isAllowed()) {
-                latestKeysMap.put(pssClientNumber,
+                latestKeysMap.put(originNumber,
                         new HashMap<>(){{
-                            if (originProperties.getRoleEnum() == RoleEnum.CUSTOMER) {
+                            if (originProperties.getRole() == RoleEnum.CUSTOMER) {
                                 put(RsaKeyTypeEnum.PUBLIC, customerBase64RsaKeyPair.getBase64PublicKey());
                                 put(RsaKeyTypeEnum.PRIVATE, customerBase64RsaKeyPair.getBase64PrivateKey());
                             } else {

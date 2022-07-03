@@ -6,7 +6,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class AdministratorSecondFactorLoginFields extends AdministratorFirstFactorLoginFields {
-    private short id;
     private String encryptedTfaCode;
     private long loginAccessCode;
 }

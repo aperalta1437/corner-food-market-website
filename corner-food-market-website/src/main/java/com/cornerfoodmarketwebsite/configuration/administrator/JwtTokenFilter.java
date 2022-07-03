@@ -1,15 +1,14 @@
 package com.cornerfoodmarketwebsite.configuration.administrator;
 
-import com.cornerfoodmarketwebsite.exception.ExpiredJwtTokenRuntimeException;
+import com.cornerfoodmarketwebsite.exception.InvalidJwtTokenRuntimeException;
+import com.cornerfoodmarketwebsite.exception.UnauthorizedUserRuntimeException;
+import com.cornerfoodmarketwebsite.exception.administrator.FailedAccountAuthenticationRuntimeException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.codehaus.jettison.json.JSONException;
-import org.codehaus.jettison.json.JSONObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.http.MediaType;
+import org.apache.commons.lang3.StringUtils;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -21,6 +20,10 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Date;
 
+import static com.cornerfoodmarketwebsite.helper.Constants.ACCESS_TOKEN_HEADER_NAME;
+import static com.cornerfoodmarketwebsite.helper.Constants.ORIGIN_NUMBER_HEADER_NAME;
+
+// This is a spring security authentication filter. Only operates while authenticating.
 @Slf4j
 @RequiredArgsConstructor
 public class JwtTokenFilter extends OncePerRequestFilter {
@@ -28,48 +31,33 @@ public class JwtTokenFilter extends OncePerRequestFilter {
     private final JwtTokenProvider jwtTokenProvider;
 
     @Override
-    public void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
-        String jwtToken = httpServletRequest.getHeader("Authorization");
+    public void doFilterInternal(HttpServletRequest httpServletRequest, @NotNull HttpServletResponse httpServletResponse, @NotNull FilterChain filterChain) throws ServletException, IOException {
+        String jwtToken = httpServletRequest.getHeader(ACCESS_TOKEN_HEADER_NAME);
 
-        if (jwtToken != null) {
+        if (!StringUtils.isEmpty(jwtToken)) {
             try {
-                Claims claims = jwtTokenProvider.getClaimsFromToken(jwtToken);
+                Claims claims = jwtTokenProvider.getClaimsFromToken(jwtToken, Integer.parseInt(httpServletRequest.getHeader(ORIGIN_NUMBER_HEADER_NAME)));
 
                 if (!claims.getExpiration().before(new Date())) {
                     Authentication authentication = jwtTokenProvider.getAuthentication(claims.getSubject());
                     if (authentication.isAuthenticated()) {
                         SecurityContextHolder.getContext().setAuthentication(authentication);
+                    } else {
+                        throw new FailedAccountAuthenticationRuntimeException();
                     }
                 } else {
-                    setExpiredJwtResponse(httpServletResponse);
-                    return;
+                    SecurityContextHolder.clearContext();
+                    throw new InvalidJwtTokenRuntimeException();
                 }
             } catch (ExpiredJwtException expiredJwtException) {
-                throw new ExpiredJwtTokenRuntimeException();
+                SecurityContextHolder.clearContext();
+                throw new InvalidJwtTokenRuntimeException();
             }
 
         } else {
-            try {
-                httpServletResponse.getWriter().println(new JSONObject().put("message", "User is not authorized"));
-                httpServletResponse.setContentType(MediaType.APPLICATION_JSON_VALUE);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            httpServletResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            return;
+            throw new UnauthorizedUserRuntimeException();
         }
 
         filterChain.doFilter(httpServletRequest, httpServletResponse);
-    }
-
-    private void setExpiredJwtResponse(HttpServletResponse httpServletResponse) {
-        SecurityContextHolder.clearContext();
-        try {
-            httpServletResponse.getWriter().println(new JSONObject().put("message", "Expired or invalid JWT token"));
-            httpServletResponse.setContentType(MediaType.APPLICATION_JSON_VALUE);
-        } catch (JSONException | IOException e) {
-            e.printStackTrace();
-        }
-        httpServletResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
     }
 }

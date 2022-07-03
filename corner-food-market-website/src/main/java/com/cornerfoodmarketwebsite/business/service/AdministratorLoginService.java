@@ -9,6 +9,7 @@ import com.cornerfoodmarketwebsite.exception.ExpiredTfaCodeRuntimeException;
 import com.cornerfoodmarketwebsite.exception.FailedFirstFactorAuthenticationRuntimeException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +22,11 @@ public class AdministratorLoginService {
     private final AdministratorRepository administratorRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final EmailService emailService;
+
+    @Value(value = "${administrator.tfa-code.valid-timeframe}")
+    private int tfaCodeValidTimeframe;
+    @Value(value = "${administrator.tfa-code.validation-overhead-timeframe}")
+    private int tfaCodeValidationOverheadTimeframe;
 
     @Autowired
     public AdministratorLoginService(AdministratorRepository administratorRepository, @Qualifier(value = "administratorPreTfaPasswordEncoder") BCryptPasswordEncoder bCryptPasswordEncoder, EmailService emailService) {
@@ -36,8 +42,8 @@ public class AdministratorLoginService {
         String tfaCode = String.format("%06d", rand.nextInt(999999));
         String encryptedTfaCode = this.bCryptPasswordEncoder.encode(tfaCode);
 
-        TfaCodeDetailsForUser tfaCodeDetailsForUser = new TfaCodeDetailsForUser(System.currentTimeMillis(), RoleInformationEnum.ADMINISTRATOR.getTfaCodeValidTimeframe());
-        this.administratorRepository.setTfaCodeDetailsById(encryptedTfaCode, tfaCodeDetailsForUser.getCreatedAt() + tfaCodeDetailsForUser.getValidTimeframe() + RoleInformationEnum.ADMINISTRATOR.getTfaCodeValidationOverheadTimeframe(), administrator.getId());
+        TfaCodeDetailsForUser tfaCodeDetailsForUser = new TfaCodeDetailsForUser(System.currentTimeMillis(), tfaCodeValidTimeframe);
+        this.administratorRepository.setTfaCodeDetailsById(encryptedTfaCode, tfaCodeDetailsForUser.getCreatedAt() + tfaCodeDetailsForUser.getValidTimeframe() + tfaCodeValidationOverheadTimeframe, administrator.getId());
 
         if (tfaTypeEnum == TfaTypeEnum.EMAIL) {
             this.emailService.sendEmail(administrator.getEmail(), "Two Factor Authentication code from our Service", EmailTemplateCustomEnum.TFA_CODE.getEmailContent(tfaCode));
