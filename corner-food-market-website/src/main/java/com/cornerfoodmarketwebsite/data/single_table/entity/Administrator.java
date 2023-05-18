@@ -1,13 +1,13 @@
 package com.cornerfoodmarketwebsite.data.single_table.entity;
 
-import com.cornerfoodmarketwebsite.data.single_table.entity.utils.AdministratorPermissionEnum;
-import com.cornerfoodmarketwebsite.data.single_table.entity.utils.AdministratorPermissionListConverter;
-import com.cornerfoodmarketwebsite.data.single_table.entity.utils.TfaTypeEnum;
+import com.cornerfoodmarketwebsite.data.single_table.entity.utils.*;
 import lombok.*;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.EnumMap;
 import java.util.EnumSet;
+import java.util.HashMap;
 import java.util.HashSet;
 
 @Entity
@@ -47,14 +47,15 @@ public class Administrator {
     private boolean isTfaEnabled;
     @Column(name = "TFA_CODE")
     private String tfaCode;
-    @Column(name = "TFA_EXPIRATION_TIME")
-    private Long tfaExpirationTime;
     @NonNull
     @Column(name = "TFA_CHOSEN_TYPE", columnDefinition = "TFA_TYPE")
     private TfaTypeEnum tfaChosenType;
-    @Convert(converter = AdministratorPermissionListConverter.class)
-    @Column(name = "PERMISSIONS", columnDefinition = "ADMINISTRATOR_PERMISSION[]")
-    private EnumSet<AdministratorPermissionEnum> permissions;
+//    @Convert(converter = AdministratorPermissionListConverter.class)
+//    @Column(name = "PERMISSIONS", columnDefinition = "ADMINISTRATOR_PERMISSION[]")
+//    private EnumSet<AdministratorPermissionEnum> permissions;
+    @Convert(converter = AdministratorDomainPermissionsConverter.class)
+    @Column(name = "PERMISSIONS", columnDefinition = "JSON")
+    private EnumMap<AdministratorPermissionDomainEnum, EnumMap<AdministratorPermissionTypeEnum, HashMap<String, Object>>> permissions;
     @NonNull
     @Column(name = "IS_SUPER")
     private boolean isSuper;

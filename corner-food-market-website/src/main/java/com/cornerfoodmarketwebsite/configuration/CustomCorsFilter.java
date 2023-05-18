@@ -12,12 +12,14 @@ import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
+import org.springframework.util.AntPathMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashMap;
 
 import static com.cornerfoodmarketwebsite.helper.Constants.ORIGIN_NUMBER_HEADER_NAME;
@@ -26,6 +28,13 @@ import static com.cornerfoodmarketwebsite.helper.Constants.ORIGIN_NUMBER_HEADER_
 @RequiredArgsConstructor
 public class CustomCorsFilter extends OncePerRequestFilter {
     private final HashMap<Integer, ClientOriginProperties> clientOriginProperties;
+    private static final String[] excludedEndpoints = new String[] {"/client/{client-domain-name}/images/{image-category}/{image-file-name}"};
+
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+        return Arrays.stream(excludedEndpoints)
+                .anyMatch(e -> new AntPathMatcher().match(e, request.getServletPath()));
+    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, @NotNull HttpServletResponse httpServletResponse, @NotNull FilterChain filterChain) throws ServletException, IOException {

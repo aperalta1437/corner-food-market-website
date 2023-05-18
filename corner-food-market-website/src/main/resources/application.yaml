@@ -77,9 +77,6 @@ customer:
       secret-key: BEROp*ISti#A#OX=&lbEtr+c+E8rUquvOcRidEfA+athe!Rotr#d+ut+Ub&OheRo
 
 administrator:
-  tfa-code:
-    valid-timeframe: 120000
-    validation-overhead-timeframe: 5
   login-rsa-key-size: 2048
   jwt:
     access-token:
@@ -90,7 +87,8 @@ administrator:
       valid-timeframe: 2419000000   # 4 weeks
     tfa-access-token:
       secret-key: wrI_We9W#DeWRiW61xetLzAvLXAs8EJ@ki7aB2_6f38UvIdlSwoYOv8VopemLfRe
-      valid-timeframe: ${administrator.tfa-code.valid-timeframe} + ${administrator.tfa-code.validation-overhead-timeframe}
+      valid-timeframe: 120000
+      valid-timeframe-overhead: 5
 
 #spring:
 #  servlet:

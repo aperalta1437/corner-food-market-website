@@ -6,30 +6,20 @@ import com.cornerfoodmarketwebsite.business.dto.request.domain.AdministratorUser
 import com.cornerfoodmarketwebsite.business.dto.response.*;
 import com.cornerfoodmarketwebsite.business.service.AdministratorLoginService;
 import com.cornerfoodmarketwebsite.business.service.utils.*;
-import com.cornerfoodmarketwebsite.configuration.administrator.JwtTokenProvider;
+import com.cornerfoodmarketwebsite.configuration.administrator.AccessTokenProvider;
 import com.cornerfoodmarketwebsite.configuration.administrator.RefreshTokenProvider;
-import com.cornerfoodmarketwebsite.configuration.administrator.TfaJwtTokenProvider;
+import com.cornerfoodmarketwebsite.configuration.administrator.TfaAccessTokenProvider;
 import com.cornerfoodmarketwebsite.data.single_table.entity.Administrator;
-import com.cornerfoodmarketwebsite.data.single_table.repository.AdministratorRepository;
 import com.cornerfoodmarketwebsite.exception.InvalidTfaCodeRuntimeException;
 import com.cornerfoodmarketwebsite.exception.administrator.FailedAccountAuthenticationRuntimeException;
-import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.codehaus.jettison.json.JSONArray;
-import org.codehaus.jettison.json.JSONException;
-import org.codehaus.jettison.json.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import javax.crypto.BadPaddingException;
@@ -52,8 +42,7 @@ public class AdministratorLoginController {
     private final AuthenticationManager administratorPreTfaAuthenticationManager;
     @Qualifier(value = "administratorPostTfaAuthenticationManagerBean")
     private final AuthenticationManager administratorPostTfaAuthenticationManager;
-    private final TfaJwtTokenProvider tfaJwtTokenProvider;
-    private final JwtTokenProvider jwtTokenProvider;
+    private final AccessTokenProvider accessTokenProvider;
     private final RefreshTokenProvider refreshTokenProvider;
     private final AdministratorLoginService administratorLoginService;
     private final LoginRsaKeysStore loginRsaKeysStore;
@@ -76,22 +65,22 @@ public class AdministratorLoginController {
                     administratorFirstFactorLoginFields.getEmail(), password));
             if (authentication.isAuthenticated()) {
                 Administrator administrator = ((AdministratorUserDetails) authentication.getPrincipal()).getAdministrator();
-                return new FinalAuthenticationResponse(administrator.getPermissions(), refreshTokenProvider.createToken(administrator.getEmail(), originNumber), jwtTokenProvider.createToken(administratorFirstFactorLoginFields.getEmail(), originNumber), administrator.getId(), String.format("%s %s", administrator.getFirstName(), administrator.getLastName()), administrator.getEmail());
+                return new FinalAuthenticationResponse(administrator.getPermissions(), accessTokenProvider.createToken(administratorFirstFactorLoginFields.getEmail(), originNumber), administrator.getId(), String.format("%s %s", administrator.getFirstName(), administrator.getLastName()), administrator.getEmail(), refreshTokenProvider.createToken(administrator.getEmail(), originNumber));
             } else {
                 throw new FailedAccountAuthenticationRuntimeException();
             }
         }
     }
 
-    public FirstFactorAuthenticationResponse tfaPreAuthenticate(String email, String password, int originNumber) throws MessagingException, NotProvidedTfaTypeException, NotSupportedTfaTypeException {
+    public AuthenticationResponse tfaPreAuthenticate(String email, String password, int originNumber) throws MessagingException, NotProvidedTfaTypeException, NotSupportedTfaTypeException {
         Authentication authentication = administratorPreTfaAuthenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                 email, password));
 
         if (authentication.isAuthenticated()) {
             Administrator administrator = ((AdministratorUserDetails) authentication.getPrincipal()).getAdministrator();
 
-            TfaCodeDetailsForUser tfaCodeDetailsForUser = this.administratorLoginService.sendTfaCodeAndGetDetailsForUser(administrator);
-            return new FirstFactorAuthenticationResponse(tfaCodeDetailsForUser.getValidTimeframe(), tfaCodeDetailsForUser.getCreatedAt(), tfaJwtTokenProvider.createToken(administrator.getEmail(), originNumber), administrator.getId(), String.format("%s %s", administrator.getFirstName(), administrator.getLastName()), administrator.getEmail());
+            TokenDetails tfaAccessTokenDetails = this.administratorLoginService.sendTfaCodeAndGetDetailsForUser(administrator, originNumber);
+            return new AuthenticationResponse(tfaAccessTokenDetails, administrator.getId(), String.format("%s %s", administrator.getFirstName(), administrator.getLastName()), administrator.getEmail());
         } else {
             throw new FailedAccountAuthenticationRuntimeException();
         }
@@ -103,7 +92,7 @@ public class AdministratorLoginController {
         String tfaCode = RsaUtil.decrypt(administratorSecondFactorLoginFields.getEncryptedTfaCode(), this.loginRsaKeysStore.getPrivateKey(administratorSecondFactorLoginFields.getLoginAccessCode(), originNumber));
 
         if (this.administratorLoginService.isCorrectTfaCodeByAdministrator(tfaCode, administrator.getId())) {
-            return new FinalAuthenticationResponse(administrator.getPermissions(), refreshTokenProvider.createToken(administrator.getEmail(), originNumber), jwtTokenProvider.createToken(administrator.getEmail(), originNumber), administrator.getId(), String.format("%s %s", administrator.getFirstName(), administrator.getLastName()), administrator.getEmail());
+            return new FinalAuthenticationResponse(administrator.getPermissions(), accessTokenProvider.createToken(administrator.getEmail(), originNumber), administrator.getId(), String.format("%s %s", administrator.getFirstName(), administrator.getLastName()), administrator.getEmail(), refreshTokenProvider.createToken(administrator.getEmail(), originNumber));
         } else {
             throw new InvalidTfaCodeRuntimeException();
         }
@@ -113,6 +102,6 @@ public class AdministratorLoginController {
     public ReAuthenticationResponse reAuthenticate(@RequestHeader(ORIGIN_NUMBER_HEADER_NAME) int originNumber) {
         Administrator administrator = ((AdministratorUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getAdministrator();
 
-        return new ReAuthenticationResponse(refreshTokenProvider.createToken(administrator.getEmail(), originNumber), jwtTokenProvider.createToken(administrator.getEmail(), originNumber));
+        return new ReAuthenticationResponse(accessTokenProvider.createToken(administrator.getEmail(), originNumber), refreshTokenProvider.createToken(administrator.getEmail(), originNumber));
     }
 }

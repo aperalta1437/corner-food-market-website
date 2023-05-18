@@ -9,7 +9,7 @@ import lombok.Setter;
 public class ClientOriginProperties {
     private String origin;
     private String storeName;
-    private boolean isAllowed;
+    private boolean allowed;
     private RoleEnum role;
     private JwtProperties jwt;
 }

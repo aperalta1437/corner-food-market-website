@@ -7,11 +7,11 @@ import org.springframework.security.web.DefaultSecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @RequiredArgsConstructor
-public class JwtTokenConfigurer extends SecurityConfigurerAdapter<DefaultSecurityFilterChain, HttpSecurity> {
+public class TfaAccessTokenConfigurer extends SecurityConfigurerAdapter<DefaultSecurityFilterChain, HttpSecurity> {
 
-    private final JwtTokenProvider jwtTokenProvider;
+    private final TfaAccessTokenProvider tfaAccessTokenProvider;
 
     public void configure(HttpSecurity http) throws Exception {
-        http.addFilterBefore(new JwtTokenFilter(this.jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(new TfaAccessTokenFilter(this.tfaAccessTokenProvider), UsernamePasswordAuthenticationFilter.class);
     }
 }

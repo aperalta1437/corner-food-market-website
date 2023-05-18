@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.io.IOException;
 
 @RestController
-@RequestMapping(value = "/api/client-specific")
+@RequestMapping(value = "/client")
 public class AwsS3BucketStorageController {
     private final AwsS3BucketStorageService awsS3BucketStorageService;
     private final ExceptionLogService exceptionLogService;
@@ -25,12 +25,12 @@ public class AwsS3BucketStorageController {
         this.exceptionLogService = exceptionLogService;
     }
 
-    @GetMapping(value = "/{request-domain}/images/{image-category}/{image-file-name}")
-    public ResponseEntity<byte[]> getPublicImage(@PathVariable(value = "request-domain") String requestDomain,
+    @GetMapping(value = "/{client-domain-name}/images/{image-category}/{image-file-name}")
+    public ResponseEntity<byte[]> getPublicImage(@PathVariable(value = "client-domain-name") String clientDomainName,
                                                @PathVariable(value = "image-category") String imageCategory,
                                                           @PathVariable(value = "image-file-name") String imageFileName) {
         try {
-            String imageFilePathName = "api/client-specific/" + requestDomain + "/images/" + imageCategory + "/" + imageFileName;
+            String imageFilePathName = "api/client-specific/" + clientDomainName + "/images/" + imageCategory + "/" + imageFileName;
             byte[] imageBytes = this.awsS3BucketStorageService.downloadFile(imageFilePathName);
 //            ByteArrayResource byteArrayResource = new ByteArrayResource(imageBytes);
 //            return ResponseEntity.ok().contentLength(imageBytes.length)

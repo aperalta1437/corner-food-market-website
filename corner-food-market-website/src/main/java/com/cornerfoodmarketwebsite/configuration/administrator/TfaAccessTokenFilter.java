@@ -1,6 +1,7 @@
 package com.cornerfoodmarketwebsite.configuration.administrator;
 
-import com.cornerfoodmarketwebsite.exception.InvalidJwtTokenRuntimeException;
+import com.cornerfoodmarketwebsite.exception.InvalidAccessTokenRuntimeException;
+import com.cornerfoodmarketwebsite.exception.InvalidRefreshTokenRuntimeException;
 import com.cornerfoodmarketwebsite.exception.UnauthorizedUserRuntimeException;
 import com.cornerfoodmarketwebsite.exception.administrator.FailedAccountAuthenticationRuntimeException;
 import io.jsonwebtoken.Claims;
@@ -8,13 +9,7 @@ import io.jsonwebtoken.ExpiredJwtException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.codehaus.jettison.json.JSONException;
-import org.codehaus.jettison.json.JSONObject;
 import org.jetbrains.annotations.NotNull;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -32,9 +27,9 @@ import static com.cornerfoodmarketwebsite.helper.Constants.TFA_ACCESS_TOKEN_HEAD
 // This is a spring security authentication filter. Only operates while authenticating.
 @Slf4j
 @RequiredArgsConstructor
-public class TfaJwtTokenFilter extends OncePerRequestFilter {
+public class TfaAccessTokenFilter extends OncePerRequestFilter {
 
-    private final TfaJwtTokenProvider tfaJwtTokenProvider;
+    private final TfaAccessTokenProvider tfaAccessTokenProvider;
 
     @Override
     public void doFilterInternal(HttpServletRequest httpServletRequest, @NotNull HttpServletResponse httpServletResponse, @NotNull FilterChain filterChain) throws ServletException, IOException {
@@ -42,10 +37,10 @@ public class TfaJwtTokenFilter extends OncePerRequestFilter {
 
         if (!StringUtils.isEmpty(jwtToken)) {
             try {
-                Claims claims = tfaJwtTokenProvider.getClaimsFromToken(jwtToken, Integer.parseInt(httpServletRequest.getHeader(ORIGIN_NUMBER_HEADER_NAME)));
+                Claims claims = tfaAccessTokenProvider.getClaimsFromToken(jwtToken, Integer.parseInt(httpServletRequest.getHeader(ORIGIN_NUMBER_HEADER_NAME)));
 
                 if (!claims.getExpiration().before(new Date())) {
-                    Authentication authentication = tfaJwtTokenProvider.getAuthentication(claims.getSubject());
+                    Authentication authentication = tfaAccessTokenProvider.getAuthentication(claims.getSubject());
                     if (authentication.isAuthenticated()) {
                         SecurityContextHolder.getContext().setAuthentication(authentication);
                     } else {
@@ -53,11 +48,11 @@ public class TfaJwtTokenFilter extends OncePerRequestFilter {
                     }
                 } else {
                     SecurityContextHolder.clearContext();
-                    throw new InvalidJwtTokenRuntimeException();
+                    throw new InvalidAccessTokenRuntimeException();
                 }
             } catch (ExpiredJwtException expiredJwtException) {
                 SecurityContextHolder.clearContext();
-                throw new InvalidJwtTokenRuntimeException();
+                throw new InvalidRefreshTokenRuntimeException();
             }
         } else {
             throw new UnauthorizedUserRuntimeException();

@@ -1,6 +1,6 @@
 package com.cornerfoodmarketwebsite.configuration.administrator;
 
-import com.cornerfoodmarketwebsite.exception.InvalidJwtTokenRuntimeException;
+import com.cornerfoodmarketwebsite.exception.InvalidAccessTokenRuntimeException;
 import com.cornerfoodmarketwebsite.exception.UnauthorizedUserRuntimeException;
 import com.cornerfoodmarketwebsite.exception.administrator.FailedAccountAuthenticationRuntimeException;
 import io.jsonwebtoken.Claims;
@@ -26,9 +26,9 @@ import static com.cornerfoodmarketwebsite.helper.Constants.ORIGIN_NUMBER_HEADER_
 // This is a spring security authentication filter. Only operates while authenticating.
 @Slf4j
 @RequiredArgsConstructor
-public class JwtTokenFilter extends OncePerRequestFilter {
+public class AccessTokenFilter extends OncePerRequestFilter {
 
-    private final JwtTokenProvider jwtTokenProvider;
+    private final AccessTokenProvider accessTokenProvider;
 
     @Override
     public void doFilterInternal(HttpServletRequest httpServletRequest, @NotNull HttpServletResponse httpServletResponse, @NotNull FilterChain filterChain) throws ServletException, IOException {
@@ -36,10 +36,10 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 
         if (!StringUtils.isEmpty(jwtToken)) {
             try {
-                Claims claims = jwtTokenProvider.getClaimsFromToken(jwtToken, Integer.parseInt(httpServletRequest.getHeader(ORIGIN_NUMBER_HEADER_NAME)));
+                Claims claims = accessTokenProvider.getClaimsFromToken(jwtToken, Integer.parseInt(httpServletRequest.getHeader(ORIGIN_NUMBER_HEADER_NAME)));
 
                 if (!claims.getExpiration().before(new Date())) {
-                    Authentication authentication = jwtTokenProvider.getAuthentication(claims.getSubject());
+                    Authentication authentication = accessTokenProvider.getAuthentication(claims.getSubject());
                     if (authentication.isAuthenticated()) {
                         SecurityContextHolder.getContext().setAuthentication(authentication);
                     } else {
@@ -47,11 +47,11 @@ public class JwtTokenFilter extends OncePerRequestFilter {
                     }
                 } else {
                     SecurityContextHolder.clearContext();
-                    throw new InvalidJwtTokenRuntimeException();
+                    throw new InvalidAccessTokenRuntimeException();
                 }
             } catch (ExpiredJwtException expiredJwtException) {
                 SecurityContextHolder.clearContext();
-                throw new InvalidJwtTokenRuntimeException();
+                throw new InvalidAccessTokenRuntimeException();
             }
 
         } else {

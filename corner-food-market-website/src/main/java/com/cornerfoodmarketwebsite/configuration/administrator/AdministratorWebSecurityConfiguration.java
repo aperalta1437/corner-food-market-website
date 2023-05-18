@@ -1,14 +1,9 @@
 package com.cornerfoodmarketwebsite.configuration.administrator;
 
 import com.cornerfoodmarketwebsite.business.service.AdministratorUserDetailsService;
-import com.cornerfoodmarketwebsite.business.service.CustomerUserDetailsService;
-import com.cornerfoodmarketwebsite.business.service.utils.RsaUtil;
-import com.cornerfoodmarketwebsite.controller.utils.LoginProcessIssueEnum;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -21,14 +16,9 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
-import org.springframework.security.web.authentication.logout.HttpStatusReturningLogoutSuccessHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import javax.sql.DataSource;
-import java.util.Arrays;
 
 @EnableWebSecurity
 @Configuration
@@ -38,7 +28,7 @@ public class AdministratorWebSecurityConfiguration {
     @RequiredArgsConstructor
     public static class AdministratorPostTfaWebSecurityConfiguration  extends WebSecurityConfigurerAdapter {
 
-        private final JwtTokenProvider jwtTokenProvider;
+        private final AccessTokenProvider accessTokenProvider;
         private final DataSource dataSource;
 
         @Bean
@@ -87,7 +77,7 @@ public class AdministratorWebSecurityConfiguration {
 //                    .logoutUrl("/admin/account/logout")
 //                    .deleteCookies("JSESSIONID");
 
-            http.apply(new JwtTokenConfigurer(this.jwtTokenProvider));
+            http.apply(new AccessTokenConfigurer(this.accessTokenProvider));
         }
     }
 
@@ -96,7 +86,7 @@ public class AdministratorWebSecurityConfiguration {
     @RequiredArgsConstructor
     public static class AdministratorPreTfaWebSecurityConfiguration  extends WebSecurityConfigurerAdapter {
 
-        private final TfaJwtTokenProvider tfaJwtTokenProvider;
+        private final TfaAccessTokenProvider tfaAccessTokenProvider;
         private final DataSource dataSource;
 
         @Bean
@@ -144,7 +134,7 @@ public class AdministratorWebSecurityConfiguration {
 //                    .logoutUrl("/admin/login/tfa-post-authenticate/logout");
 //                    .deleteCookies("JSESSIONID");
 
-            http.apply(new TfaJwtTokenConfigurer(this.tfaJwtTokenProvider));
+            http.apply(new TfaAccessTokenConfigurer(this.tfaAccessTokenProvider));
         }
     }
 
@@ -154,7 +144,7 @@ public class AdministratorWebSecurityConfiguration {
     public static class AdministratorRefreshWebSecurityConfiguration  extends WebSecurityConfigurerAdapter {
 
         private final RefreshTokenProvider refreshTokenProvider;
-        private final JwtTokenProvider jwtTokenProvider;
+        private final AccessTokenProvider accessTokenProvider;
         private final DataSource dataSource;
 
         @Bean
@@ -202,7 +192,7 @@ public class AdministratorWebSecurityConfiguration {
 //                    .logoutUrl("/admin/login/tfa-post-authenticate/logout");
 //                    .deleteCookies("JSESSIONID");
 
-            http.apply(new RefreshTokenConfigurer(refreshTokenProvider, jwtTokenProvider));
+            http.apply(new RefreshTokenConfigurer(refreshTokenProvider, accessTokenProvider));
         }
     }
 }

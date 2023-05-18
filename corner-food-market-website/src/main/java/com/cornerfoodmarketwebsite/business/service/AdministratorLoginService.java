@@ -1,15 +1,13 @@
 package com.cornerfoodmarketwebsite.business.service;
 
 import com.cornerfoodmarketwebsite.business.service.utils.*;
+import com.cornerfoodmarketwebsite.configuration.administrator.TfaAccessTokenProvider;
 import com.cornerfoodmarketwebsite.data.single_table.entity.Administrator;
 import com.cornerfoodmarketwebsite.data.single_table.entity.utils.TfaTypeEnum;
 import com.cornerfoodmarketwebsite.data.single_table.repository.AdministratorRepository;
-import com.cornerfoodmarketwebsite.data.single_table.repository.utils.projection.TfaDetails;
-import com.cornerfoodmarketwebsite.exception.ExpiredTfaCodeRuntimeException;
 import com.cornerfoodmarketwebsite.exception.FailedFirstFactorAuthenticationRuntimeException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -22,28 +20,24 @@ public class AdministratorLoginService {
     private final AdministratorRepository administratorRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final EmailService emailService;
-
-    @Value(value = "${administrator.tfa-code.valid-timeframe}")
-    private int tfaCodeValidTimeframe;
-    @Value(value = "${administrator.tfa-code.validation-overhead-timeframe}")
-    private int tfaCodeValidationOverheadTimeframe;
+    private final TfaAccessTokenProvider tfaAccessTokenProvider;
 
     @Autowired
-    public AdministratorLoginService(AdministratorRepository administratorRepository, @Qualifier(value = "administratorPreTfaPasswordEncoder") BCryptPasswordEncoder bCryptPasswordEncoder, EmailService emailService) {
+    public AdministratorLoginService(AdministratorRepository administratorRepository, @Qualifier(value = "administratorPreTfaPasswordEncoder") BCryptPasswordEncoder bCryptPasswordEncoder, EmailService emailService, TfaAccessTokenProvider tfaAccessTokenProvider) {
         this.administratorRepository = administratorRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.emailService = emailService;
+        this.tfaAccessTokenProvider = tfaAccessTokenProvider;
     }
 
-    public TfaCodeDetailsForUser sendTfaCodeAndGetDetailsForUser(Administrator administrator) throws NotProvidedTfaTypeException, NotSupportedTfaTypeException, MessagingException {
+    public TokenDetails sendTfaCodeAndGetDetailsForUser(Administrator administrator, int originNumber) throws NotProvidedTfaTypeException, NotSupportedTfaTypeException, MessagingException {
         TfaTypeEnum tfaTypeEnum = administrator.getTfaChosenType();
 
         Random rand = new Random();
         String tfaCode = String.format("%06d", rand.nextInt(999999));
         String encryptedTfaCode = this.bCryptPasswordEncoder.encode(tfaCode);
 
-        TfaCodeDetailsForUser tfaCodeDetailsForUser = new TfaCodeDetailsForUser(System.currentTimeMillis(), tfaCodeValidTimeframe);
-        this.administratorRepository.setTfaCodeDetailsById(encryptedTfaCode, tfaCodeDetailsForUser.getCreatedAt() + tfaCodeDetailsForUser.getValidTimeframe() + tfaCodeValidationOverheadTimeframe, administrator.getId());
+//        TfaCodeDetailsForUser tfaCodeDetailsForUser = new TfaCodeDetailsForUser(System.currentTimeMillis(), tfaCodeValidTimeframe);
 
         if (tfaTypeEnum == TfaTypeEnum.EMAIL) {
             this.emailService.sendEmail(administrator.getEmail(), "Two Factor Authentication code from our Service", EmailTemplateCustomEnum.TFA_CODE.getEmailContent(tfaCode));
@@ -55,17 +49,15 @@ public class AdministratorLoginService {
             }
         }
 
-        return tfaCodeDetailsForUser;
+        TokenDetails tfaAccessTokenDetails = tfaAccessTokenProvider.createToken(administrator.getEmail(), originNumber);
+
+        this.administratorRepository.setTfaCodeDetailsById(encryptedTfaCode, administrator.getId());
+
+        return tfaAccessTokenDetails;
     }
 
     public boolean isCorrectTfaCodeByAdministrator(String tfaCode, short administratorId) {
-        TfaDetails tfaDetails = this.administratorRepository.getTfaDetailsById(administratorId);
-
-        if (System.currentTimeMillis() > tfaDetails.getTfaExpirationTime()) {
-            throw new ExpiredTfaCodeRuntimeException();
-        }
-
-        return this.bCryptPasswordEncoder.matches(tfaCode, tfaDetails.getTfaCode());
+        return this.bCryptPasswordEncoder.matches(tfaCode, this.administratorRepository.getTfaCodeById(administratorId));
     }
 
     public FirstFactorAuthenticationInformation verifyCredentialsAndGetFirstFactorAuthenticationInformation(String email, String password) {

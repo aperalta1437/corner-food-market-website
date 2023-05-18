@@ -1,6 +1,6 @@
 package com.cornerfoodmarketwebsite.configuration.administrator;
 
-import com.cornerfoodmarketwebsite.exception.InvalidJwtTokenRuntimeException;
+import com.cornerfoodmarketwebsite.exception.InvalidRefreshTokenRuntimeException;
 import com.cornerfoodmarketwebsite.exception.NonExpiredJwtAccessTokenRuntimeException;
 import com.cornerfoodmarketwebsite.exception.UnauthorizedUserRuntimeException;
 import com.cornerfoodmarketwebsite.exception.administrator.FailedAccountAuthenticationRuntimeException;
@@ -34,7 +34,7 @@ public class RefreshTokenFilter extends OncePerRequestFilter {
     @Value(value = "${administrator.jwt.refresh-token.valid-timeframe}")
     private long refreshTokenValidTimeframe;
     private final RefreshTokenProvider refreshTokenProvider;
-    private final JwtTokenProvider jwtTokenProvider;
+    private final AccessTokenProvider accessTokenProvider;
 
     @Override
     protected void doFilterInternal(@NotNull HttpServletRequest httpServletRequest, @NotNull HttpServletResponse httpServletResponse, @NotNull FilterChain filterChain) throws ServletException, IOException {
@@ -45,7 +45,7 @@ public class RefreshTokenFilter extends OncePerRequestFilter {
             try {
                 int originNumber = Integer.parseInt(httpServletRequest.getHeader(ORIGIN_NUMBER_HEADER_NAME));
                 Claims refreshTokenClaims = refreshTokenProvider.getClaimsFromToken(refreshToken, originNumber);
-                Claims accessTokenClaims = jwtTokenProvider.getClaimsFromToken(accessToken, originNumber);
+                Claims accessTokenClaims = accessTokenProvider.getClaimsFromToken(accessToken, originNumber);
 
                 if (!refreshTokenClaims.getExpiration().before(new Date()) && refreshTokenClaims.getSubject().equals(accessTokenClaims.getSubject()) && !refreshTokenClaims.getExpiration().after(new Date(new Date().getTime() + refreshTokenValidTimeframe - accessTokenValidTimeframe))) {
 
@@ -62,11 +62,11 @@ public class RefreshTokenFilter extends OncePerRequestFilter {
                     }
                 } else {
                     SecurityContextHolder.clearContext();
-                    throw new InvalidJwtTokenRuntimeException();
+                    throw new InvalidRefreshTokenRuntimeException();
                 }
             } catch (ExpiredJwtException expiredJwtException) {
                 SecurityContextHolder.clearContext();
-                throw new InvalidJwtTokenRuntimeException();
+                throw new InvalidRefreshTokenRuntimeException();
             }
         } else {
             throw new UnauthorizedUserRuntimeException();

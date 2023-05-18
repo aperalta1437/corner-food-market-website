@@ -10,9 +10,9 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class RefreshTokenConfigurer extends SecurityConfigurerAdapter<DefaultSecurityFilterChain, HttpSecurity> {
 
     private final RefreshTokenProvider refreshTokenProvider;
-    private final JwtTokenProvider jwtTokenProvider;
+    private final AccessTokenProvider accessTokenProvider;
 
     public void configure(HttpSecurity http) throws Exception {
-        http.addFilterBefore(new RefreshTokenFilter(refreshTokenProvider, jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(new RefreshTokenFilter(refreshTokenProvider, accessTokenProvider), UsernamePasswordAuthenticationFilter.class);
     }
 }
